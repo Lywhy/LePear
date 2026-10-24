@@ -1,35 +1,99 @@
-# React + TypeScript + Vite
+# LePear
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+LePear — веб-приложение для визуального проектирования темы сайта на основе **shadcn/ui**. Редактор позволит подбирать цвета, типографику и параметры компонентов, сразу видеть результат на UI-блоках и экспортировать тему для своего сайта.
 
-Currently, two official plugins are available:
+## Текущее состояние
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Проект находится на этапе подготовки: настроены React, TypeScript, Vite, Tailwind CSS и alias `@` для импортов из `src`. Подключён React Compiler. Корневой компонент `App` пока пустой.
 
-## React Compiler
+shadcn/ui выбран в качестве основы интерфейса, но ещё не инициализирован. Возможности редактора ниже относятся к плану разработки и пока не реализованы.
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## Планируемые возможности
 
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
+- Светлая и тёмная темы с независимыми настройками цветов.
+- Готовые пресеты, выбор акцентного и семантических цветов.
+- Выбор шрифта, размеров текста, начертаний и интервалов.
+- Настройка закруглений, высоты элементов, отступов и плотности компонентов.
+- Живой предпросмотр компонентов и составных блоков на разных ширинах экрана.
+- Локальное сохранение и переключение пользовательских тем.
+- Импорт и экспорт JSON, экспорт CSS-переменных для подключения к сайту.
 
-## Expanding the Oxlint configuration
+В MVP настройки будут храниться в браузере. Аккаунты, серверное хранение и совместное редактирование в текущий объём не входят. Применение темы к другому сайту предполагается через экспорт.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Стек
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+| Технология | Назначение |
+| --- | --- |
+| React 19 + TypeScript 6 | Интерфейс и типизация |
+| Vite 8 | Разработка и сборка |
+| Tailwind CSS 4 | Стилизация |
+| shadcn/ui | Планируемая основа компонентов |
+| React Router 7 | Установлен для маршрутизации |
+| React Compiler | Компиляционная оптимизация React |
+| Oxlint | Проверка кода |
+| pnpm | Управление зависимостями |
+
+Версии зависимостей указаны в `package.json`, зафиксированные версии — в `pnpm-lock.yaml`.
+
+## Локальный запуск
+
+Понадобятся Node.js, совместимый с установленной версией Vite, и pnpm.
+
+```sh
+pnpm install
+pnpm dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+По умолчанию приложение доступно по адресу http://localhost:5173. Если порт занят, Vite может выбрать следующий свободный порт — точный адрес выводится в терминале.
+
+## Команды
+
+| Команда | Действие |
+| --- | --- |
+| `pnpm dev` | Запустить сервер разработки |
+| `pnpm build` | Проверить TypeScript и собрать приложение в `dist/` |
+| `pnpm preview` | Локально просмотреть готовую сборку |
+| `pnpm lint` | Проверить код с помощью Oxlint |
+
+Для просмотра сборки сначала выполните `pnpm build`, затем `pnpm preview`. Отдельная команда автоматизированных тестов пока не настроена.
+
+## Структура проекта
+
+```text
+public/                 Статические файлы
+src/
+  assets/               Ресурсы приложения
+  App.tsx               Корневой компонент
+  main.tsx              Точка входа React
+  index.css             Глобальные стили и подключение Tailwind CSS
+index.html              HTML-точка входа
+vite.config.ts          Плагины Vite, alias и сервер разработки
+tsconfig.json           Корневая конфигурация TypeScript
+tsconfig.app.json       Конфигурация TypeScript для приложения
+tsconfig.node.json      Конфигурация TypeScript для Vite
+.oxlintrc.json           Конфигурация Oxlint
+```
+
+### Импорты через alias
+
+Alias `@` указывает на `src`. Он настроен в Vite, `tsconfig.json` и `tsconfig.app.json`.
+
+```tsx
+import App from '@/App.tsx'
+```
+
+После добавления компонентов shadcn/ui импорты будут использовать ту же схему, например `@/components/ui/button`.
+
+## План разработки
+
+Задачи, критерии приёмки и зависимости ведутся в [Linear: MYT-5 — Редактор темы сайта — MVP](https://linear.app/mythme/issue/MYT-5).
+
+1. **MYT-6** — подготовить существующий проект для shadcn/ui.
+2. **MYT-7** — реализовать модель темы и применение токенов.
+3. **MYT-8** — собрать редактор и живой предпросмотр.
+4. **MYT-9** — добавить режимы, пресеты и цвета.
+5. **MYT-10** — добавить шрифты и типографику.
+6. **MYT-11** — добавить радиусы, размеры и отступы.
+7. **MYT-12** — реализовать локальное сохранение тем.
+8. **MYT-13** — реализовать импорт и экспорт.
+9. **MYT-14** — проверить MVP и подготовить инструкцию использования.
