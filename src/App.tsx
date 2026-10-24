@@ -1,24 +1,23 @@
-import { useState } from "react";
-import {
-  ArrowDown,
-  ArrowUpRight,
-  Code2,
-  Menu,
-  MousePointer2,
-  Palette,
-  X,
-} from "lucide-react";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { LandingPreview } from "@/components/landing/landing-preview";
+import { EditorLink, Kicker } from "@/components/landing/shared";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { LandingPreview } from "@/components/landing/landing-preview";
-import { Brand, EditorLink, Kicker } from "@/components/landing/shared";
+import { Button } from "@/components/ui/button";
 import { themeColors } from "@/lib/site-theme";
+import {
+  ArrowUpRight,
+  Code2,
+  Menu,
+  MousePointer2,
+  Palette,
+  X
+} from "lucide-react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const faqs = [
   [
@@ -61,7 +60,6 @@ export default function App() {
       <header
         className={`${sectionWidth} relative flex min-h-20 items-center justify-between gap-4 py-4 lg:min-h-22`}
       >
-        <Brand />
         <nav
           className="hidden items-center gap-7 text-sm text-[#b6c0ad] lg:flex"
           aria-label="Основная навигация"
@@ -155,7 +153,6 @@ export default function App() {
                 className="inline-flex min-h-12 items-center gap-3 border-b border-white/40 py-3 text-sm text-white hover:border-white focus-visible:outline-2 focus-visible:outline-white"
               >
                 Узнать больше
-                <ArrowDown size={16} />
               </a>
             </div>
             <p className="mt-4 text-sm text-[#e3ebd8]">
@@ -270,7 +267,6 @@ export default function App() {
               className="mt-6 inline-flex min-h-12 items-center gap-6 border-b border-[#91a878]/50 py-3 text-base text-[#d4e7be] hover:text-white focus-visible:outline-2 focus-visible:outline-[#d3ed9a]"
             >
               Начать с одного цвета
-              <ArrowUpRight size={18} />
             </Link>
           </div>
           <div className="divide-y divide-white/10">
@@ -367,7 +363,6 @@ export default function App() {
       <footer
         className={`${sectionWidth} flex flex-wrap items-center justify-between gap-6 py-9`}
       >
-        <Brand />
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-[#b1bda7]">
           <Link to="/contact" className="hover:text-white">
             Обратная связь
@@ -379,7 +374,6 @@ export default function App() {
             rel="noreferrer"
           >
             Built with shadcn/ui
-            <ArrowUpRight size={14} />
           </a>
           <span>© 2026 LePear</span>
         </div>

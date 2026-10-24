@@ -22,6 +22,7 @@
   "menuAccent": "subtle",
   "registries": {
     "@react-bits": "https://reactbits.dev/r/{name}.json",
-    "@reui": "https://mcp.reui.io/r/{name}.json"
+    "@reui": "https://reui.io/r/{style}/{name}.json"
   }
 }
+

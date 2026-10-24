@@ -1,20 +1,7 @@
+import { cn } from "cn";
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Sprout } from "lucide-react";
-import { cn } from "cn";
 
-export function Brand() {
-  return (
-    <Link
-      to="/"
-      className="inline-flex shrink-0 items-center gap-2 text-2xl font-semibold tracking-tight text-[#f2f3ed] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d3ed9a]"
-      aria-label="LePear — на главную"
-    >
-      <Sprout className="size-7 text-[#d3ed9a]" aria-hidden="true" />
-      LePear
-    </Link>
-  );
-}
 export function EditorLink({
   children = "Открыть редактор",
   className,
@@ -31,7 +18,6 @@ export function EditorLink({
       )}
     >
       {children}
-      <ArrowUpRight size={18} aria-hidden="true" />
     </Link>
   );
 }
