@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { motion, useReducedMotion } from "motion/react";
+import { SiteBackdrop } from "@/components/layout/site-backdrop";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { designClasses as ui } from "@/lib/design-system";
@@ -39,7 +40,8 @@ export function SiteLayout() {
     return () => window.cancelAnimationFrame(frame);
   }, [location.pathname, location.hash, location.key]);
   return (
-    <div className={ui.page}>
+    <div className={ui.page + " relative isolate"}>
+      <SiteBackdrop />
       <a
         href="#page-content"
         className={`fixed top-3 left-3 z-[100] -translate-y-24 rounded-lg bg-[#d3ed9a] px-4 py-3 text-sm text-[#182112] focus:translate-y-0 ${ui.focus}`}

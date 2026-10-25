@@ -115,7 +115,7 @@ export function ContactForm({ onSend }: ContactFormProps) {
           <div className="mb-1 flex size-11 items-center justify-center rounded-xl border border-[#d3ed9a]/20 bg-[#d3ed9a]/10 text-[#d3ed9a]">
             <MessageSquare size={21} aria-hidden="true" />
           </div>
-          <CardTitle className="text-2xl font-medium tracking-tight">
+          <CardTitle className="font-[family-name:Arial_Black,Arial,sans-serif] text-2xl leading-tight font-black tracking-tight sm:text-3xl">
             Расскажите о своей идее
           </CardTitle>
           <CardDescription className="text-base leading-7 text-[#b1bda7]">
@@ -331,7 +331,7 @@ export function ContactForm({ onSend }: ContactFormProps) {
                 aria-hidden="true"
               />
             )}
-            <DialogTitle className="text-2xl leading-tight">
+            <DialogTitle className="font-[family-name:Arial_Black,Arial,sans-serif] text-2xl leading-tight font-black tracking-tight">
               {sent ? "Сообщение отправлено" : "Проверьте ваше сообщение"}
             </DialogTitle>
             <DialogDescription className="text-base leading-7 text-[#b1bda7]">

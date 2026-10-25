@@ -7,11 +7,11 @@ export const designClasses = {
   grid: "grid gap-4 sm:gap-6 lg:gap-8",
   eyebrow: "text-sm leading-6 font-medium tracking-[0.12em] text-[#c5dbab]",
   heroTitle:
-    "text-4xl leading-[1.08] font-medium tracking-[-0.04em] sm:text-5xl lg:text-6xl [overflow-wrap:anywhere]",
+    "font-[family-name:Arial_Black,Arial,sans-serif] text-4xl leading-[1.08] font-black tracking-[-0.04em] sm:text-5xl lg:text-6xl [overflow-wrap:anywhere]",
   sectionTitle:
-    "text-3xl leading-tight font-medium tracking-[-0.03em] sm:text-4xl [overflow-wrap:anywhere]",
+    "font-[family-name:Arial_Black,Arial,sans-serif] text-3xl leading-tight font-black tracking-[-0.03em] sm:text-4xl [overflow-wrap:anywhere]",
   cardTitle:
-    "text-xl leading-snug font-medium tracking-tight [overflow-wrap:anywhere]",
+    "font-[family-name:Arial_Black,Arial,sans-serif] text-xl leading-snug font-black tracking-tight [overflow-wrap:anywhere]",
   body: "text-base leading-7 text-[#b1bda7] [overflow-wrap:anywhere]",
   caption: "text-sm leading-6 text-[#b1bda7] [overflow-wrap:anywhere]",
   surface: "min-w-0 rounded-2xl border border-white/10 bg-[#171c17] p-5 sm:p-6",

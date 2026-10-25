@@ -6,8 +6,9 @@ import {
   SlidersHorizontal,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { RevealText } from "@/components/landing/marketing-text";
 import { ContactForm } from "@/components/contact-form";
-import { Reveal } from "@/components/motion/reveal";
+import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import SpotlightCard from "@/components/react-bits/spotlight-card";
 import { useDecorativeMotion } from "@/hooks/use-decorative-motion";
 import { designClasses as ui } from "@/lib/design-system";
@@ -35,21 +36,23 @@ export default function ContactPage() {
   const effectsEnabled = useDecorativeMotion(scope);
   return (
     <main className={ui.container + " py-10 sm:py-16 lg:py-20"}>
-      <div className="grid min-w-0 items-start gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12 xl:gap-20">
+      <div className="grid min-w-0 items-start gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12 xl:gap-20">
         <div ref={scope} className="min-w-0 lg:sticky lg:top-8">
-          <Reveal>
-            <p className={ui.eyebrow}>ЕСТЬ ИДЕЯ?</p>
+          <ScrollReveal>
+            <p className={ui.eyebrow}>03 / ОБРАТНАЯ СВЯЗЬ</p>
             <h1 className={"mt-4 " + ui.heroTitle}>
-              LePear начинается
+              <RevealText text="Ваши идеи." />
               <br />
-              <span className="text-[#d3ed9a]">с ваших идей.</span>
+              <span className="text-[#d3ed9a]">
+                <RevealText text="Новый взгляд." />
+              </span>
             </h1>
             <p className={"mt-5 max-w-lg " + ui.body}>
               Расскажите, чего вам не хватает в редакторе, задайте вопрос или
               предложите новый взгляд на привычные настройки.
             </p>
-          </Reveal>
-          <Reveal className="mt-7">
+          </ScrollReveal>
+          <ScrollReveal className="mt-7">
             <SpotlightCard
               effectsEnabled={effectsEnabled}
               spotlightColor="#d3ed9a"
@@ -59,7 +62,7 @@ export default function ContactPage() {
               smoothing={0.2}
               ambient={false}
               flare={false}
-              className="rounded-2xl p-5 sm:p-6"
+              className="rounded-2xl p-5 sm:p-7"
               style={
                 {
                   "--spotlight-card-surface": "#171c17",
@@ -84,7 +87,7 @@ export default function ContactPage() {
                 ))}
               </ul>
             </SpotlightCard>
-          </Reveal>
+          </ScrollReveal>
           <p className={"mt-5 max-w-lg " + ui.caption}>
             Сейчас доступен предпросмотр формы. Сообщения не отправляются, канал
             обратной связи ещё не подключён.
@@ -100,9 +103,9 @@ export default function ContactPage() {
             <ArrowUpRight size={18} aria-hidden="true" />
           </Link>
         </div>
-        <Reveal className="min-w-0">
+        <ScrollReveal className="min-w-0">
           <ContactForm />
-        </Reveal>
+        </ScrollReveal>
       </div>
     </main>
   );

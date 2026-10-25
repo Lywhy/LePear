@@ -132,12 +132,12 @@ export default function EditorPage() {
   return (
     <div className="font-sans text-[#edf1e7]">
       <main className="mx-auto max-w-[1600px] px-4 py-6 sm:px-8 sm:py-10 lg:px-10">
-        <div className="mb-6 flex flex-wrap items-start justify-between gap-5 rounded-2xl border border-white/10 bg-[#121810] p-5 sm:mb-8 sm:p-6">
+        <div className="mb-6 grid items-start gap-5 lg:grid-cols-[1fr_auto] rounded-2xl border border-white/10 bg-[#121810] p-5 sm:mb-8 sm:p-6">
           <div>
             <p className="text-sm leading-6 font-medium tracking-wide text-[#b5c6a5]">
-              РАБОЧЕЕ ПРОСТРАНСТВО
+              LEPEAR / МАСТЕРСКАЯ ТЕМЫ
             </p>
-            <h1 className="mt-2 text-3xl font-medium tracking-tight sm:text-4xl">
+            <h1 className="mt-2 font-[Arial_Black,Arial,sans-serif] text-3xl leading-tight font-black tracking-[-0.04em] sm:text-5xl">
               Редактор темы
             </h1>
             <p className="mt-3 max-w-2xl text-base leading-7 text-[#b1bda7]">
@@ -364,7 +364,9 @@ export default function EditorPage() {
           >
             <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
               <div>
-                <h2 className="text-xl font-medium">Результат</h2>
+                <h2 className="font-[Arial_Black,Arial,sans-serif] text-xl font-black tracking-tight">
+                  Результат
+                </h2>
                 <p className="mt-1 text-sm leading-6 text-[#b1bda7]">
                   Изменения видны сразу и применяются только здесь.
                 </p>
@@ -500,7 +502,10 @@ export default function EditorPage() {
               aria-labelledby="editor-export-title"
               className="mt-6 scroll-mt-24 rounded-2xl border border-white/10 bg-[#121810] p-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d3ed9a] sm:p-5"
             >
-              <h2 id="editor-export-title" className="text-lg font-medium">
+              <h2
+                id="editor-export-title"
+                className="font-[Arial_Black,Arial,sans-serif] text-xl font-black tracking-tight"
+              >
                 Перенос темы
               </h2>
               <p className="mt-2 text-sm leading-6 text-[#b1bda7]">

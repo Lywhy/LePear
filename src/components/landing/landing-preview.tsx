@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from "motion/react";
-import { appearMotion } from "@/lib/motion-presets";
+
 import {
   Check,
   Code2,
@@ -16,7 +16,17 @@ export function LandingPreview() {
   const reduced = useReducedMotion();
   return (
     <motion.section
-      {...appearMotion(reduced !== false)}
+      initial={false}
+      whileInView={
+        reduced !== false
+          ? { y: 0, opacity: 1 }
+          : { y: [24, 0], opacity: [0.82, 1] }
+      }
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{
+        duration: reduced !== false ? 0 : 0.7,
+        ease: [0.22, 1, 0.36, 1],
+      }}
       className="relative z-10 mx-auto -mt-28 w-[calc(100%-2rem)] max-w-290 sm:-mt-36 sm:w-[calc(100%-4rem)]"
       aria-label="Внешний вид редактора LePear"
     >
@@ -26,7 +36,7 @@ export function LandingPreview() {
         className="overflow-hidden rounded-lg border border-[#5b6e48] bg-[#141813] shadow-2xl shadow-black/40"
       >
         <div aria-hidden="true">
-          <div className="flex min-h-11 items-center justify-between gap-3 border-b border-white/10 bg-[#191e17] px-4 py-2 font-mono text-xs text-[#b6c4a8]">
+          <div className="flex min-h-11 items-center justify-between gap-3 border-b border-white/10 bg-[#191e17] px-4 py-2 font-mono text-sm text-[#b6c4a8]">
             <span className="flex gap-1.5">
               <span className="size-1.5 rounded-full bg-[#b1c789]" />
               <span className="size-1.5 rounded-full bg-[#626d56]" />
@@ -86,7 +96,7 @@ export function LandingPreview() {
                 <div className="relative my-5 h-1 rounded-full bg-[#546445]">
                   <span className="absolute top-1/2 left-[42%] size-3 -translate-y-1/2 rounded-full bg-[#d3ed9a]" />
                 </div>
-                <div className="flex justify-between text-xs">
+                <div className="flex justify-between text-sm">
                   <span>Строго</span>
                   <span>Мягко</span>
                 </div>
@@ -94,7 +104,7 @@ export function LandingPreview() {
             </div>
             <ThemePreview staticView />
           </div>
-          <div className="flex min-h-10 flex-wrap items-center justify-between gap-2 border-t border-white/10 px-4 py-2 font-mono text-xs text-[#b6c4a8]">
+          <div className="flex min-h-10 flex-wrap items-center justify-between gap-2 border-t border-white/10 px-4 py-2 font-mono text-sm text-[#b6c4a8]">
             <span className="flex items-center gap-2">
               <Code2 size={14} />
               CSS variables

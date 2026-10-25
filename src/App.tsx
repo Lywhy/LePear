@@ -1,7 +1,10 @@
+import { ThemeJourney } from "@/components/landing/theme-journey";
+import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { LandingHero } from "@/components/landing/landing-hero";
 import { LandingPreview } from "@/components/landing/landing-preview";
 import {
   LandingFeatures,
+  LandingNumbers,
   LandingWorkflow,
   LandingFaq,
   LandingCta,
@@ -13,10 +16,18 @@ export default function App() {
       <main id="main">
         <LandingHero />
         <LandingPreview />
-        <LandingFeatures />
+        <ScrollReveal>
+          <LandingFeatures />
+        </ScrollReveal>
+        <LandingNumbers />
+        <ThemeJourney />
         <LandingWorkflow />
-        <LandingFaq />
-        <LandingCta />
+        <ScrollReveal>
+          <LandingFaq />
+        </ScrollReveal>
+        <ScrollReveal>
+          <LandingCta />
+        </ScrollReveal>
       </main>
     </div>
   );

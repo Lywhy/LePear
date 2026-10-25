@@ -1,8 +1,10 @@
+import { AccentText } from "@/components/landing/marketing-text";
 import { EditorLink } from "@/components/landing/shared";
 import { Reveal } from "@/components/motion/reveal";
 import { useDecorativeMotion } from "@/hooks/use-decorative-motion";
 import { designClasses as ui } from "@/lib/design-system";
-import { Check } from "lucide-react";
+import TiltedCard from "@/components/react-bits/tilted-card";
+import { ArrowDown, Check } from "lucide-react";
 import { lazy, Suspense, useRef } from "react";
 
 const Aurora = lazy(() => import("@/components/react-bits/aurora"));
@@ -14,7 +16,7 @@ export function LandingHero() {
     <section
       ref={scope}
       aria-labelledby="hero-title"
-      className="relative isolate mx-2 overflow-hidden rounded-b-3xl bg-[#14241d] px-4 pt-12 pb-48 text-center sm:mx-4 sm:px-8 sm:pt-16 sm:pb-60 lg:pt-20 lg:pb-64"
+      className="relative isolate mx-2 overflow-hidden rounded-b-3xl bg-[#14241d] px-4 pt-10 pb-44 sm:mx-4 sm:px-8 sm:pt-14 sm:pb-52 lg:pt-16 lg:pb-56"
     >
       <div
         aria-hidden="true"
@@ -49,62 +51,110 @@ export function LandingHero() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-[-5] bg-[radial-gradient(ellipse_at_50%_45%,rgba(7,17,13,0.8)_0%,rgba(7,17,13,0.35)_48%,transparent_75%)]"
       />
-      <div className="mx-auto max-w-4xl">
-        <p className="mx-auto inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border border-[#d3ed9a]/25 bg-[#14241d]/80 px-4 py-2 text-sm leading-6 text-[#e1ebd4]">
-          <span
-            aria-hidden="true"
-            className="size-1.5 shrink-0 rounded-full bg-[#d3ed9a]"
-          />
-          Визуальный редактор тем на shadcn/ui
-        </p>
-        <Reveal>
-          <h1
-            id="hero-title"
-            className="mt-6 text-[clamp(2.5rem,8vw,5.5rem)] leading-[1.04] font-medium tracking-[-0.055em] text-[#f2f3ed] wrap-anywhere sm:mt-8"
+      <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-14">
+        <div className="min-w-0">
+          <p className="flex flex-wrap items-center gap-3 text-sm leading-6 tracking-wide text-[#d5dfcb]">
+            <span className="h-px w-8 bg-[#d3ed9a]" aria-hidden="true" />
+            LEPEAR / ВАША ТЕМА
+          </p>
+          <Reveal>
+            <h1
+              id="hero-title"
+              className="mt-6 font-[family-name:Arial_Black,Arial,sans-serif] text-[clamp(2.75rem,7.3vw,6.5rem)] leading-[1.02] font-black tracking-[-0.065em] text-[#f2f3ed] wrap-anywhere"
+            >
+              Ваш сайт.
+              <br />
+              Ваш
+              <br />
+              <AccentText text="характер." />
+            </h1>
+          </Reveal>
+          <p className="mt-6 max-w-md text-base leading-8 text-[#e1e8d9] sm:text-lg">
+            Цвет, шрифт и форма — не мелочи. Соберите из них свой визуальный
+            язык и примерьте его на настоящие компоненты.
+          </p>
+          <Reveal className="mt-7 flex flex-wrap items-center gap-3">
+            <EditorLink className="min-h-12 gap-2 rounded-lg px-5 text-base">
+              Создать тему
+            </EditorLink>
+            <a
+              href="#how-it-works"
+              className={
+                "inline-flex min-h-12 items-center gap-3 rounded-lg px-3 py-3 text-base text-[#edf1e7] hover:text-[#d3ed9a] " +
+                ui.focus
+              }
+            >
+              Как это работает
+              <ArrowDown size={18} aria-hidden="true" />
+            </a>
+          </Reveal>
+          <ul
+            aria-label="Возможности LePear"
+            className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm leading-6 text-[#d5dfcb]"
           >
-            Ваш сайт.
-            <br />
-            <span className="text-[#d3ed9a]">Ваш характер.</span>
-          </h1>
-        </Reveal>
-        <p className="mx-auto mt-6 max-w-xl text-base leading-7 text-[#e1e8d9] sm:text-lg sm:leading-8">
-          Подбирайте цвета, шрифты и форму компонентов.
-          <br className="hidden sm:block" /> Смотрите результат сразу и
-          переносите готовую тему в свой проект.
-        </p>
-        <Reveal className="mt-7 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-          <EditorLink className="min-h-12 gap-2 rounded-lg px-5 text-base">
-            Создать тему
-          </EditorLink>
-          <a
-            href="#how-it-works"
-            className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-white/25 bg-[#102016]/60 px-5 py-3 text-base text-[#edf1e7] hover:bg-[#182b1e]/80 ${ui.focus}`}
+            {["Без регистрации", "Локальные темы", "CSS и JSON"].map(
+              (label) => (
+                <li key={label} className="inline-flex items-center gap-2">
+                  <Check
+                    size={14}
+                    aria-hidden="true"
+                    className="shrink-0 text-[#d3ed9a]"
+                  />
+                  {label}
+                </li>
+              ),
+            )}
+          </ul>
+        </div>
+        <div className="min-w-0 lg:pt-10">
+          <TiltedCard
+            effectsEnabled={animateBackground}
+            className="relative rounded-2xl border border-[#d3ed9a]/30 bg-[#101810]/95 p-5 shadow-2xl shadow-black/30 sm:p-7"
           >
-            Как это работает
-          </a>
-        </Reveal>
-        <ul
-          aria-label="Возможности LePear"
-          className="mx-auto mt-6 flex max-w-xl flex-wrap justify-center gap-x-5 gap-y-2 text-sm leading-6 text-[#d5dfcb]"
-        >
-          {[
-            "Без регистрации",
-            "Темы в вашем браузере",
-            "Экспорт CSS и JSON",
-          ].map((label) => (
-            <li key={label} className="inline-flex items-center gap-2">
-              <Check
-                size={14}
-                aria-hidden="true"
-                className="shrink-0 text-[#d3ed9a]"
-              />
-              {label}
-            </li>
-          ))}
-        </ul>
-        <p className="mt-8 text-sm leading-6 text-[#d5dfcb]">
-          Ниже — пример оформления. Все настройки доступны в редакторе.
-        </p>
+            <div className="flex flex-wrap justify-between gap-2 border-b border-white/15 pb-4 text-sm leading-6 text-[#b5c6a5]">
+              <span>ЭТЮД № 01</span>
+              <span>Forest / Dark</span>
+            </div>
+            <p
+              aria-hidden="true"
+              className="mt-6 font-[family-name:Arial_Black,Arial,sans-serif] text-[clamp(4.5rem,12vw,9rem)] leading-none font-black tracking-[-0.08em] text-[#edf1e7]"
+            >
+              Aa<span className="text-[#d3ed9a]">.</span>
+            </p>
+            <p className="mt-3 max-w-xs text-base leading-7 text-[#c5d1b9]">
+              Знакомые компоненты.
+              <br />
+              Ваш собственный характер.
+            </p>
+            <div
+              className="mt-7 grid grid-cols-4 gap-2"
+              aria-label="Образец палитры: лесной, лаймовый, небесный и лавандовый"
+            >
+              {["#263720", "#d3ed9a", "#9fd6ef", "#c2b4ef"].map(
+                (color, index) => (
+                  <div key={color} className="min-w-0">
+                    <span
+                      className="block h-16 rounded-lg border border-white/15 sm:h-20"
+                      style={{ backgroundColor: color }}
+                    />
+                    <span className="mt-2 block font-mono text-sm text-[#a8b69c]">
+                      0{index + 1}
+                    </span>
+                  </div>
+                ),
+              )}
+            </div>
+            <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-white/15 pt-4 text-sm leading-6 text-[#b5c6a5]">
+              <span>Цвет / Типографика / Форма</span>
+              <span className="rounded-full border border-[#d3ed9a]/30 px-3 py-1 text-[#d3ed9a]">
+                shadcn/ui
+              </span>
+            </div>
+          </TiltedCard>
+          <p className="mt-4 text-sm leading-6 text-[#d5dfcb]">
+            Визуальный образец. Рабочие настройки — в редакторе.
+          </p>
+        </div>
       </div>
     </section>
   );

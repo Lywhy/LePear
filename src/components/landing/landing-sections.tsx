@@ -1,4 +1,6 @@
+import { AccentText, RevealText } from "@/components/landing/marketing-text";
 import { EditorLink, Kicker } from "@/components/landing/shared";
+import CountUp from "@/components/react-bits/count-up";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import SpotlightCard from "@/components/react-bits/spotlight-card";
 import {
@@ -17,7 +19,7 @@ import {
   Palette,
   Save,
   SlidersHorizontal,
-  Type
+  Type,
 } from "lucide-react";
 import { useReducedMotion } from "motion/react";
 import type { CSSProperties } from "react";
@@ -122,11 +124,14 @@ function FeatureVisual({ kind }: { kind: string }) {
   return (
     <div
       aria-hidden="true"
-      className="flex min-h-52 flex-col justify-center border-b border-white/10 bg-[#101710]/55 p-6 sm:p-7"
+      className={
+        "flex min-h-52 flex-col justify-center border-b border-white/10 bg-[#101710]/55 p-6 sm:p-7 " +
+        (kind === "color" ? "lg:border-r lg:border-b-0" : "")
+      }
     >
       {kind === "color" ? (
         <>
-          <div className="flex h-14 gap-2">
+          <div className="flex h-28 gap-2 sm:h-36">
             {themeColors.map((color) => (
               <span
                 key={color.name}
@@ -192,9 +197,11 @@ export function LandingFeatures() {
         <div>
           <Kicker>СОБСТВЕННЫЙ ВИЗУАЛЬНЫЙ ЯЗЫК</Kicker>
           <h2 id="features-title" className={`mt-4 ${ui.sectionTitle}`}>
-            Одна основа.
+            <RevealText text="Одна основа." />
             <br />
-            <span className="text-[#a8b69c]">Бесконечно ваш.</span>
+            <span className="text-[#a8b69c]">
+              <RevealText text="Бесконечно ваш." />
+            </span>
           </h2>
         </div>
         <p className={`${ui.body} max-w-lg`}>
@@ -202,7 +209,7 @@ export function LandingFeatures() {
           сразу посмотрите на целый интерфейс.
         </p>
       </div>
-      <div className={`${ui.grid} lg:grid-cols-3`}>
+      <div className={`${ui.grid} lg:grid-cols-2`}>
         {cards.map((card) => (
           <SpotlightCard
             key={card.id}
@@ -216,7 +223,12 @@ export function LandingFeatures() {
             smoothing={0.2}
             ambient={false}
             flare={false}
-            className="flex h-full min-w-0 flex-col p-0 focus-within:outline-2 focus-within:outline-offset-4 focus-within:outline-[#d3ed9a]"
+            className={
+              "grid h-full min-w-0 p-0 focus-within:outline-2 focus-within:outline-offset-4 focus-within:outline-[#d3ed9a] " +
+              (card.id === "color"
+                ? "lg:col-span-2 lg:grid-cols-[1.05fr_0.95fr]"
+                : "grid-rows-[auto_1fr]")
+            }
             style={
               {
                 "--spotlight-card-surface": "#171c17",
@@ -277,7 +289,7 @@ export function LandingWorkflow() {
         <div>
           <Kicker>ОТ ИДЕИ ДО ИНТЕРФЕЙСА</Kicker>
           <h2 id="workflow-title" className={`mt-4 ${ui.sectionTitle}`}>
-            Найдите своё.
+            <RevealText text="Найдите своё." />
             <br />
             <span className="text-[#a8b69c]">Сохраните. Используйте.</span>
           </h2>
@@ -289,24 +301,29 @@ export function LandingWorkflow() {
             Начать с пресета
           </EditorLink>
         </div>
-        <ol className="grid gap-4 sm:grid-cols-2">
-          {steps.map((step) => (
-            <li key={step.number} className="min-w-0">
-              <ScrollReveal className="h-full rounded-2xl border border-white/10 bg-[#171c17] p-5 sm:p-6">
-                <div className="flex items-center justify-between gap-4">
-                  <span className="font-mono text-sm leading-6 text-[#b1c79a]">
-                    {step.number}
-                  </span>
-                  <step.icon
-                    size={21}
-                    aria-hidden="true"
-                    className="text-[#c9dfa9]"
-                  />
+        <ol className="min-w-0 border-t border-white/20">
+          {steps.map((step, index) => (
+            <li key={step.number} className="min-w-0 border-b border-white/15">
+              <ScrollReveal
+                delay={index * 0.05}
+                className="grid grid-cols-[3rem_1fr] gap-4 py-7 sm:grid-cols-[4.5rem_1fr] sm:gap-6"
+              >
+                <span className="font-[family-name:Arial_Black,Arial,sans-serif] text-4xl leading-none font-black tracking-tight text-[#d3ed9a]/65 sm:text-5xl">
+                  {step.number}
+                </span>
+                <div className="min-w-0">
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className="text-xl leading-7 font-medium text-[#edf1e7]">
+                      {step.title}
+                    </h3>
+                    <step.icon
+                      size={21}
+                      aria-hidden="true"
+                      className="mt-1 shrink-0 text-[#c9dfa9]"
+                    />
+                  </div>
+                  <p className={"mt-3 max-w-lg " + ui.body}>{step.text}</p>
                 </div>
-                <h3 className="mt-5 text-lg leading-7 font-medium">
-                  {step.title}
-                </h3>
-                <p className={`mt-3 ${ui.body}`}>{step.text}</p>
               </ScrollReveal>
             </li>
           ))}
@@ -367,7 +384,7 @@ export function LandingFaq() {
 export function LandingCta() {
   return (
     <section aria-labelledby="cta-title" className={`${ui.container} pb-8`}>
-      <div className="relative isolate overflow-hidden rounded-3xl border border-[#a7c77c]/25 bg-[#1a2417] px-5 py-12 text-center sm:px-10 sm:py-16">
+      <div className="relative isolate overflow-hidden rounded-3xl border border-[#a7c77c]/25 bg-[#1a2417] px-5 py-12 text-left sm:px-10 sm:py-16 lg:px-14">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_50%_0%,rgba(163,195,112,0.14),transparent_70%)]"
@@ -375,15 +392,12 @@ export function LandingCta() {
         <p className="text-sm leading-6 font-medium tracking-wide text-[#c5dbab]">
           ВАШ СЛЕДУЮЩИЙ ХОРОШИЙ ВАРИАНТ
         </p>
-        <h2
-          id="cta-title"
-          className="mt-4 text-3xl leading-tight font-medium tracking-[-0.04em] sm:text-5xl"
-        >
+        <h2 id="cta-title" className={"mt-4 " + ui.heroTitle}>
           Пусть выглядит
           <br />
-          <span className="text-[#d3ed9a]">по-вашему.</span>
+          <AccentText text="по-вашему." />
         </h2>
-        <p className={`mx-auto mt-5 max-w-lg ${ui.body}`}>
+        <p className={`mt-5 max-w-lg ${ui.body}`}>
           Начните с пресета, сохраните свой вариант и заберите тему в проект.
         </p>
         <EditorLink className="mt-6 gap-2 rounded-lg text-base">
@@ -392,6 +406,44 @@ export function LandingCta() {
         <p className="mt-4 text-sm leading-6 text-[#b7c6a8]">
           Без аккаунта · Локальные копии · CSS и JSON
         </p>
+      </div>
+    </section>
+  );
+}
+
+export function LandingNumbers() {
+  return (
+    <section
+      className={ui.container + " pb-12 sm:pb-16"}
+      aria-label="Возможности LePear в цифрах"
+    >
+      <div className="grid gap-6 border-y border-white/20 py-7 sm:grid-cols-3 sm:gap-8 sm:py-9">
+        {[
+          { to: 2, label: "независимые палитры", detail: "Светлая и тёмная" },
+          {
+            to: 4,
+            label: "цветовых пресета",
+            detail: "Отправная точка для своего стиля",
+          },
+          {
+            to: 7,
+            label: "семейств шрифтов",
+            detail: "С кириллицей и fallback",
+          },
+        ].map((item) => (
+          <div key={item.label} className="flex items-start gap-4">
+            <CountUp
+              to={item.to}
+              className="font-[family-name:Arial_Black,Arial,sans-serif] text-6xl leading-none font-black tracking-tight text-[#d3ed9a]"
+            />
+            <div className="min-w-0 pt-1">
+              <p className="text-base leading-7 text-[#edf1e7]">{item.label}</p>
+              <p className="mt-1 text-sm leading-6 text-[#b1bda7]">
+                {item.detail}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
