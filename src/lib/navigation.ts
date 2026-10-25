@@ -1,6 +1,7 @@
 export const pageLinks = [
   { to: "/", label: "Главная", title: "LePear — ваш сайт, ваш характер" },
   { to: "/editor", label: "Редактор", title: "Редактор темы — LePear" },
+  { to: "/youtube", label: "YouTube", title: "YouTube — LePear" },
   { to: "/contact", label: "Обратная связь", title: "Обратная связь — LePear" },
 ] as const;
 export const landingLinks = [

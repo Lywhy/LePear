@@ -1,3 +1,4 @@
+import { shellColors } from "@/lib/shell-palette";
 import { lazy, Suspense, useRef } from "react";
 import { useDecorativeMotion } from "@/hooks/use-decorative-motion";
 const ShapeGrid = lazy(() => import("@/components/react-bits/shape-grid"));
@@ -12,8 +13,8 @@ export function SiteBackdrop() {
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_8%_25%,rgba(89,119,62,0.18),transparent_52%),radial-gradient(ellipse_at_95%_75%,rgba(70,101,91,0.16),transparent_48%)]" />
-      <div className="absolute inset-0 opacity-35 [background-image:linear-gradient(rgba(152,181,124,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(152,181,124,0.07)_1px,transparent_1px)] [background-size:96px_96px]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_8%_25%,var(--shell-glow-amber),transparent_52%),radial-gradient(ellipse_at_95%_75%,var(--shell-glow-teal),transparent_48%)]" />
+      <div className="absolute inset-0 opacity-35 [background-image:linear-gradient(var(--shell-grid)_1px,transparent_1px),linear-gradient(90deg,var(--shell-grid)_1px,transparent_1px)] [background-size:96px_96px]" />
       {enabled && (
         <Suspense fallback={null}>
           <ShapeGrid
@@ -22,8 +23,8 @@ export function SiteBackdrop() {
             lineWidth={0.6}
             direction="diagonal"
             speed={0.12}
-            lineColor="#38512e"
-            hoverColor="#d3ed9a"
+            lineColor={shellColors["line"]}
+            hoverColor={shellColors["accent"]}
             fillOpacity={0.06}
             rainbow={false}
             trail={0.4}
@@ -37,7 +38,7 @@ export function SiteBackdrop() {
           />
         </Suspense>
       )}
-      <div className="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-[#0e100f] to-transparent" />
+      <div className="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-shell-background to-transparent" />
     </div>
   );
 }

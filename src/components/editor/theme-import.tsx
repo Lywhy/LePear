@@ -1,3 +1,4 @@
+import { TextReveal } from "@/components/motion/text-reveal";
 import { controlClasses as controls } from "@/components/editor/control-classes";
 import { TransferStatus } from "@/components/editor/transfer-status";
 import { Button } from "@/components/ui/button";
@@ -27,15 +28,15 @@ export function ThemeImport({
   return (
     <section
       aria-labelledby={`${id}-title`}
-      className="mt-6 min-w-0 rounded-xl border border-white/15 bg-[#171c17] p-4 sm:p-5"
+      className="mt-6 min-w-0 rounded-xl border border-white/15 bg-shell-surface p-4 sm:p-5"
     >
-      <p className="mb-2 inline-flex items-center gap-2 text-sm leading-6 text-[#b1bda7]">
+      <TextReveal className="mb-2 inline-flex items-center gap-2 text-sm leading-6 text-shell-muted">
         Из JSON в редактор
-      </p>
-      <h3 id={`${id}-title`} className="text-lg font-medium">
+      </TextReveal>
+      <TextReveal as="h3" id={`${id}-title`} className="text-lg font-medium">
         Импорт темы
-      </h3>
-      <p className="mt-2 text-sm leading-6 text-[#b1bda7]">
+      </TextReveal>
+      <p className="mt-2 text-sm leading-6 text-shell-muted">
         Выберите JSON LePear или вставьте его содержимое. Сначала проверьте
         параметры ниже, затем примените тему к рабочему черновику. Именованные
         копии сохраняются.
@@ -83,7 +84,7 @@ export function ThemeImport({
           }
         }}
       />
-      <div className="flex min-w-0 flex-wrap items-center gap-3 rounded-xl border border-dashed border-white/25 bg-[#10160f] p-4">
+      <div className="flex min-w-0 flex-wrap items-center gap-3 rounded-xl border border-dashed border-white/25 bg-shell-deep p-4">
         <Button
           id={`${id}-choose`}
           type="button"
@@ -99,7 +100,7 @@ export function ThemeImport({
         <span
           id={`${id}-filename`}
           role="status"
-          className="min-w-0 text-sm leading-6 text-[#b1bda7] wrap-anywhere"
+          className="min-w-0 text-sm leading-6 text-shell-muted wrap-anywhere"
         >
           {fileName || "Файл не выбран"}
         </span>
@@ -138,7 +139,7 @@ export function ThemeImport({
         }
         placeholder={'{ "version": 2, ... }'}
       />
-      <p id={`${id}-hint`} className="mt-2 text-sm leading-6 text-[#b1bda7]">
+      <p id={`${id}-hint`} className="mt-2 text-sm leading-6 text-shell-muted">
         Поддерживается схема темы v2. CSS и файлы локального хранилища не
         импортируются. Некорректные значения не меняют тему.
       </p>
@@ -146,7 +147,7 @@ export function ThemeImport({
         <div
           id={`${id}-errors`}
           role="alert"
-          className="mt-3 min-w-0 rounded-xl border border-[#ffb4b0]/25 bg-[#ffb4b0]/5 p-4 text-sm leading-6 text-[#ffb4b0] wrap-anywhere"
+          className="mt-3 min-w-0 rounded-xl border border-shell-danger/25 bg-shell-danger/5 p-4 text-sm leading-6 text-shell-danger wrap-anywhere"
         >
           <p className="mb-2 font-medium">
             JSON не применён. Исправьте ошибки:
@@ -164,10 +165,10 @@ export function ThemeImport({
         </div>
       )}
       {result?.success && (
-        <div className="mt-4 rounded-xl border border-[#d3ed9a]/25 bg-[#10160f] p-4">
+        <div className="mt-4 rounded-xl border border-shell-accent/25 bg-shell-deep p-4">
           <p
             role="status"
-            className="text-base leading-7 font-medium text-[#d3ed9a]"
+            className="text-base leading-7 font-medium text-shell-accent"
           >
             Тема готова к применению
           </p>
@@ -181,12 +182,14 @@ export function ThemeImport({
               ["Формат", "LePear · schema v2"],
             ].map(([label, value]) => (
               <div key={label} className="min-w-0">
-                <dt className="text-[#b1bda7]">{label}</dt>
-                <dd className="mt-0.5 text-[#edf1e7] wrap-anywhere">{value}</dd>
+                <dt className="text-shell-muted">{label}</dt>
+                <dd className="mt-0.5 text-shell-text wrap-anywhere">
+                  {value}
+                </dd>
               </div>
             ))}
           </dl>
-          <p className="mt-4 border-t border-white/10 pt-3 text-sm leading-6 text-[#b1bda7]">
+          <p className="mt-4 border-t border-white/10 pt-3 text-sm leading-6 text-shell-muted">
             Будут заменены все настройки рабочего варианта. Именованные копии
             останутся в библиотеке.
           </p>
@@ -205,7 +208,7 @@ export function ThemeImport({
           }}
           className={
             controls.action +
-            " border-[#d3ed9a]/40 bg-[#d3ed9a] text-[#182112] hover:bg-[#e0f6b7] hover:text-[#182112] dark:border-[#d3ed9a]/40 dark:bg-[#d3ed9a] dark:hover:bg-[#e0f6b7]"
+            " border-shell-accent/40 bg-shell-accent text-shell-accent-ink hover:bg-shell-accent-hover hover:text-shell-accent-ink dark:border-shell-accent/40 dark:bg-shell-accent dark:hover:bg-shell-accent-hover"
           }
         >
           {reading ? "Чтение файла…" : "Применить тему"}

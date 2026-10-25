@@ -149,10 +149,10 @@ export function TypographyEditor({
             ))}
           </SelectContent>
         </Select>
-        <div className="mt-3 rounded-xl border border-white/10 bg-[#10160f] p-4">
-          <p className="text-sm leading-6 text-[#b1bda7]">Образец шрифта</p>
+        <div className="mt-3 rounded-xl border border-white/10 bg-shell-deep p-4">
+          <p className="text-sm leading-6 text-shell-muted">Образец шрифта</p>
           <p
-            className="mt-2 text-2xl leading-9 text-[#edf1e7] wrap-anywhere"
+            className="mt-2 text-2xl leading-9 text-shell-text wrap-anywhere"
             style={{ fontFamily: fontFamilies[value.font] }}
           >
             Своя тема. Your style. 0123
@@ -160,7 +160,7 @@ export function TypographyEditor({
         </div>
         <p
           id={`${id}-font-hint`}
-          className="mt-3 text-sm leading-6 text-[#b1bda7]"
+          className="mt-3 text-sm leading-6 text-shell-muted"
         >
           {fonts.find((font) => font.value === value.font)?.description}
         </p>
@@ -185,7 +185,7 @@ export function TypographyEditor({
         <RotateCcw size={16} className="shrink-0" />
         Сбросить типографику
       </Button>
-      <p className="text-sm leading-6 text-[#b1bda7]">
+      <p className="text-sm leading-6 text-shell-muted">
         Настройки общие для обоих режимов. Цвета, закругления и отступы при
         сбросе типографики сохраняются.
       </p>

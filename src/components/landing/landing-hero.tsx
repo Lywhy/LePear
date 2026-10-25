@@ -1,7 +1,12 @@
+import { Link } from "react-router-dom";
+import { DecorativeBoundary } from "@/components/motion/decorative-boundary";
+import { ScrollReveal } from "@/components/motion/scroll-reveal";
+import { TextReveal } from "@/components/motion/text-reveal";
+import { shellColors } from "@/lib/shell-palette";
 import { AccentText } from "@/components/landing/marketing-text";
 import { EditorLink } from "@/components/landing/shared";
 import { Reveal } from "@/components/motion/reveal";
-import { useDecorativeMotion } from "@/hooks/use-decorative-motion";
+import { useDecorativeMotionState } from "@/hooks/use-decorative-motion";
 import { designClasses as ui } from "@/lib/design-system";
 import TiltedCard from "@/components/react-bits/tilted-card";
 import { ArrowDown, Check } from "lucide-react";
@@ -11,12 +16,13 @@ const Aurora = lazy(() => import("@/components/react-bits/aurora"));
 
 export function LandingHero() {
   const scope = useRef<HTMLElement>(null);
-  const animateBackground = useDecorativeMotion(scope);
+  const { supported: canShowAurora, active: animateBackground } =
+    useDecorativeMotionState(scope);
   return (
     <section
       ref={scope}
       aria-labelledby="hero-title"
-      className="relative isolate mx-2 overflow-hidden rounded-b-3xl bg-[#14241d] px-4 pt-10 pb-44 sm:mx-4 sm:px-8 sm:pt-14 sm:pb-52 lg:pt-16 lg:pb-56"
+      className="relative isolate mx-2 overflow-hidden rounded-b-3xl bg-shell-surface px-4 pt-10 pb-44 sm:mx-4 sm:px-8 sm:pt-14 sm:pb-52 lg:pt-16 lg:pb-56"
     >
       <div
         aria-hidden="true"
@@ -26,71 +32,78 @@ export function LandingHero() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 opacity-85"
       >
-        {animateBackground && (
-          <Suspense fallback={null}>
-            <Aurora
-              colorStops={["#729b68", "#d3ed9a", "#72bca8"]}
-              speed={0.35}
-              amplitude={0.8}
-              blend={0.7}
-              height={0.6}
-              brightness={1}
-              layers={1}
-              intro={false}
-              mouseInteraction={false}
-              dpr={1}
-            />
-          </Suspense>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_0%,var(--shell-glow-teal),transparent_60%),radial-gradient(ellipse_at_80%_15%,var(--shell-glow-amber),transparent_65%)]" />
+        {canShowAurora && (
+          <DecorativeBoundary>
+            <Suspense fallback={null}>
+              <Aurora
+                colorStops={[
+                  shellColors["line"],
+                  shellColors["accent"],
+                  shellColors["teal"],
+                ]}
+                paused={!animateBackground}
+                speed={0.35}
+                amplitude={0.8}
+                blend={0.7}
+                height={0.6}
+                brightness={1}
+                layers={1}
+                intro={false}
+                mouseInteraction={false}
+                dpr={1}
+              />
+            </Suspense>
+          </DecorativeBoundary>
         )}
       </div>
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-20 bg-linear-to-b from-[#07110d]/75 via-[#10231a]/65 to-[#0e100f]/25"
+        className="pointer-events-none absolute inset-0 -z-20 bg-linear-to-b from-shell-deep/75 via-shell-surface/65 to-shell-background/25"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-[-5] bg-[radial-gradient(ellipse_at_50%_45%,rgba(7,17,13,0.8)_0%,rgba(7,17,13,0.35)_48%,transparent_75%)]"
+        className="pointer-events-none absolute inset-0 z-[-5] bg-[radial-gradient(ellipse_at_50%_45%,var(--shell-hero-shade)_0%,var(--shell-hero-shade-soft)_48%,transparent_75%)]"
       />
       <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-14">
         <div className="min-w-0">
-          <p className="flex flex-wrap items-center gap-3 text-sm leading-6 tracking-wide text-[#d5dfcb]">
-            <span className="h-px w-8 bg-[#d3ed9a]" aria-hidden="true" />
+          <p className="flex flex-wrap items-center gap-3 text-sm leading-6 tracking-wide text-shell-soft">
+            <span className="h-px w-8 bg-shell-accent" aria-hidden="true" />
             LEPEAR / ВАША ТЕМА
           </p>
-          <Reveal>
-            <h1
-              id="hero-title"
-              className="mt-6 font-[family-name:Arial_Black,Arial,sans-serif] text-[clamp(2.75rem,7.3vw,6.5rem)] leading-[1.02] font-black tracking-[-0.065em] text-[#f2f3ed] wrap-anywhere"
-            >
-              Ваш сайт.
-              <br />
-              Ваш
-              <br />
-              <AccentText text="характер." />
-            </h1>
-          </Reveal>
-          <p className="mt-6 max-w-md text-base leading-8 text-[#e1e8d9] sm:text-lg">
+          <TextReveal
+            as="h1"
+            id="hero-title"
+            className="mt-6 font-[family-name:Arial_Black,Arial,sans-serif] text-[clamp(2.75rem,7.3vw,6.5rem)] leading-[1.02] font-black tracking-[-0.065em] text-shell-text wrap-anywhere"
+          >
+            Ваш сайт.
+            <br />
+            Ваш
+            <br />
+            <AccentText text="характер." />
+          </TextReveal>
+          <TextReveal className="mt-6 max-w-md text-base leading-8 text-shell-soft sm:text-lg">
             Цвет, шрифт и форма — не мелочи. Соберите из них свой визуальный
             язык и примерьте его на настоящие компоненты.
-          </p>
+          </TextReveal>
           <Reveal className="mt-7 flex flex-wrap items-center gap-3">
             <EditorLink className="min-h-12 gap-2 rounded-lg px-5 text-base">
               Создать тему
             </EditorLink>
-            <a
-              href="#how-it-works"
+            <Link
+              to="/#how-it-works"
               className={
-                "inline-flex min-h-12 items-center gap-3 rounded-lg px-3 py-3 text-base text-[#edf1e7] hover:text-[#d3ed9a] " +
+                "inline-flex min-h-12 items-center gap-3 rounded-lg px-3 py-3 text-base text-shell-text hover:text-shell-accent " +
                 ui.focus
               }
             >
               Как это работает
               <ArrowDown size={18} aria-hidden="true" />
-            </a>
+            </Link>
           </Reveal>
           <ul
             aria-label="Возможности LePear"
-            className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm leading-6 text-[#d5dfcb]"
+            className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm leading-6 text-shell-soft"
           >
             {["Без регистрации", "Локальные темы", "CSS и JSON"].map(
               (label) => (
@@ -98,7 +111,7 @@ export function LandingHero() {
                   <Check
                     size={14}
                     aria-hidden="true"
-                    className="shrink-0 text-[#d3ed9a]"
+                    className="shrink-0 text-shell-accent"
                   />
                   {label}
                 </li>
@@ -106,55 +119,58 @@ export function LandingHero() {
             )}
           </ul>
         </div>
-        <div className="min-w-0 lg:pt-10">
+        <ScrollReveal className="min-w-0 lg:pt-10" delay={0.12}>
           <TiltedCard
             effectsEnabled={animateBackground}
-            className="relative rounded-2xl border border-[#d3ed9a]/30 bg-[#101810]/95 p-5 shadow-2xl shadow-black/30 sm:p-7"
+            className="relative rounded-2xl border border-shell-accent/30 bg-shell-deep/95 p-5 shadow-2xl shadow-black/30 sm:p-7"
           >
-            <div className="flex flex-wrap justify-between gap-2 border-b border-white/15 pb-4 text-sm leading-6 text-[#b5c6a5]">
+            <div className="flex flex-wrap justify-between gap-2 border-b border-white/15 pb-4 text-sm leading-6 text-shell-muted">
               <span>ЭТЮД № 01</span>
-              <span>Forest / Dark</span>
+              <span>Sunset / Dark</span>
             </div>
             <p
               aria-hidden="true"
-              className="mt-6 font-[family-name:Arial_Black,Arial,sans-serif] text-[clamp(4.5rem,12vw,9rem)] leading-none font-black tracking-[-0.08em] text-[#edf1e7]"
+              className="mt-6 font-[family-name:Arial_Black,Arial,sans-serif] text-[clamp(4.5rem,12vw,9rem)] leading-none font-black tracking-[-0.08em] text-shell-text"
             >
-              Aa<span className="text-[#d3ed9a]">.</span>
+              Aa<span className="text-shell-accent">.</span>
             </p>
-            <p className="mt-3 max-w-xs text-base leading-7 text-[#c5d1b9]">
+            <TextReveal className="mt-3 max-w-xs text-base leading-7 text-shell-soft">
               Знакомые компоненты.
               <br />
               Ваш собственный характер.
-            </p>
+            </TextReveal>
             <div
               className="mt-7 grid grid-cols-4 gap-2"
-              aria-label="Образец палитры: лесной, лаймовый, небесный и лавандовый"
+              aria-label="Образец палитры: тёмный коричневый, оранжевый, медный и персиковый"
             >
-              {["#263720", "#d3ed9a", "#9fd6ef", "#c2b4ef"].map(
-                (color, index) => (
-                  <div key={color} className="min-w-0">
-                    <span
-                      className="block h-16 rounded-lg border border-white/15 sm:h-20"
-                      style={{ backgroundColor: color }}
-                    />
-                    <span className="mt-2 block font-mono text-sm text-[#a8b69c]">
-                      0{index + 1}
-                    </span>
-                  </div>
-                ),
-              )}
+              {[
+                shellColors["raised"],
+                shellColors["accent"],
+                shellColors["teal"],
+                shellColors["sand"],
+              ].map((color, index) => (
+                <div key={color} className="min-w-0">
+                  <span
+                    className="block h-16 rounded-lg border border-white/15 sm:h-20"
+                    style={{ backgroundColor: color }}
+                  />
+                  <span className="mt-2 block font-mono text-sm text-shell-dim">
+                    0{index + 1}
+                  </span>
+                </div>
+              ))}
             </div>
-            <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-white/15 pt-4 text-sm leading-6 text-[#b5c6a5]">
+            <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-white/15 pt-4 text-sm leading-6 text-shell-muted">
               <span>Цвет / Типографика / Форма</span>
-              <span className="rounded-full border border-[#d3ed9a]/30 px-3 py-1 text-[#d3ed9a]">
+              <span className="rounded-full border border-shell-accent/30 px-3 py-1 text-shell-accent">
                 shadcn/ui
               </span>
             </div>
           </TiltedCard>
-          <p className="mt-4 text-sm leading-6 text-[#d5dfcb]">
+          <TextReveal className="mt-4 text-sm leading-6 text-shell-soft">
             Визуальный образец. Рабочие настройки — в редакторе.
-          </p>
-        </div>
+          </TextReveal>
+        </ScrollReveal>
       </div>
     </section>
   );

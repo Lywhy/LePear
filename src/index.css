@@ -6,6 +6,26 @@
 @custom-variant dark (&:where(.dark, .dark *):not(:where([data-theme="light"], [data-theme="light"] *)));
 
 @theme inline {
+  --color-shell-background: var(--shell-background);
+  --color-shell-deep: var(--shell-deep);
+  --color-shell-surface: var(--shell-surface);
+  --color-shell-raised: var(--shell-raised);
+  --color-shell-hover: var(--shell-hover);
+  --color-shell-accent: var(--shell-accent);
+  --color-shell-accent-hover: var(--shell-accent-hover);
+  --color-shell-accent-ink: var(--shell-accent-ink);
+  --color-shell-text: var(--shell-text);
+  --color-shell-soft: var(--shell-soft);
+  --color-shell-muted: var(--shell-muted);
+  --color-shell-dim: var(--shell-dim);
+  --color-shell-teal: var(--shell-teal);
+  --color-shell-sand: var(--shell-sand);
+  --color-shell-success: var(--shell-success);
+  --color-shell-warning: var(--shell-warning);
+  --color-shell-danger: var(--shell-danger);
+  --color-shell-light-surface: var(--shell-light-surface);
+  --color-shell-light-ink: var(--shell-light-ink);
+  --color-shell-line: var(--shell-line);
   --font-heading: var(--font-sans);
   --font-sans: "Geist Variable", sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);

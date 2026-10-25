@@ -1,3 +1,6 @@
+import { scrollToSection } from "@/lib/anchor-scroll";
+import { ScrollReveal } from "@/components/motion/scroll-reveal";
+import { TextReveal } from "@/components/motion/text-reveal";
 import { useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { motionTransitions } from "@/lib/motion-presets";
@@ -78,9 +81,7 @@ export default function EditorPage() {
   const [manualCopy, setManualCopy] = useState<string | null>(null);
   const [paletteRevision, setPaletteRevision] = useState(0);
   function jumpTo(id: string) {
-    const target = document.getElementById(id);
-    target?.focus({ preventScroll: true });
-    target?.scrollIntoView({ block: "start", behavior: "auto" });
+    scrollToSection(id);
   }
   function patch(update: ThemeUpdate) {
     const result = updateTheme(theme, update);
@@ -130,28 +131,31 @@ export default function EditorPage() {
     }
   }
   return (
-    <div className="font-sans text-[#edf1e7]">
+    <div className="font-sans text-shell-text">
       <main className="mx-auto max-w-[1600px] px-4 py-6 sm:px-8 sm:py-10 lg:px-10">
-        <div className="mb-6 grid items-start gap-5 lg:grid-cols-[1fr_auto] rounded-2xl border border-white/10 bg-[#121810] p-5 sm:mb-8 sm:p-6">
+        <div className="mb-6 grid items-start gap-5 lg:grid-cols-[1fr_auto] rounded-2xl border border-white/10 bg-shell-deep p-5 sm:mb-8 sm:p-6">
           <div>
-            <p className="text-sm leading-6 font-medium tracking-wide text-[#b5c6a5]">
+            <p className="text-sm leading-6 font-medium tracking-wide text-shell-muted">
               LEPEAR / МАСТЕРСКАЯ ТЕМЫ
             </p>
-            <h1 className="mt-2 font-[Arial_Black,Arial,sans-serif] text-3xl leading-tight font-black tracking-[-0.04em] sm:text-5xl">
+            <TextReveal
+              as="h1"
+              className="mt-2 font-[Arial_Black,Arial,sans-serif] text-3xl leading-tight font-black tracking-[-0.04em] sm:text-5xl"
+            >
               Редактор темы
-            </h1>
-            <p className="mt-3 max-w-2xl text-base leading-7 text-[#b1bda7]">
+            </TextReveal>
+            <TextReveal className="mt-3 max-w-2xl text-base leading-7 text-shell-muted">
               Настройте оформление и проверьте его на компонентах. Изменения
               применяются только к области предпросмотра.
-            </p>
+            </TextReveal>
             <div
-              className="mt-4 flex flex-wrap gap-2 text-sm leading-6 text-[#c5d1b9]"
+              className="mt-4 flex flex-wrap gap-2 text-sm leading-6 text-shell-soft"
               aria-label="Текущие параметры темы"
             >
-              <span className="rounded-full border border-white/10 bg-[#22291e] px-3 py-1">
+              <span className="rounded-full border border-white/10 bg-shell-raised px-3 py-1">
                 {theme.mode === "dark" ? "Тёмный режим" : "Светлый режим"}
               </span>
-              <span className="rounded-full border border-white/10 bg-[#22291e] px-3 py-1">
+              <span className="rounded-full border border-white/10 bg-shell-raised px-3 py-1">
                 {theme.typography.font === "System"
                   ? "Системный"
                   : theme.typography.font}{" "}
@@ -159,7 +163,7 @@ export default function EditorPage() {
               </span>
               <span
                 title={storageMessage}
-                className={`inline-flex items-center gap-2 rounded-full border border-white/10 px-3 py-1 ${storageOk ? "text-[#c4dab0]" : "text-[#ffd29c]"}`}
+                className={`inline-flex items-center gap-2 rounded-full border border-white/10 px-3 py-1 ${storageOk ? "text-shell-success" : "text-shell-warning"}`}
               >
                 {storageOk ? (
                   <CircleCheck size={15} aria-hidden="true" />
@@ -179,7 +183,7 @@ export default function EditorPage() {
               setStatusTone("success");
               setStatus("Исходная тема восстановлена для обоих режимов");
             }}
-            className="h-11 gap-2 border-white/20 bg-transparent px-4 text-sm text-[#dbe4d2] hover:bg-white/5"
+            className="h-11 gap-2 border-white/20 bg-transparent px-4 text-sm text-shell-soft hover:bg-white/5"
           >
             <RotateCcw size={16} />
             Сбросить всю тему
@@ -187,7 +191,7 @@ export default function EditorPage() {
         </div>
         <nav
           aria-label="Быстрые переходы в редакторе"
-          className="sticky top-0 z-30 mb-5 grid grid-cols-3 gap-1 rounded-xl border border-white/15 bg-[#121810] p-1 shadow-lg shadow-black/20 lg:hidden"
+          className="sticky top-0 z-30 mb-5 grid grid-cols-3 gap-1 rounded-xl border border-white/15 bg-shell-deep p-1 shadow-lg shadow-black/20 lg:hidden"
         >
           {[
             { id: "editor-settings", label: "Настройки" },
@@ -200,36 +204,40 @@ export default function EditorPage() {
               variant="ghost"
               aria-controls={item.id}
               onClick={() => jumpTo(item.id)}
-              className="h-auto min-h-11 min-w-0 px-2 py-2 text-sm leading-6 text-[#dbe4d2] whitespace-normal focus-visible:ring-[#d3ed9a]/40"
+              className="h-auto min-h-11 min-w-0 px-2 py-2 text-sm leading-6 text-shell-soft whitespace-normal focus-visible:ring-shell-accent/40"
             >
               {item.label}
             </Button>
           ))}
         </nav>
         <div className="grid items-start gap-6 lg:grid-cols-[340px_minmax(0,1fr)] xl:grid-cols-[360px_minmax(0,1fr)] xl:gap-8">
-          <aside
+          <ScrollReveal
+            as="aside"
             id="editor-settings"
             tabIndex={-1}
-            className="min-w-0 scroll-mt-24 rounded-2xl border border-white/10 bg-[#121810] p-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d3ed9a] sm:p-4"
+            className="min-w-0 scroll-mt-24 rounded-2xl border border-white/10 bg-shell-deep p-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shell-accent sm:p-4"
             aria-label="Настройки темы"
           >
             <div className="mb-3 px-1 pt-1">
-              <h2 className="flex items-center gap-2 text-lg font-medium">
+              <TextReveal
+                as="h2"
+                className="flex items-center gap-2 text-lg font-medium"
+              >
                 <SlidersHorizontal
                   size={19}
-                  className="text-[#c9dfa9]"
+                  className="text-shell-sand"
                   aria-hidden="true"
                 />
                 Параметры темы
-              </h2>
-              <p className="mt-2 text-sm leading-6 text-[#b1bda7]">
+              </TextReveal>
+              <p className="mt-2 text-sm leading-6 text-shell-muted">
                 Открыто {openSettings.length} из {settingsSections.length}{" "}
                 групп. Раскройте только нужные.
               </p>
             </div>
             <div className="space-y-3">
               <div
-                className="grid grid-cols-2 gap-1 rounded-lg border border-white/10 bg-[#171c17] p-1"
+                className="grid grid-cols-2 gap-1 rounded-lg border border-white/10 bg-shell-surface p-1"
                 role="group"
                 aria-label="Видимость блоков настроек"
               >
@@ -237,7 +245,7 @@ export default function EditorPage() {
                   type="button"
                   variant="ghost"
                   onClick={() => setOpenSettings([...settingsSections])}
-                  className="min-h-11 px-2 text-sm text-[#c5d1b9] hover:bg-white/5"
+                  className="min-h-11 px-2 text-sm text-shell-soft hover:bg-white/5"
                 >
                   Раскрыть всё
                 </Button>
@@ -245,7 +253,7 @@ export default function EditorPage() {
                   type="button"
                   variant="ghost"
                   onClick={() => setOpenSettings([])}
-                  className="min-h-11 px-2 text-sm text-[#c5d1b9] hover:bg-white/5"
+                  className="min-h-11 px-2 text-sm text-shell-soft hover:bg-white/5"
                 >
                   Свернуть всё
                 </Button>
@@ -286,7 +294,7 @@ export default function EditorPage() {
                           onClick={() => patch({ mode })}
                           aria-pressed={theme.mode === mode}
                           variant="default"
-                          className={`min-h-11 gap-2 border-white/15 px-2 text-sm ${theme.mode === mode ? "bg-[#d3ed9a] text-[#182112] hover:bg-[#e0f6b7]" : "bg-transparent text-[#c5d1b9] hover:bg-white/5"}`}
+                          className={`min-h-11 gap-2 border-white/15 px-2 text-sm ${theme.mode === mode ? "bg-shell-accent text-shell-accent-ink hover:bg-shell-accent-hover" : "bg-transparent text-shell-soft hover:bg-white/5"}`}
                         >
                           {mode === "dark" ? (
                             <Moon size={16} />
@@ -297,7 +305,7 @@ export default function EditorPage() {
                         </Button>
                       ))}
                     </div>
-                    <p className="mt-3 text-sm leading-6 text-[#b1bda7]">
+                    <p className="mt-3 text-sm leading-6 text-shell-muted">
                       Цвета светлого и тёмного режимов независимы. Шрифт,
                       размеры и отступы общие.
                     </p>
@@ -333,7 +341,7 @@ export default function EditorPage() {
                 </SettingsSection>
               </Accordion>
             </div>
-            <div className="mt-4 space-y-3 rounded-xl border border-white/10 bg-[#171c17] p-4">
+            <div className="mt-4 space-y-3 rounded-xl border border-white/10 bg-shell-surface p-4">
               <TransferStatus
                 message={storageMessage}
                 tone={storageOk ? "success" : "warning"}
@@ -350,39 +358,42 @@ export default function EditorPage() {
                     : "Повторить сохранение"}
                 </Button>
               )}
-              <p className="text-sm leading-6 text-[#b1bda7]">
+              <p className="text-sm leading-6 text-shell-muted">
                 Скачайте JSON для резервной копии текущей темы. Очистка данных
                 браузера удаляет локальные темы.
               </p>
             </div>
-          </aside>
+          </ScrollReveal>
           <section
             id="editor-preview"
             tabIndex={-1}
-            className="min-w-0 scroll-mt-24 rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d3ed9a]"
+            className="min-w-0 scroll-mt-24 rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shell-accent"
             aria-label="Предпросмотр и экспорт"
           >
             <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
               <div>
-                <h2 className="font-[Arial_Black,Arial,sans-serif] text-xl font-black tracking-tight">
+                <TextReveal
+                  as="h2"
+                  className="font-[Arial_Black,Arial,sans-serif] text-xl font-black tracking-tight"
+                >
                   Результат
-                </h2>
-                <p className="mt-1 text-sm leading-6 text-[#b1bda7]">
+                </TextReveal>
+                <TextReveal className="mt-1 text-sm leading-6 text-shell-muted">
                   Изменения видны сразу и применяются только здесь.
-                </p>
+                </TextReveal>
               </div>
               <Button
                 type="button"
                 variant="ghost"
                 onClick={() => jumpTo("editor-settings")}
-                className="min-h-11 gap-2 px-3 text-sm text-[#c5d1b9]"
+                className="min-h-11 gap-2 px-3 text-sm text-shell-soft"
               >
                 <ArrowUp size={16} aria-hidden="true" />К настройкам
               </Button>
             </div>
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-white/10 bg-[#171c17] p-2 lg:sticky lg:top-4 lg:z-20">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-white/10 bg-shell-surface p-2 lg:sticky lg:top-4 lg:z-20">
               <div
-                className="flex min-w-0 flex-wrap gap-1 rounded-lg border border-white/10 bg-[#171c17] p-1"
+                className="flex min-w-0 flex-wrap gap-1 rounded-lg border border-white/10 bg-shell-surface p-1"
                 aria-label="Вид предпросмотра"
               >
                 {[
@@ -399,7 +410,7 @@ export default function EditorPage() {
                         : "preview-css"
                     }
                     onClick={() => setView(tab.value as typeof view)}
-                    className={`h-auto min-h-11 min-w-0 gap-2 px-3 py-2 text-sm whitespace-normal ${view === tab.value ? "bg-[#343e2a] text-[#e4efd9]" : "text-[#b5c2a8]"}`}
+                    className={`h-auto min-h-11 min-w-0 gap-2 px-3 py-2 text-sm whitespace-normal ${view === tab.value ? "bg-shell-hover text-shell-text" : "text-shell-muted"}`}
                   >
                     <tab.icon size={16} />
                     {tab.label}
@@ -410,13 +421,13 @@ export default function EditorPage() {
                 <div
                   role="group"
                   aria-label="Ширина предпросмотра"
-                  className="flex flex-wrap gap-1 rounded-lg border border-white/10 bg-[#171c17] p-1"
+                  className="flex flex-wrap gap-1 rounded-lg border border-white/10 bg-shell-surface p-1"
                 >
                   <Button
                     variant="ghost"
                     aria-pressed={previewWidth === "wide"}
                     onClick={() => setPreviewWidth("wide")}
-                    className={`h-auto min-h-11 min-w-0 gap-2 px-3 py-2 text-sm whitespace-normal ${previewWidth === "wide" ? "bg-[#343e2a] text-[#e4efd9]" : "text-[#b5c2a8]"}`}
+                    className={`h-auto min-h-11 min-w-0 gap-2 px-3 py-2 text-sm whitespace-normal ${previewWidth === "wide" ? "bg-shell-hover text-shell-text" : "text-shell-muted"}`}
                   >
                     <Monitor size={16} />
                     Широкий
@@ -425,24 +436,24 @@ export default function EditorPage() {
                     variant="ghost"
                     aria-pressed={previewWidth === "narrow"}
                     onClick={() => setPreviewWidth("narrow")}
-                    className={`h-auto min-h-11 min-w-0 gap-2 px-3 py-2 text-sm whitespace-normal ${previewWidth === "narrow" ? "bg-[#343e2a] text-[#e4efd9]" : "text-[#b5c2a8]"}`}
+                    className={`h-auto min-h-11 min-w-0 gap-2 px-3 py-2 text-sm whitespace-normal ${previewWidth === "narrow" ? "bg-shell-hover text-shell-text" : "text-shell-muted"}`}
                   >
                     <Smartphone size={16} />
                     Узкий
                   </Button>
                 </div>
               )}
-              <span className="px-2 text-sm leading-6 text-[#c0d4a7]">
+              <span className="px-2 text-sm leading-6 text-shell-soft">
                 shadcn/ui · Nova
               </span>
             </div>
-            <div className="overflow-hidden rounded-2xl border border-white/15 bg-[#121810]">
+            <div className="overflow-hidden rounded-2xl border border-white/15 bg-shell-deep">
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 px-4 py-3 text-sm leading-6">
-                <span className="inline-flex items-center gap-2 text-[#edf1e7]">
+                <span className="inline-flex items-center gap-2 text-shell-text">
                   <Layers3 size={16} aria-hidden="true" />
                   {view === "components" ? "Витрина темы" : "Код темы"}
                 </span>
-                <span className="text-[#b1bda7]">
+                <span className="text-shell-muted">
                   {view === "components"
                     ? theme.mode === "dark"
                       ? "Тёмная палитра"
@@ -456,9 +467,9 @@ export default function EditorPage() {
                 initial={false}
                 animate={{ opacity: view === "components" ? 1 : 0.92 }}
                 transition={previewTransition}
-                className="bg-[#0b0e0a] p-2 sm:p-4"
+                className="bg-shell-deep p-2 sm:p-4"
               >
-                <p className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm leading-6 text-[#b1bda7]">
+                <p className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm leading-6 text-shell-muted">
                   {previewWidth === "narrow"
                     ? "Узкий вид: до 390 px. На небольшом экране ширина подстраивается под доступное место."
                     : "Широкий вид: вся доступная ширина. Компоненты перестраиваются по ширине области предпросмотра."}
@@ -481,36 +492,38 @@ export default function EditorPage() {
                 initial={false}
                 animate={{ opacity: view === "css" ? 1 : 0.92 }}
                 transition={previewTransition}
-                className="bg-[#121611] p-4 sm:p-5"
+                className="bg-shell-deep p-4 sm:p-5"
               >
-                <h2 className="mb-4 text-lg font-medium">
+                <TextReveal as="h2" className="mb-4 text-lg font-medium">
                   CSS-переменные темы
-                </h2>
-                <pre className="max-h-175 overflow-auto rounded-lg border border-white/10 bg-[#0d100c] p-4 font-mono text-sm leading-7 whitespace-pre-wrap wrap-break-word text-[#cce4ac]">
+                </TextReveal>
+                <pre className="max-h-175 overflow-auto rounded-lg border border-white/10 bg-shell-deep p-4 font-mono text-sm leading-7 whitespace-pre-wrap wrap-break-word text-shell-accent">
                   <code>{exportTheme(theme)}</code>
                 </pre>
-                <p className="mt-4 text-sm leading-7 text-[#b1bda7]">
+                <p className="mt-4 text-sm leading-7 text-shell-muted">
                   Код содержит обе палитры и стили компонентов. Скачивание,
                   копирование и раскрываемая инструкция подключения находятся
                   ниже, в блоке «Перенос темы».
                 </p>
               </motion.div>
             </div>
-            <section
+            <ScrollReveal
+              as="section"
               id="editor-export"
               tabIndex={-1}
               aria-labelledby="editor-export-title"
-              className="mt-6 scroll-mt-24 rounded-2xl border border-white/10 bg-[#121810] p-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d3ed9a] sm:p-5"
+              className="mt-6 scroll-mt-24 rounded-2xl border border-white/10 bg-shell-deep p-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shell-accent sm:p-5"
             >
-              <h2
+              <TextReveal
+                as="h2"
                 id="editor-export-title"
                 className="font-[Arial_Black,Arial,sans-serif] text-xl font-black tracking-tight"
               >
                 Перенос темы
-              </h2>
-              <p className="mt-2 text-sm leading-6 text-[#b1bda7]">
+              </TextReveal>
+              <TextReveal className="mt-2 text-sm leading-6 text-shell-muted">
                 Скачайте тему для своего сайта или сохраните резервную копию.
-              </p>
+              </TextReveal>
               <ThemeExport
                 onCopy={copy}
                 onDownload={download}
@@ -532,7 +545,7 @@ export default function EditorPage() {
                   setStatus("");
                 }}
               />
-            </section>
+            </ScrollReveal>
           </section>
         </div>
       </main>

@@ -1,5 +1,5 @@
 import { ThemeJourney } from "@/components/landing/theme-journey";
-import { ScrollReveal } from "@/components/motion/scroll-reveal";
+
 import { LandingHero } from "@/components/landing/landing-hero";
 import { LandingPreview } from "@/components/landing/landing-preview";
 import {
@@ -16,18 +16,12 @@ export default function App() {
       <main id="main">
         <LandingHero />
         <LandingPreview />
-        <ScrollReveal>
-          <LandingFeatures />
-        </ScrollReveal>
+        <LandingFeatures />
         <LandingNumbers />
         <ThemeJourney />
         <LandingWorkflow />
-        <ScrollReveal>
-          <LandingFaq />
-        </ScrollReveal>
-        <ScrollReveal>
-          <LandingCta />
-        </ScrollReveal>
+        <LandingFaq />
+        <LandingCta />
       </main>
     </div>
   );

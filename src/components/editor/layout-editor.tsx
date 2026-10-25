@@ -92,7 +92,7 @@ export function LayoutEditor({
             className={
               controls.action +
               (activeDensity?.label === density.label
-                ? " border-[#d3ed9a]/50 bg-[#343e2a]"
+                ? " border-shell-accent/50 bg-shell-hover"
                 : "")
             }
           >
@@ -107,7 +107,7 @@ export function LayoutEditor({
           </Button>
         ))}
       </div>
-      <p className="text-sm leading-6 text-[#b1bda7]">
+      <p className="text-sm leading-6 text-shell-muted">
         {activeDensity
           ? `Плотность: ${activeDensity.label.toLowerCase()}.`
           : "Своя плотность."}{" "}
@@ -135,7 +135,7 @@ export function LayoutEditor({
           }
         />
       ))}
-      <p className="rounded-lg border border-white/15 p-3 text-sm leading-6 text-[#c4dab0]">
+      <p className="rounded-lg border border-white/15 p-3 text-sm leading-6 text-shell-success">
         Расчётный минимум высоты: {safeHeight} px
         {safeHeight > theme.layout.controlHeight
           ? " — увеличен под текущий размер текста и межстрочный интервал"
@@ -154,7 +154,7 @@ export function LayoutEditor({
         <RotateCcw size={16} className="shrink-0" />
         Сбросить размеры
       </Button>
-      <p className="text-sm leading-6 text-[#b1bda7]">
+      <p className="text-sm leading-6 text-shell-muted">
         Параметры общие для обоих режимов и действуют только внутри
         предпросмотра. Переключатель остаётся овальным, аватары — круглыми.
         Толщина границ и тени заданы компонентами.

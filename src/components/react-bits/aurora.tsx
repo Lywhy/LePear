@@ -2,7 +2,7 @@
 // Adapted locally: skip pointer subscriptions when mouse interaction is disabled.
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 
 export interface AuroraProps {
   colorStops?: string[];
@@ -248,7 +248,12 @@ const link = (gl: WebGL2RenderingContext): Program | null => {
   const vertex = compile(gl, gl.VERTEX_SHADER, VERTEX);
   const fragment = compile(gl, gl.FRAGMENT_SHADER, FRAGMENT);
   const program = gl.createProgram();
-  if (!vertex || !fragment || !program) return null;
+  if (!vertex || !fragment || !program) {
+    if (vertex) gl.deleteShader(vertex);
+    if (fragment) gl.deleteShader(fragment);
+    if (program) gl.deleteProgram(program);
+    return null;
+  }
   gl.attachShader(program, vertex);
   gl.attachShader(program, fragment);
   gl.bindAttribLocation(program, 0, "aPosition");
@@ -326,12 +331,12 @@ const Aurora = ({
     dpr,
   };
   const settingsRef = useRef(settings);
-  useEffect(() => {
+  useLayoutEffect(() => {
     settingsRef.current = settings;
     wakeRef.current?.();
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const container = containerRef.current;
     const canvas = canvasRef.current;
     const gl = canvas?.getContext("webgl2", {
@@ -343,12 +348,50 @@ const Aurora = ({
     });
     if (!container || !canvas || !gl) return undefined;
 
+    canvas.style.opacity = "0";
+    let raf = 0,
+      last = 0,
+      disposed = false;
+    let contextLost = gl.isContextLost();
+    const stop = () => {
+      cancelAnimationFrame(raf);
+      raf = 0;
+      last = 0;
+    };
+    const onContextLost = (event: Event) => {
+      event.preventDefault();
+      contextLost = true;
+      canvas.style.opacity = "0";
+      stop();
+    };
+    const onContextRestored = () => {
+      if (!disposed) setContextRevision((revision) => revision + 1);
+    };
+    canvas.addEventListener("webglcontextlost", onContextLost);
+    canvas.addEventListener("webglcontextrestored", onContextRestored);
+    const detachContext = () => {
+      canvas.removeEventListener("webglcontextlost", onContextLost);
+      canvas.removeEventListener("webglcontextrestored", onContextRestored);
+    };
     const program = link(gl);
-    if (!program) return undefined;
+    if (!program)
+      return () => {
+        disposed = true;
+        detachContext();
+      };
     const u = program.uniforms;
 
     const buffer = gl.createBuffer();
     const vao = gl.createVertexArray();
+    if (!buffer || !vao) {
+      gl.deleteProgram(program.program);
+      gl.deleteBuffer(buffer);
+      gl.deleteVertexArray(vao);
+      return () => {
+        disposed = true;
+        detachContext();
+      };
+    }
     gl.bindVertexArray(vao);
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.bufferData(
@@ -382,7 +425,7 @@ const Aurora = ({
     };
     const palette = new Float32Array(MAX_STOPS * 3);
 
-    const view = { width: 1, height: 1 };
+    const view = { width: 0, height: 0 };
     const pointer = { x: 0, y: 0, inside: false };
     const state = {
       clock: 0,
@@ -391,14 +434,17 @@ const Aurora = ({
       reach: 0,
       reveal: settingsRef.current.intro && !reduce ? 0 : 1,
     };
-    let raf = 0;
-    let last = 0;
     let visible = true;
-    let disposed = false;
-    let contextLost = gl.isContextLost();
 
     const render = () => {
-      if (disposed || contextLost || gl.isContextLost()) return;
+      if (
+        disposed ||
+        contextLost ||
+        gl.isContextLost() ||
+        !view.width ||
+        !view.height
+      )
+        return;
       const s = settingsRef.current;
       unwrapHues(s.stops.map((value) => toOklch(parse(value)))).forEach(
         (stop, index) => palette.set(stop, index * 3),
@@ -427,6 +473,7 @@ const Aurora = ({
       gl.uniform1f(u.uOpacity, s.opacity);
       gl.uniform1f(u.uLightMode, s.lightMode ? 1 : 0);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
+      canvas.style.opacity = "1";
     };
 
     const frame = (now: number) => {
@@ -436,13 +483,15 @@ const Aurora = ({
         contextLost ||
         gl.isContextLost() ||
         !visible ||
+        !view.width ||
+        !view.height ||
         document.hidden
       )
         return;
       const s = settingsRef.current;
       const dt = last ? clamp((now - last) / 1000, 0.0005, 0.05) : 1 / 60;
       last = now;
-      if (s.paused) {
+      if (s.paused || reduce) {
         state.reveal = 1;
         render();
         last = 0;
@@ -477,6 +526,8 @@ const Aurora = ({
         !gl.isContextLost() &&
         !raf &&
         visible &&
+        view.width > 0 &&
+        view.height > 0 &&
         !document.hidden
       )
         raf = requestAnimationFrame(frame);
@@ -484,18 +535,26 @@ const Aurora = ({
 
     const resize = () => {
       if (disposed || contextLost || gl.isContextLost()) return;
+      const width = container.clientWidth,
+        height = container.clientHeight;
+      if (width <= 0 || height <= 0) {
+        view.width = 0;
+        view.height = 0;
+        canvas.style.opacity = "0";
+        stop();
+        return;
+      }
       const s = settingsRef.current;
-      const width = Math.max(1, container.clientWidth);
-      const height = Math.max(1, container.clientHeight);
       const ratio = Math.min(s.dpr || window.devicePixelRatio || 1, 2);
       view.width = width;
       view.height = height;
-      canvas.width = Math.max(1, Math.round(width * ratio));
-      canvas.height = Math.max(1, Math.round(height * ratio));
+      const nextWidth = Math.max(1, Math.round(width * ratio));
+      const nextHeight = Math.max(1, Math.round(height * ratio));
+      if (canvas.width !== nextWidth) canvas.width = nextWidth;
+      if (canvas.height !== nextHeight) canvas.height = nextHeight;
       render();
       wake();
     };
-
     const onPointerMove = (event: PointerEvent) => {
       const rect = container.getBoundingClientRect();
       pointer.x = event.clientX - rect.left;
@@ -525,34 +584,22 @@ const Aurora = ({
     };
 
     const onVisibility = () => {
-      last = 0;
-      wake();
+      stop();
+      if (!document.hidden) resize();
     };
-
-    const onContextLost = (event: Event) => {
-      // Allow restoration while the static landscape remains visible.
-      event.preventDefault();
-      contextLost = true;
-      cancelAnimationFrame(raf);
-      raf = 0;
-      last = 0;
-    };
-    const onContextRestored = () => {
-      if (!disposed) setContextRevision((revision) => revision + 1);
-    };
-    canvas.addEventListener("webglcontextlost", onContextLost);
-    canvas.addEventListener("webglcontextrestored", onContextRestored);
-
-    const resizeObserver = new ResizeObserver(resize);
-    resizeObserver.observe(container);
-    const intersection = new IntersectionObserver((entries) => {
-      visible = entries.some((entry) => entry.isIntersecting);
-      if (visible) {
-        last = 0;
-        wake();
-      }
-    });
-    intersection.observe(container);
+    const resizeObserver =
+      typeof ResizeObserver !== "undefined" ? new ResizeObserver(resize) : null;
+    resizeObserver?.observe(container);
+    window.addEventListener("resize", resize);
+    const intersection =
+      typeof IntersectionObserver !== "undefined"
+        ? new IntersectionObserver((entries) => {
+            visible = entries.some((entry) => entry.isIntersecting);
+            stop();
+            if (visible) resize();
+          })
+        : null;
+    intersection?.observe(container);
     if (settingsRef.current.mouseInteraction) {
       window.addEventListener("pointermove", onPointerMove, { passive: true });
       window.addEventListener("pointerdown", onPointerMove, { passive: true });
@@ -578,11 +625,12 @@ const Aurora = ({
     return () => {
       disposed = true;
       cancelAnimationFrame(raf);
-      canvas.removeEventListener("webglcontextlost", onContextLost);
-      canvas.removeEventListener("webglcontextrestored", onContextRestored);
+      detachContext();
+      canvas.style.opacity = "0";
       wakeRef.current = null;
-      resizeObserver.disconnect();
-      intersection.disconnect();
+      resizeObserver?.disconnect();
+      window.removeEventListener("resize", resize);
+      intersection?.disconnect();
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerdown", onPointerMove);
       window.removeEventListener("pointerup", onPointerUp);
@@ -618,7 +666,7 @@ const Aurora = ({
     >
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 block h-full w-full"
+        className="absolute inset-0 block h-full w-full opacity-0 transition-opacity duration-500 motion-reduce:transition-none"
         aria-hidden="true"
       />
     </div>

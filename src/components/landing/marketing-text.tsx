@@ -1,3 +1,4 @@
+import { shellColors } from "@/lib/shell-palette";
 import { useRef } from "react";
 import { useReducedMotion } from "motion/react";
 import ShinyText from "@/components/react-bits/shiny-text";
@@ -17,8 +18,8 @@ export function AccentText({
     <span ref={scope} className={className}>
       <ShinyText
         text={text}
-        color="#d3ed9a"
-        shineColor="#ffffff"
+        color={shellColors["accent"]}
+        shineColor={shellColors.text}
         speed={1.8}
         trigger="view"
         glow={0}

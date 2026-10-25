@@ -20,12 +20,12 @@ export function TransferStatus({
           : Info;
   const colors =
     tone === "error"
-      ? "border-[#ffb4b0]/25 bg-[#ffb4b0]/5 text-[#ffb4b0]"
+      ? "border-shell-danger/25 bg-shell-danger/5 text-shell-danger"
       : tone === "warning"
-        ? "border-[#ffd29c]/25 bg-[#ffd29c]/5 text-[#ffd29c]"
+        ? "border-shell-warning/25 bg-shell-warning/5 text-shell-warning"
         : tone === "success"
-          ? "border-[#d3ed9a]/25 bg-[#d3ed9a]/5 text-[#d3ed9a]"
-          : "border-white/15 bg-[#10160f] text-[#c5d1b9]";
+          ? "border-shell-accent/25 bg-shell-accent/5 text-shell-accent"
+          : "border-white/15 bg-shell-deep text-shell-soft";
   return (
     <div
       role={tone === "error" ? "alert" : "status"}

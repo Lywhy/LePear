@@ -1,3 +1,5 @@
+import { TextReveal } from "@/components/motion/text-reveal";
+import { shellColors } from "@/lib/shell-palette";
 import { useRef, type CSSProperties } from "react";
 import {
   ArrowUpRight,
@@ -38,24 +40,24 @@ export default function ContactPage() {
     <main className={ui.container + " py-10 sm:py-16 lg:py-20"}>
       <div className="grid min-w-0 items-start gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12 xl:gap-20">
         <div ref={scope} className="min-w-0 lg:sticky lg:top-8">
-          <ScrollReveal>
+          <div>
             <p className={ui.eyebrow}>03 / ОБРАТНАЯ СВЯЗЬ</p>
             <h1 className={"mt-4 " + ui.heroTitle}>
               <RevealText text="Ваши идеи." />
               <br />
-              <span className="text-[#d3ed9a]">
+              <span className="text-shell-accent">
                 <RevealText text="Новый взгляд." />
               </span>
             </h1>
-            <p className={"mt-5 max-w-lg " + ui.body}>
+            <TextReveal className={"mt-5 max-w-lg " + ui.body}>
               Расскажите, чего вам не хватает в редакторе, задайте вопрос или
               предложите новый взгляд на привычные настройки.
-            </p>
-          </ScrollReveal>
+            </TextReveal>
+          </div>
           <ScrollReveal className="mt-7">
             <SpotlightCard
               effectsEnabled={effectsEnabled}
-              spotlightColor="#d3ed9a"
+              spotlightColor={shellColors["accent"]}
               intensity={0.12}
               borderGlow={0.5}
               proximity={32}
@@ -65,18 +67,18 @@ export default function ContactPage() {
               className="rounded-2xl p-5 sm:p-7"
               style={
                 {
-                  "--spotlight-card-surface": "#171c17",
-                  "--spotlight-card-border": "rgba(211,237,154,0.16)",
+                  "--spotlight-card-surface": shellColors["surface"],
+                  "--spotlight-card-border": shellColors["spotlight-border"],
                 } as CSSProperties
               }
             >
-              <h2 className="text-lg leading-7 font-medium">
+              <TextReveal as="h2" className="text-lg leading-7 font-medium">
                 О чём можно рассказать
-              </h2>
+              </TextReveal>
               <ul className="mt-5 space-y-5">
                 {topics.map(({ Icon, title, text }) => (
                   <li key={title} className="flex items-start gap-3">
-                    <span className="grid size-9 shrink-0 place-items-center rounded-lg border border-white/10 bg-[#22291e] text-[#d3ed9a]">
+                    <span className="grid size-9 shrink-0 place-items-center rounded-lg border border-white/10 bg-shell-raised text-shell-accent">
                       <Icon size={18} aria-hidden="true" />
                     </span>
                     <div className="min-w-0">
@@ -88,14 +90,14 @@ export default function ContactPage() {
               </ul>
             </SpotlightCard>
           </ScrollReveal>
-          <p className={"mt-5 max-w-lg " + ui.caption}>
+          <TextReveal className={"mt-5 max-w-lg " + ui.caption}>
             Сейчас доступен предпросмотр формы. Сообщения не отправляются, канал
             обратной связи ещё не подключён.
-          </p>
+          </TextReveal>
           <Link
             to="/editor"
             className={
-              "mt-3 inline-flex min-h-11 items-center gap-2 rounded-md py-2 text-base leading-7 text-[#d3ed9a] hover:text-[#edf1e7] " +
+              "mt-3 inline-flex min-h-11 items-center gap-2 rounded-md py-2 text-base leading-7 text-shell-accent hover:text-shell-text " +
               ui.focus
             }
           >

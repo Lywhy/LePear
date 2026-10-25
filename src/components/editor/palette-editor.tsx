@@ -135,7 +135,7 @@ function ColorField({
       {error && (
         <p
           id={`${id}-error`}
-          className="mt-2 text-sm leading-5 text-[#ffb4b0]"
+          className="mt-2 text-sm leading-5 text-shell-danger"
           role="status"
         >
           {error} Тема сохраняет последний корректный цвет. Escape — отменить
@@ -191,8 +191,8 @@ export function PaletteEditor({
                 controls.action +
                 " min-h-24 flex-col items-stretch gap-3 px-3 py-3 " +
                 (selected?.id === preset.id
-                  ? " border-[#d3ed9a]/60 bg-[#2b3426]"
-                  : " bg-[#121810]")
+                  ? " border-shell-accent/60 bg-shell-raised"
+                  : " bg-shell-deep")
               }
             >
               <span className="flex w-full items-center justify-between gap-2 font-medium">
@@ -222,7 +222,7 @@ export function PaletteEditor({
             </Button>
           ))}
         </div>
-        <p className="mt-3 text-sm leading-6 text-[#b1bda7]">
+        <p className="mt-3 text-sm leading-6 text-shell-muted">
           {selected ? `Палитра: ${selected.name}.` : "Своя палитра."} Пресет
           заменяет все цвета только{" "}
           {theme.mode === "dark" ? "тёмного" : "светлого"} режима. Шрифт и
@@ -242,10 +242,10 @@ export function PaletteEditor({
                 onChange({ primary: color.value });
                 setRevision((n) => n + 1);
               }}
-              className={`grid size-11 place-items-center rounded-full transition-[filter] hover:brightness-110 motion-reduce:transition-none border-4 border-[#171c17] text-[#182112] outline-offset-1 focus-visible:outline-2 focus-visible:outline-[#edf1e7] ${color.className} ${palette.primary === color.value ? "outline-2 outline-[#d3ed9a]" : ""}`}
+              className={`grid size-11 place-items-center rounded-full transition-[filter] hover:brightness-110 motion-reduce:transition-none border-4 border-shell-surface text-shell-accent-ink outline-offset-1 focus-visible:outline-2 focus-visible:outline-shell-text ${color.className} ${palette.primary === color.value ? "outline-2 outline-shell-accent" : ""}`}
             >
               {palette.primary === color.value && (
-                <SelectionFeedback className="inline-flex rounded-full bg-[#10160f] p-0.5 text-white">
+                <SelectionFeedback className="inline-flex rounded-full bg-shell-deep p-0.5 text-white">
                   <Check size={16} aria-hidden="true" />
                 </SelectionFeedback>
               )}
@@ -259,7 +259,7 @@ export function PaletteEditor({
           opaque
           onChange={(primary) => onChange({ primary })}
         />
-        <p className="mt-3 text-sm leading-6 text-[#b1bda7]">
+        <p className="mt-3 text-sm leading-6 text-shell-muted">
           При изменении акцента текст основной кнопки подбирается автоматически,
           а кольцо фокуса принимает цвет акцента. Ниже их можно изменить
           отдельно.
@@ -268,9 +268,9 @@ export function PaletteEditor({
       {groups.map((group) => (
         <details
           key={group.name}
-          className="group rounded-xl border border-white/10 bg-[#121810] p-3"
+          className="group rounded-xl border border-white/10 bg-shell-deep p-3"
         >
-          <summary className="cursor-pointer rounded text-sm leading-6 font-medium focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d3ed9a]">
+          <summary className="cursor-pointer rounded text-sm leading-6 font-medium focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shell-accent">
             {group.name}
           </summary>
           <div className="mt-4 space-y-4">
@@ -285,9 +285,9 @@ export function PaletteEditor({
           </div>
         </details>
       ))}
-      <div className="rounded-xl border border-white/15 bg-[#10160f] p-4 text-sm leading-6">
+      <div className="rounded-xl border border-white/15 bg-shell-deep p-4 text-sm leading-6">
         <h3 className="flex items-center gap-2 font-medium">
-          <span className="grid size-6 place-items-center rounded-md bg-[#22291e] text-[#d3ed9a]">
+          <span className="grid size-6 place-items-center rounded-md bg-shell-raised text-shell-accent">
             {warnings.length ? (
               <TriangleAlert size={16} aria-hidden="true" />
             ) : (
@@ -296,17 +296,17 @@ export function PaletteEditor({
           </span>
           Читаемость цветов
         </h3>
-        <p className="mt-2 text-[#b1bda7]">
+        <p className="mt-2 text-shell-muted">
           Ориентир для текстовых пар — 4.5:1. Это подсказка по базовым цветам, а
           не полная проверка доступности. Прозрачность учитывается поверх фона
           режима; hover и disabled смотрите в превью.
         </p>
         {warnings.length > 0 ? (
-          <ul className="mt-3 space-y-2 text-[#ffd29c]">
+          <ul className="mt-3 space-y-2 text-shell-warning">
             {warnings.map((pair) => (
               <li
                 key={pair.label}
-                className="rounded-lg border border-[#ffd29c]/20 bg-[#ffd29c]/5 p-3"
+                className="rounded-lg border border-shell-warning/20 bg-shell-warning/5 p-3"
               >
                 <span className="flex flex-wrap items-center justify-between gap-2">
                   <span>{pair.label}</span>
@@ -319,12 +319,12 @@ export function PaletteEditor({
             ))}
           </ul>
         ) : (
-          <p className="mt-3 text-[#c4dab0]">
+          <p className="mt-3 text-shell-success">
             Расчётные текстовые пары: не ниже 4.5:1.
           </p>
         )}
         {focusContrast < 3 && (
-          <p className="mt-3 text-[#ffd29c]">
+          <p className="mt-3 text-shell-warning">
             Кольцо фокуса / фон: {focusContrast.toFixed(2)}:1. Рекомендуется
             контраст от 3:1.
           </p>
@@ -341,7 +341,7 @@ export function PaletteEditor({
         <RotateCcw size={16} className="shrink-0" />
         Исходные цвета режима
       </Button>
-      <p className="text-sm leading-6 text-[#b1bda7]">
+      <p className="text-sm leading-6 text-shell-muted">
         Сброс цветов возвращает палитру «Лес» в выбранном режиме. Второй режим,
         типографика и размеры сохраняются.
       </p>

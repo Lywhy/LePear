@@ -5,14 +5,14 @@ import { pageLinks, landingLinks } from "@/lib/navigation";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-10 border-t border-white/10 bg-[#0e100f]">
+    <footer className="mt-10 shrink-0 border-t border-white/10 bg-shell-background">
       <div
         className={`${ui.container} flex flex-wrap items-start justify-between gap-6 py-8`}
       >
         <div className="space-y-2">
-          <p className="text-sm text-[#dbe4d2]">© 2026 LePear</p>
+          <p className="text-sm text-shell-soft">© 2026 LePear</p>
           <a
-            className={`inline-flex min-h-11 items-center gap-2 text-sm text-[#b1bda7] hover:text-white ${ui.focus}`}
+            className={`inline-flex min-h-11 items-center gap-2 text-sm text-shell-muted hover:text-shell-text ${ui.focus}`}
             href="https://ui.shadcn.com"
             target="_blank"
             rel="noreferrer"
@@ -32,7 +32,7 @@ export function SiteFooter() {
               to={link.to}
               end
               className={({ isActive }) =>
-                `inline-flex min-h-11 items-center text-sm ${ui.focus} ${isActive ? "text-[#d3ed9a]" : "text-[#b1bda7] hover:text-white"}`
+                `inline-flex min-h-11 items-center text-sm ${ui.focus} ${isActive ? "text-shell-accent" : "text-shell-muted hover:text-shell-text"}`
               }
             >
               {link.label}
@@ -47,7 +47,7 @@ export function SiteFooter() {
             <Link
               key={link.to}
               to={link.to}
-              className={`inline-flex min-h-11 items-center text-sm text-[#b1bda7] hover:text-white ${ui.focus}`}
+              className={`inline-flex min-h-11 items-center text-sm text-shell-muted hover:text-shell-text ${ui.focus}`}
             >
               {link.label}
             </Link>

@@ -140,10 +140,10 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
           </SelectContent>
         </Select>
       </div>
-      <div className="rounded-xl border border-white/15 bg-[#10160f] p-4">
+      <div className="rounded-xl border border-white/15 bg-shell-deep p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-sm leading-6 text-[#b1bda7]">
+            <p className="text-sm leading-6 text-shell-muted">
               {selected ? "Выбранная копия" : "Рабочий вариант"}
             </p>
             <p className="mt-1 text-base leading-7 font-medium wrap-anywhere">
@@ -151,7 +151,7 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
             </p>
           </div>
           {selected && (
-            <SelectionFeedback className="mt-1 inline-flex shrink-0 rounded-full bg-[#d3ed9a]/10 p-1.5 text-[#d3ed9a]">
+            <SelectionFeedback className="mt-1 inline-flex shrink-0 rounded-full bg-shell-accent/10 p-1.5 text-shell-accent">
               <Check size={16} aria-hidden="true" />
             </SelectionFeedback>
           )}
@@ -166,7 +166,7 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
                 key={mode}
                 className="min-w-0 rounded-lg border border-white/10 p-2"
               >
-                <p className="text-sm leading-6 text-[#b1bda7]">
+                <p className="text-sm leading-6 text-shell-muted">
                   {mode === "light" ? "Светлая" : "Тёмная"}
                 </p>
                 <div
@@ -199,8 +199,8 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
           className={
             "mt-3 min-h-24 rounded-lg border px-3 py-2 text-sm leading-6 " +
             (dirty
-              ? "border-[#ffd29c]/25 bg-[#ffd29c]/5 text-[#ffd29c]"
-              : "border-[#d3ed9a]/20 bg-[#d3ed9a]/5 text-[#d3ed9a]")
+              ? "border-shell-warning/25 bg-shell-warning/5 text-shell-warning"
+              : "border-shell-accent/20 bg-shell-accent/5 text-shell-accent")
           }
         >
           {selected
@@ -210,7 +210,7 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
             : "Черновик сохраняется автоматически в этом браузере."}
         </p>
       </div>
-      <p className="text-sm leading-6 text-[#b1bda7]">
+      <p className="text-sm leading-6 text-shell-muted">
         {selected &&
           "Изменения автоматически сохраняются в рабочем варианте. Нажмите «Обновить копию», чтобы записать их в выбранную тему. "}
         Выбор другой копии заменяет рабочий вариант. Чтобы сохранить несколько
@@ -241,7 +241,7 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
           variant="outline"
           className={
             buttonClass +
-            " border-[#d3ed9a]/40 bg-[#d3ed9a] text-[#182112] hover:bg-[#e0f4b5] hover:text-[#182112] dark:border-[#d3ed9a]/40 dark:bg-[#d3ed9a] dark:hover:bg-[#e0f4b5]"
+            " border-shell-accent/40 bg-shell-accent text-shell-accent-ink hover:bg-shell-accent-hover hover:text-shell-accent-ink dark:border-shell-accent/40 dark:bg-shell-accent dark:hover:bg-shell-accent-hover"
           }
           disabled={workspace.savedThemes.length >= MAX_SAVED_THEMES}
           onClick={createCopy}
@@ -296,7 +296,7 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
           variant="outline"
           className={
             buttonClass +
-            " border-[#ffb4b0]/25 text-[#ffb4b0] hover:border-[#ffb4b0]/50 hover:bg-[#ffb4b0]/10 hover:text-[#ffb4b0] dark:border-[#ffb4b0]/25 dark:hover:bg-[#ffb4b0]/10"
+            " border-shell-danger/25 text-shell-danger hover:border-shell-danger/50 hover:bg-shell-danger/10 hover:text-shell-danger dark:border-shell-danger/25 dark:hover:bg-shell-danger/10"
           }
           disabled={!selected}
           onClick={() => {
@@ -314,17 +314,17 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
           Удалить копию
         </Button>
       </div>
-      <p className="text-sm leading-6 text-[#b1bda7]">
+      <p className="text-sm leading-6 text-shell-muted">
         Копий: {workspace.savedThemes.length} / {MAX_SAVED_THEMES}. Удаление
         копии сохраняет её текущий рабочий вариант в черновике. Сброс всей темы
         также не удаляет копии. Данные доступны в этом браузере по текущему
         адресу сайта.
       </p>
       <div className="min-h-18 text-sm leading-6">
-        <p id={id + "-error"} role="alert" className="text-[#ffb4b0]">
+        <p id={id + "-error"} role="alert" className="text-shell-danger">
           {error}
         </p>
-        <p role="status" className="text-[#c4dab0]">
+        <p role="status" className="text-shell-success">
           {message && !dirty && (
             <SelectionFeedback
               key={feedbackRevision}

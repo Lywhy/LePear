@@ -1,3 +1,5 @@
+import { TextReveal } from "@/components/motion/text-reveal";
+import { shellThemeStyle } from "@/lib/shell-palette";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -107,20 +109,22 @@ export function ContactForm({ onSend }: ContactFormProps) {
     }
   }
   const fieldClass =
-    "h-auto min-h-12 w-full min-w-0 rounded-lg border-white/20 bg-[#10160f] px-3 py-3 text-base leading-6 text-[#edf1e7] placeholder:text-[#9da992] hover:border-white/35 focus-visible:border-[#d3ed9a] focus-visible:ring-[#d3ed9a]/25 aria-invalid:border-[#ffb4b0] aria-invalid:ring-[#ffb4b0]/20 dark:bg-[#10160f] dark:aria-invalid:border-[#ffb4b0] disabled:cursor-not-allowed disabled:opacity-50 md:text-base";
+    "h-auto min-h-12 w-full min-w-0 rounded-lg border-white/20 bg-shell-deep px-3 py-3 text-base leading-6 text-shell-text placeholder:text-shell-dim hover:border-white/35 focus-visible:border-shell-accent focus-visible:ring-shell-accent/25 aria-invalid:border-shell-danger aria-invalid:ring-shell-danger/20 dark:bg-shell-deep dark:aria-invalid:border-shell-danger disabled:cursor-not-allowed disabled:opacity-50 md:text-base";
   return (
     <>
-      <Card className="min-w-0 w-full gap-6 rounded-2xl border border-white/15 bg-[#171c17] py-6 text-[#edf1e7] shadow-none ring-0 sm:py-8">
+      <Card className="min-w-0 w-full gap-6 rounded-2xl border border-white/15 bg-shell-surface py-6 text-shell-text shadow-none ring-0 sm:py-8">
         <CardHeader className="gap-3 border-b border-white/10 px-5 pb-6 sm:px-8">
-          <div className="mb-1 flex size-11 items-center justify-center rounded-xl border border-[#d3ed9a]/20 bg-[#d3ed9a]/10 text-[#d3ed9a]">
+          <div className="mb-1 flex size-11 items-center justify-center rounded-xl border border-shell-accent/20 bg-shell-accent/10 text-shell-accent">
             <MessageSquare size={21} aria-hidden="true" />
           </div>
           <CardTitle className="font-[family-name:Arial_Black,Arial,sans-serif] text-2xl leading-tight font-black tracking-tight sm:text-3xl">
-            Расскажите о своей идее
+            <TextReveal as="span">Расскажите о своей идее</TextReveal>
           </CardTitle>
-          <CardDescription className="text-base leading-7 text-[#b1bda7]">
-            Идея, вопрос или предложение для LePear — расскажите, что у вас на
-            уме.
+          <CardDescription className="text-base leading-7 text-shell-muted">
+            <TextReveal as="span">
+              Идея, вопрос или предложение для LePear — расскажите, что у вас на
+              уме.
+            </TextReveal>
           </CardDescription>
         </CardHeader>
         <CardContent className="min-w-0 px-5 sm:px-8">
@@ -139,7 +143,7 @@ export function ContactForm({ onSend }: ContactFormProps) {
               <div className="grid min-w-0 gap-5 sm:grid-cols-2">
                 <div className="min-w-0 space-y-2.5">
                   <Label htmlFor={id("name")} className="text-sm">
-                    Имя <span className="text-[#b1bda7]">*</span>
+                    Имя <span className="text-shell-muted">*</span>
                   </Label>
                   <Input
                     id={id("name")}
@@ -166,7 +170,7 @@ export function ContactForm({ onSend }: ContactFormProps) {
                 </div>
                 <div className="min-w-0 space-y-2.5">
                   <Label htmlFor={id("email")} className="text-sm">
-                    Email <span className="text-[#b1bda7]">*</span>
+                    Email <span className="text-shell-muted">*</span>
                   </Label>
                   <Input
                     id={id("email")}
@@ -195,7 +199,7 @@ export function ContactForm({ onSend }: ContactFormProps) {
               <div className="min-w-0 space-y-2.5">
                 <Label htmlFor={id("subject")} className="flex-wrap text-sm">
                   Тема{" "}
-                  <span className="font-normal text-[#b1bda7]">
+                  <span className="font-normal text-shell-muted">
                     необязательно
                   </span>
                 </Label>
@@ -211,7 +215,7 @@ export function ContactForm({ onSend }: ContactFormProps) {
               </div>
               <div className="min-w-0 space-y-2.5">
                 <Label htmlFor={id("message")} className="text-sm">
-                  Сообщение <span className="text-[#b1bda7]">*</span>
+                  Сообщение <span className="text-shell-muted">*</span>
                 </Label>
                 <Textarea
                   id={id("message")}
@@ -232,7 +236,7 @@ export function ContactForm({ onSend }: ContactFormProps) {
                 />
                 <div
                   id={id("message-hint")}
-                  className="flex flex-wrap justify-between gap-2 text-sm leading-6 text-[#b1bda7]"
+                  className="flex flex-wrap justify-between gap-2 text-sm leading-6 text-shell-muted"
                 >
                   <span>От 10 до 3000 символов</span>
                   <span>{values.message.length}/3000</span>
@@ -251,15 +255,15 @@ export function ContactForm({ onSend }: ContactFormProps) {
             {!onSend && (
               <p
                 id={id("demo-note")}
-                className="flex items-start gap-3 rounded-xl border border-[#d3ed9a]/20 bg-[#10160f] p-4 text-sm leading-6 text-[#c5d1b9]"
+                className="flex items-start gap-3 rounded-xl border border-shell-accent/20 bg-shell-deep p-4 text-sm leading-6 text-shell-soft"
               >
                 <Info
                   size={18}
                   aria-hidden="true"
-                  className="mt-0.5 shrink-0 text-[#d3ed9a]"
+                  className="mt-0.5 shrink-0 text-shell-accent"
                 />
                 <span>
-                  <span className="mb-1 block font-medium text-[#edf1e7]">
+                  <span className="mb-1 block font-medium text-shell-text">
                     Предпросмотр без отправки
                   </span>
                   Заполните форму и проверьте сообщение в следующем окне. Оно не
@@ -296,11 +300,11 @@ export function ContactForm({ onSend }: ContactFormProps) {
               )}
             </Button>
             <div className="flex min-h-12 flex-wrap items-start justify-between gap-2 text-sm leading-6">
-              <p className="text-[#b1bda7]">* Обязательные поля</p>
+              <p className="text-shell-muted">* Обязательные поля</p>
               <div
                 role="status"
                 aria-atomic="true"
-                className="min-w-0 text-[#d3ed9a]"
+                className="min-w-0 text-shell-accent"
               >
                 {!onSend && previewed && (
                   <motion.p {...feedbackMotion(reduced !== false)}>
@@ -314,19 +318,20 @@ export function ContactForm({ onSend }: ContactFormProps) {
       </Card>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent
-          className="dark max-h-[85dvh] min-w-0 max-w-[calc(100vw_-_2rem)] overflow-y-auto rounded-2xl border border-white/15 bg-[#171c17] p-5 text-[#edf1e7] motion-reduce:animate-none sm:max-w-lg sm:p-6"
+          style={shellThemeStyle}
+          className="dark max-h-[85dvh] min-w-0 max-w-[calc(100vw_-_2rem)] overflow-y-auto rounded-2xl border border-white/15 bg-shell-surface p-5 text-shell-text motion-reduce:animate-none sm:max-w-lg sm:p-6"
           showCloseButton={false}
         >
           <DialogHeader className="gap-3">
             {sent ? (
               <CheckCircle2
-                className="mb-1 text-[#d3ed9a]"
+                className="mb-1 text-shell-accent"
                 size={28}
                 aria-hidden="true"
               />
             ) : (
               <Eye
-                className="mb-1 text-[#d3ed9a]"
+                className="mb-1 text-shell-accent"
                 size={28}
                 aria-hidden="true"
               />
@@ -334,30 +339,30 @@ export function ContactForm({ onSend }: ContactFormProps) {
             <DialogTitle className="font-[family-name:Arial_Black,Arial,sans-serif] text-2xl leading-tight font-black tracking-tight">
               {sent ? "Сообщение отправлено" : "Проверьте ваше сообщение"}
             </DialogTitle>
-            <DialogDescription className="text-base leading-7 text-[#b1bda7]">
+            <DialogDescription className="text-base leading-7 text-shell-muted">
               {sent
                 ? "Спасибо, что поделились своими мыслями."
                 : "Форма заполнена корректно. Это предварительный просмотр: сообщение не отправлено."}
             </DialogDescription>
           </DialogHeader>
           {!sent && (
-            <dl className="my-2 min-w-0 space-y-4 rounded-xl border border-white/10 bg-[#10160f] p-4 text-base wrap-anywhere">
+            <dl className="my-2 min-w-0 space-y-4 rounded-xl border border-white/10 bg-shell-deep p-4 text-base wrap-anywhere">
               <div>
-                <dt className="text-sm text-[#b1bda7]">Имя</dt>
+                <dt className="text-sm text-shell-muted">Имя</dt>
                 <dd className="mt-1">{values.name}</dd>
               </div>
               <div>
-                <dt className="text-sm text-[#b1bda7]">Email</dt>
+                <dt className="text-sm text-shell-muted">Email</dt>
                 <dd className="mt-1">{values.email}</dd>
               </div>
               {values.subject && (
                 <div>
-                  <dt className="text-sm text-[#b1bda7]">Тема</dt>
+                  <dt className="text-sm text-shell-muted">Тема</dt>
                   <dd className="mt-1">{values.subject}</dd>
                 </div>
               )}
               <div>
-                <dt className="text-sm text-[#b1bda7]">Сообщение</dt>
+                <dt className="text-sm text-shell-muted">Сообщение</dt>
                 <dd className="mt-1 whitespace-pre-wrap leading-7">
                   {values.message}
                 </dd>
@@ -388,7 +393,7 @@ function ContactFieldError({ id, message }: { id: string; message: string }) {
     <div
       id={id}
       role="alert"
-      className="rounded-lg border border-[#ffb4b0]/20 bg-[#ffb4b0]/5 px-3 py-2 text-sm leading-6 text-[#ffb4b0]"
+      className="rounded-lg border border-shell-danger/20 bg-shell-danger/5 px-3 py-2 text-sm leading-6 text-shell-danger"
     >
       <motion.p {...feedbackMotion(reduced !== false)}>{message}</motion.p>
     </div>

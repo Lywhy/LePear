@@ -54,3 +54,15 @@ Desktop.ini
 *.sw?
 
 # Keep source, assets, documentation, examples, AGENTS.md and pnpm-lock.yaml tracked.
+
+# Local YouTube runtime and generated media
+/.tools/
+/.youtube-cache/
+/.youtube-downloads/
+
+# Accidental local downloads and interrupted downloader files.
+# Source media assets elsewhere remain eligible for version control.
+/downloads/
+/media-downloads/
+*.part
+*.ytdl

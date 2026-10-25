@@ -22,7 +22,7 @@ function disabledOnServer() {
 }
 
 /** Mount a looping React Bits effect only while true; otherwise render its static fallback. */
-export function useDecorativeMotion(scope: RefObject<Element | null>) {
+export function useDecorativeMotionState(scope: RefObject<Element | null>) {
   const reduced = useReducedMotion();
   const inView = useInView(scope, { amount: 0.1 });
   const visible = useSyncExternalStore(
@@ -35,5 +35,11 @@ export function useDecorativeMotion(scope: RefObject<Element | null>) {
     isDesktop,
     disabledOnServer,
   );
-  return reduced === false && inView && visible && desktop;
+  const supported = reduced === false && desktop;
+  return { supported, active: supported && inView && visible };
+}
+
+/** Existing effects retain their active-only contract. */
+export function useDecorativeMotion(scope: RefObject<Element | null>) {
+  return useDecorativeMotionState(scope).active;
 }
