@@ -37,7 +37,7 @@ export function ThemePreview({
       <div className="flex min-h-14 flex-wrap items-center justify-between gap-[var(--preview-component-gap)] border-b px-[var(--preview-component-padding)] py-[var(--preview-control-padding-block)] text-[length:var(--preview-small-size)] text-muted-foreground">
         <span className="flex items-center gap-2">
           <PanelLeft size={16} aria-hidden="true" />
-          Workspace<span className="mx-1 opacity-50">/</span>Overview
+          Пространство<span className="mx-1 opacity-50">/</span>Обзор
         </span>
         <Badge
           variant="outline"
@@ -65,6 +65,21 @@ export function ThemePreview({
             aria-hidden="true"
           />
         </div>
+        {!staticView && <TypographySpecimen />}
+        {!staticView && (
+          <div className="mt-[calc(var(--preview-component-gap)*2)] mb-[var(--preview-component-gap)] border-t pt-[var(--preview-component-padding)]">
+            <p className="text-[length:var(--preview-small-size)] text-muted-foreground">
+              02 / В контексте
+            </p>
+            <h3 className="mt-2 text-[length:var(--preview-subheading-size)] font-[number:var(--preview-heading-weight)]">
+              Небольшой рабочий интерфейс
+            </h3>
+            <p className="mt-2 text-[length:var(--preview-small-size)] text-muted-foreground">
+              Карточки, поля и действия вместе — чтобы оценить сочетание
+              настроек.
+            </p>
+          </div>
+        )}
         <div
           className={`grid gap-[var(--preview-component-gap)] ${staticView ? "xl:grid-cols-2" : "@min-[650px]:grid-cols-2"}`}
         >
@@ -104,7 +119,7 @@ export function ThemePreview({
                 {["АЛ", "МК", "+2"].map((text, i) => (
                   <span
                     key={text}
-                    className={`grid size-8 place-items-center rounded-full border-2 border-card text-[length:var(--preview-small-size)] ${i === 0 ? "bg-[#79634f] text-white" : i === 1 ? "bg-[#54634a] text-white" : "bg-secondary text-secondary-foreground"}`}
+                    className={`grid size-8 place-items-center rounded-full border-2 border-card text-[length:var(--preview-small-size)] ${i === 0 ? "bg-primary text-primary-foreground" : i === 1 ? "bg-accent text-accent-foreground" : "bg-secondary text-secondary-foreground"}`}
                   >
                     {text}
                   </span>
@@ -206,7 +221,6 @@ export function ThemePreview({
         </div>
         {!staticView && (
           <>
-            <TypographySpecimen />
             <PreviewGallery portalContainer={previewScope} />
           </>
         )}

@@ -1,8 +1,10 @@
 import { useId, useState } from "react";
-import { Check, RotateCcw } from "lucide-react";
+import { Check, RotateCcw, TriangleAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { SelectionFeedback } from "@/components/editor/selection-feedback";
+import { controlClasses as controls } from "@/components/editor/control-classes";
 import {
   createInitialTheme,
   themeColors,
@@ -84,7 +86,7 @@ function ColorField({
   function edit(input: string) {
     const color = normalizeColor(input, opaque);
     setField({
-      source: value,
+      source: color ?? value,
       draft: input,
       error: color
         ? ""
@@ -105,7 +107,7 @@ function ColorField({
           value={value.slice(0, 7)}
           aria-label={`${label}: выбрать цвет`}
           onChange={(e) => edit(e.target.value + value.slice(7))}
-          className="h-11 w-12 shrink-0 cursor-pointer p-1"
+          className={controls.input + " w-12 shrink-0 cursor-pointer p-1"}
         />
         <Input
           id={id}
@@ -125,7 +127,9 @@ function ColorField({
               });
             }
           }}
-          className="h-11 min-w-0 flex-1 font-mono text-sm"
+          className={
+            controls.input + " flex-1 font-mono text-base tabular-nums"
+          }
         />
       </div>
       {error && (
@@ -183,24 +187,37 @@ export function PaletteEditor({
                 onChange({ ...preset.palettes[theme.mode] });
                 setRevision((n) => n + 1);
               }}
-              className={`h-auto min-h-16 flex-col items-start gap-2 border-white/20 px-3 py-3 text-sm ${selected?.id === preset.id ? "bg-[#343e2a] text-[#edf1e7]" : "bg-transparent text-[#c5d1b9]"}`}
+              className={
+                controls.action +
+                " min-h-24 flex-col items-stretch gap-3 px-3 py-3 " +
+                (selected?.id === preset.id
+                  ? " border-[#d3ed9a]/60 bg-[#2b3426]"
+                  : " bg-[#121810]")
+              }
             >
-              <span className="flex items-center gap-2">
+              <span className="flex w-full items-center justify-between gap-2 font-medium">
                 {preset.name}
                 {selected?.id === preset.id && (
-                  <Check size={14} aria-hidden="true" />
+                  <SelectionFeedback className="inline-flex">
+                    <Check size={16} aria-hidden="true" />
+                  </SelectionFeedback>
                 )}
               </span>
-              <span className="flex gap-1" aria-hidden="true">
-                {(["background", "card", "primary"] as const).map((key) => (
-                  <span
-                    key={key}
-                    className="size-4 rounded-full border border-white/30"
-                    style={{
-                      backgroundColor: preset.palettes[theme.mode][key],
-                    }}
-                  />
-                ))}
+              <span
+                className="grid w-full grid-cols-4 gap-1"
+                aria-hidden="true"
+              >
+                {(["background", "card", "primary", "foreground"] as const).map(
+                  (key) => (
+                    <span
+                      key={key}
+                      className="h-7 rounded-md border border-white/20"
+                      style={{
+                        backgroundColor: preset.palettes[theme.mode][key],
+                      }}
+                    />
+                  ),
+                )}
               </span>
             </Button>
           ))}
@@ -225,10 +242,12 @@ export function PaletteEditor({
                 onChange({ primary: color.value });
                 setRevision((n) => n + 1);
               }}
-              className={`grid size-11 place-items-center rounded-full border-4 border-[#171c17] text-[#182112] outline-offset-1 focus-visible:outline-2 focus-visible:outline-[#edf1e7] ${color.className} ${palette.primary === color.value ? "outline-2 outline-[#d3ed9a]" : ""}`}
+              className={`grid size-11 place-items-center rounded-full transition-[filter] hover:brightness-110 motion-reduce:transition-none border-4 border-[#171c17] text-[#182112] outline-offset-1 focus-visible:outline-2 focus-visible:outline-[#edf1e7] ${color.className} ${palette.primary === color.value ? "outline-2 outline-[#d3ed9a]" : ""}`}
             >
               {palette.primary === color.value && (
-                <Check size={18} aria-hidden="true" />
+                <SelectionFeedback className="inline-flex rounded-full bg-[#10160f] p-0.5 text-white">
+                  <Check size={16} aria-hidden="true" />
+                </SelectionFeedback>
               )}
             </button>
           ))}
@@ -249,7 +268,7 @@ export function PaletteEditor({
       {groups.map((group) => (
         <details
           key={group.name}
-          className="group rounded-lg border border-white/15 p-3"
+          className="group rounded-xl border border-white/10 bg-[#121810] p-3"
         >
           <summary className="cursor-pointer rounded text-sm leading-6 font-medium focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d3ed9a]">
             {group.name}
@@ -266,8 +285,17 @@ export function PaletteEditor({
           </div>
         </details>
       ))}
-      <div className="rounded-lg border border-white/15 p-3 text-sm leading-6">
-        <h3 className="font-medium">Читаемость цветов</h3>
+      <div className="rounded-xl border border-white/15 bg-[#10160f] p-4 text-sm leading-6">
+        <h3 className="flex items-center gap-2 font-medium">
+          <span className="grid size-6 place-items-center rounded-md bg-[#22291e] text-[#d3ed9a]">
+            {warnings.length ? (
+              <TriangleAlert size={16} aria-hidden="true" />
+            ) : (
+              <Check size={16} aria-hidden="true" />
+            )}
+          </span>
+          Читаемость цветов
+        </h3>
         <p className="mt-2 text-[#b1bda7]">
           Ориентир для текстовых пар — 4.5:1. Это подсказка по базовым цветам, а
           не полная проверка доступности. Прозрачность учитывается поверх фона
@@ -276,8 +304,17 @@ export function PaletteEditor({
         {warnings.length > 0 ? (
           <ul className="mt-3 space-y-2 text-[#ffd29c]">
             {warnings.map((pair) => (
-              <li key={pair.label}>
-                {pair.label}: {pair.ratio.toFixed(2)}:1 — увеличьте контраст.
+              <li
+                key={pair.label}
+                className="rounded-lg border border-[#ffd29c]/20 bg-[#ffd29c]/5 p-3"
+              >
+                <span className="flex flex-wrap items-center justify-between gap-2">
+                  <span>{pair.label}</span>
+                  <span className="font-mono tabular-nums">
+                    {pair.ratio.toFixed(2)}:1
+                  </span>
+                </span>
+                <span className="mt-1 block">Увеличьте контраст.</span>
               </li>
             ))}
           </ul>
@@ -295,7 +332,7 @@ export function PaletteEditor({
       </div>
       <Button
         variant="outline"
-        className="h-auto min-h-11 w-full gap-2 border-white/20 bg-transparent px-3 py-2 text-sm whitespace-normal"
+        className={controls.action + " w-full"}
         onClick={() => {
           onChange(createInitialTheme().palettes[theme.mode]);
           setRevision((n) => n + 1);

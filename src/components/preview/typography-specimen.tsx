@@ -12,8 +12,11 @@ export function TypographySpecimen() {
   return (
     <section
       aria-labelledby={id}
-      className={`mt-[calc(var(--preview-component-gap)*2)] ${previewCardClass}`}
+      className={`mt-[calc(var(--preview-component-gap)*2)] bg-card text-card-foreground ${previewCardClass}`}
     >
+      <p className="mb-[var(--preview-component-gap)] text-[length:var(--preview-small-size)] text-muted-foreground">
+        01 / Типографика
+      </p>
       <h3
         id={id}
         className="text-[length:var(--preview-heading-size)] break-words"

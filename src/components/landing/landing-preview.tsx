@@ -1,3 +1,5 @@
+import { motion, useReducedMotion } from "motion/react";
+import { appearMotion } from "@/lib/motion-presets";
 import {
   Check,
   Code2,
@@ -11,9 +13,11 @@ import { themeColors } from "@/lib/site-theme";
 
 /** Illustration only: no focusable controls or editor state on the landing page. */
 export function LandingPreview() {
+  const reduced = useReducedMotion();
   return (
-    <section
-      className="relative z-10 mx-auto -mt-28 w-[calc(100%-2rem)] max-w-[1160px] sm:-mt-36 sm:w-[calc(100%-4rem)]"
+    <motion.section
+      {...appearMotion(reduced !== false)}
+      className="relative z-10 mx-auto -mt-28 w-[calc(100%-2rem)] max-w-290 sm:-mt-36 sm:w-[calc(100%-4rem)]"
       aria-label="Внешний вид редактора LePear"
     >
       <div
@@ -103,6 +107,6 @@ export function LandingPreview() {
         Пример интерфейса. Все настройки доступны на отдельной странице
         редактора.
       </p>
-    </section>
+    </motion.section>
   );
 }

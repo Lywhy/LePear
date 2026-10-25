@@ -1,48 +1,109 @@
-import { ArrowLeft, Sprout } from "lucide-react";
+import { useRef, type CSSProperties } from "react";
+import {
+  ArrowUpRight,
+  Lightbulb,
+  MessageCircle,
+  SlidersHorizontal,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { ContactForm } from "@/components/contact-form";
+import { Reveal } from "@/components/motion/reveal";
+import SpotlightCard from "@/components/react-bits/spotlight-card";
+import { useDecorativeMotion } from "@/hooks/use-decorative-motion";
+import { designClasses as ui } from "@/lib/design-system";
+
+const topics = [
+  {
+    Icon: Lightbulb,
+    title: "Новая возможность",
+    text: "Что помогло бы вам быстрее собрать свою тему?",
+  },
+  {
+    Icon: SlidersHorizontal,
+    title: "Работа редактора",
+    text: "Какой параметр или компонент стоит улучшить?",
+  },
+  {
+    Icon: MessageCircle,
+    title: "Вопрос о LePear",
+    text: "Что осталось непонятным при знакомстве с проектом?",
+  },
+];
 
 export default function ContactPage() {
+  const scope = useRef<HTMLDivElement>(null);
+  const effectsEnabled = useDecorativeMotion(scope);
   return (
-    <div className="dark min-h-dvh bg-[#0e100f] px-5 py-7 font-sans text-[#f2f3ed] sm:px-10 sm:py-10">
-      <header className="mx-auto flex max-w-6xl items-center justify-between gap-5">
-        <Link
-          to="/"
-          className="flex items-center gap-2 text-2xl font-semibold tracking-tight focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d3ed9a]"
-          aria-label="LePear — на главную"
-        >
-          <Sprout className="text-[#d3ed9a]" aria-hidden="true" />
-          LePear
-        </Link>
-        <Link
-          to="/"
-          className="flex items-center gap-2 text-sm text-[#b5bfab] underline-offset-4 hover:text-white hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d3ed9a]"
-        >
-          <ArrowLeft size={16} aria-hidden="true" />
-          На главную
-        </Link>
-      </header>
-      <main className="mx-auto grid max-w-6xl items-start gap-10 py-12 sm:py-20 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-        <div className="lg:sticky lg:top-14">
-          <span className="text-xs font-medium tracking-[0.18em] text-[#c5dbab]">
-            НАЧНЁМ С РАЗГОВОРА
-          </span>
-          <h1 className="mt-5 text-4xl leading-tight font-medium tracking-tight sm:text-5xl">
-            Хорошие идеи
-            <br />
-            <span className="text-[#a0ad94]">заслуживают ответа.</span>
-          </h1>
-          <p className="mt-6 max-w-sm text-base leading-8 text-[#a8b39f]">
-            Помогите сделать LePear лучше. Расскажите, чего вам не хватает,
-            задайте вопрос или предложите новую возможность.
+    <main className={ui.container + " py-10 sm:py-16 lg:py-20"}>
+      <div className="grid min-w-0 items-start gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12 xl:gap-20">
+        <div ref={scope} className="min-w-0 lg:sticky lg:top-8">
+          <Reveal>
+            <p className={ui.eyebrow}>ЕСТЬ ИДЕЯ?</p>
+            <h1 className={"mt-4 " + ui.heroTitle}>
+              LePear начинается
+              <br />
+              <span className="text-[#d3ed9a]">с ваших идей.</span>
+            </h1>
+            <p className={"mt-5 max-w-lg " + ui.body}>
+              Расскажите, чего вам не хватает в редакторе, задайте вопрос или
+              предложите новый взгляд на привычные настройки.
+            </p>
+          </Reveal>
+          <Reveal className="mt-7">
+            <SpotlightCard
+              effectsEnabled={effectsEnabled}
+              spotlightColor="#d3ed9a"
+              intensity={0.12}
+              borderGlow={0.5}
+              proximity={32}
+              smoothing={0.2}
+              ambient={false}
+              flare={false}
+              className="rounded-2xl p-5 sm:p-6"
+              style={
+                {
+                  "--spotlight-card-surface": "#171c17",
+                  "--spotlight-card-border": "rgba(211,237,154,0.16)",
+                } as CSSProperties
+              }
+            >
+              <h2 className="text-lg leading-7 font-medium">
+                О чём можно рассказать
+              </h2>
+              <ul className="mt-5 space-y-5">
+                {topics.map(({ Icon, title, text }) => (
+                  <li key={title} className="flex items-start gap-3">
+                    <span className="grid size-9 shrink-0 place-items-center rounded-lg border border-white/10 bg-[#22291e] text-[#d3ed9a]">
+                      <Icon size={18} aria-hidden="true" />
+                    </span>
+                    <div className="min-w-0">
+                      <p className="text-base leading-7 font-medium">{title}</p>
+                      <p className={ui.caption}>{text}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </SpotlightCard>
+          </Reveal>
+          <p className={"mt-5 max-w-lg " + ui.caption}>
+            Сейчас доступен предпросмотр формы. Сообщения не отправляются, канал
+            обратной связи ещё не подключён.
           </p>
-          <p className="mt-5 max-w-sm text-sm leading-7 text-[#a8b39f]">
-            Сейчас форма работает в режиме предпросмотра. Отправку подключим,
-            когда будет готов канал обратной связи.
-          </p>
+          <Link
+            to="/editor"
+            className={
+              "mt-3 inline-flex min-h-11 items-center gap-2 rounded-md py-2 text-base leading-7 text-[#d3ed9a] hover:text-[#edf1e7] " +
+              ui.focus
+            }
+          >
+            Вернуться к своей теме
+            <ArrowUpRight size={18} aria-hidden="true" />
+          </Link>
         </div>
-        <ContactForm />
-      </main>
-    </div>
+        <Reveal className="min-w-0">
+          <ContactForm />
+        </Reveal>
+      </div>
+    </main>
   );
 }

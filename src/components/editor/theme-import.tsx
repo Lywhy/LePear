@@ -1,9 +1,11 @@
-import { useId, useMemo, useRef, useState } from "react";
+import { controlClasses as controls } from "@/components/editor/control-classes";
+import { TransferStatus } from "@/components/editor/transfer-status";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { MAX_THEME_IMPORT_BYTES, parseThemeJSON } from "@/lib/theme-transfer";
 import type { SiteTheme } from "@/lib/site-theme";
+import { MAX_THEME_IMPORT_BYTES, parseThemeJSON } from "@/lib/theme-transfer";
+import { useId, useMemo, useRef, useState } from "react";
 
 export function ThemeImport({
   onImport,
@@ -25,11 +27,14 @@ export function ThemeImport({
   return (
     <section
       aria-labelledby={`${id}-title`}
-      className="mt-7 rounded-xl border border-white/15 bg-[#171c17] p-5"
+      className="mt-6 min-w-0 rounded-xl border border-white/15 bg-[#171c17] p-4 sm:p-5"
     >
-      <h2 id={`${id}-title`} className="text-lg font-medium">
+      <p className="mb-2 inline-flex items-center gap-2 text-sm leading-6 text-[#b1bda7]">
+        Из JSON в редактор
+      </p>
+      <h3 id={`${id}-title`} className="text-lg font-medium">
         Импорт темы
-      </h2>
+      </h3>
       <p className="mt-2 text-sm leading-6 text-[#b1bda7]">
         Выберите JSON LePear или вставьте его содержимое. Сначала проверьте
         параметры ниже, затем примените тему к рабочему черновику. Именованные
@@ -78,34 +83,36 @@ export function ThemeImport({
           }
         }}
       />
-      <div className="flex min-w-0 flex-wrap items-center gap-3">
+      <div className="flex min-w-0 flex-wrap items-center gap-3 rounded-xl border border-dashed border-white/25 bg-[#10160f] p-4">
         <Button
           id={`${id}-choose`}
           type="button"
           variant="outline"
           onClick={() => fileInput.current?.click()}
+          aria-invalid={!!fileError}
+          aria-busy={reading}
           aria-describedby={`${id}-filename${fileError ? ` ${id}-file-error` : ""}`}
-          className="min-h-11 shrink-0 border-white/20 bg-transparent px-4 text-sm"
+          className={controls.action}
         >
           Выбрать JSON
         </Button>
         <span
           id={`${id}-filename`}
           role="status"
-          className="min-w-0 text-sm leading-6 text-[#b1bda7] [overflow-wrap:anywhere]"
+          className="min-w-0 text-sm leading-6 text-[#b1bda7] wrap-anywhere"
         >
           {fileName || "Файл не выбран"}
         </span>
       </div>
-      {fileError && (
-        <p
-          id={`${id}-file-error`}
-          role="alert"
-          className="mt-2 text-sm leading-6 text-[#ffb4b0]"
-        >
-          {fileError}
-        </p>
-      )}
+      <div id={id + "-file-error"} className="mt-3">
+        {fileError && <TransferStatus tone="error" message={fileError} />}
+        {reading && (
+          <TransferStatus
+            tone="loading"
+            message="Читаем JSON. Текущая тема пока не меняется."
+          />
+        )}
+      </div>
       <Label htmlFor={`${id}-text`} className="mt-4 mb-2 text-sm">
         Содержимое JSON
       </Label>
@@ -125,7 +132,10 @@ export function ThemeImport({
           setFileName("");
           setText(event.target.value);
         }}
-        className="min-h-40 max-h-80 resize-y field-sizing-fixed font-mono text-sm md:text-sm"
+        className={
+          controls.input +
+          " h-48 max-h-80 max-w-full resize-y field-sizing-fixed font-mono text-sm leading-6 md:text-sm"
+        }
         placeholder={'{ "version": 2, ... }'}
       />
       <p id={`${id}-hint`} className="mt-2 text-sm leading-6 text-[#b1bda7]">
@@ -136,9 +146,12 @@ export function ThemeImport({
         <div
           id={`${id}-errors`}
           role="alert"
-          className="mt-3 text-sm leading-6 text-[#ffb4b0]"
+          className="mt-3 min-w-0 rounded-xl border border-[#ffb4b0]/25 bg-[#ffb4b0]/5 p-4 text-sm leading-6 text-[#ffb4b0] wrap-anywhere"
         >
-          <ul className="space-y-1">
+          <p className="mb-2 font-medium">
+            JSON не применён. Исправьте ошибки:
+          </p>
+          <ul className="space-y-2">
             {result.errors.slice(0, 6).map((error) => (
               <li key={error.path}>
                 {error.path}: {error.message}
@@ -151,14 +164,33 @@ export function ThemeImport({
         </div>
       )}
       {result?.success && (
-        <p className="mt-3 text-sm leading-6 text-[#c4dab0]">
-          Готова к импорту:{" "}
-          {result.theme.mode === "dark" ? "тёмный" : "светлый"} режим, обе
-          палитры, {result.theme.typography.font},{" "}
-          {result.theme.typography.fontSize} px, радиус{" "}
-          {result.theme.shape.radius} px. Будут заменены все настройки рабочей
-          темы.
-        </p>
+        <div className="mt-4 rounded-xl border border-[#d3ed9a]/25 bg-[#10160f] p-4">
+          <p
+            role="status"
+            className="text-base leading-7 font-medium text-[#d3ed9a]"
+          >
+            Тема готова к применению
+          </p>
+          <dl className="mt-3 grid grid-cols-1 gap-3 text-sm leading-6 min-[440px]:grid-cols-2">
+            {[
+              ["Режим", result.theme.mode === "dark" ? "Тёмный" : "Светлый"],
+              ["Палитры", "Светлая и тёмная"],
+              ["Шрифт", result.theme.typography.font],
+              ["Размер текста", result.theme.typography.fontSize + " px"],
+              ["Закругление", result.theme.shape.radius + " px"],
+              ["Формат", "LePear · schema v2"],
+            ].map(([label, value]) => (
+              <div key={label} className="min-w-0">
+                <dt className="text-[#b1bda7]">{label}</dt>
+                <dd className="mt-0.5 text-[#edf1e7] wrap-anywhere">{value}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="mt-4 border-t border-white/10 pt-3 text-sm leading-6 text-[#b1bda7]">
+            Будут заменены все настройки рабочего варианта. Именованные копии
+            останутся в библиотеке.
+          </p>
+        </div>
       )}
       <div className="mt-4 flex flex-wrap gap-3">
         <Button
@@ -171,14 +203,17 @@ export function ThemeImport({
               "Тема импортирована в рабочий черновик. При необходимости создайте именованную копию.",
             );
           }}
-          className="min-h-11 bg-[#d3ed9a] px-4 text-sm text-[#182112] hover:bg-[#e0f6b7]"
+          className={
+            controls.action +
+            " border-[#d3ed9a]/40 bg-[#d3ed9a] text-[#182112] hover:bg-[#e0f6b7] hover:text-[#182112] dark:border-[#d3ed9a]/40 dark:bg-[#d3ed9a] dark:hover:bg-[#e0f6b7]"
+          }
         >
           {reading ? "Чтение файла…" : "Применить тему"}
         </Button>
         <Button
           type="button"
           variant="outline"
-          className="min-h-11 border-white/20 bg-transparent px-4 text-sm"
+          className={controls.action}
           onClick={() => {
             ++request.current;
             setReading(false);
@@ -191,11 +226,9 @@ export function ThemeImport({
           Очистить ввод
         </Button>
       </div>
-      {message && (
-        <p role="status" className="mt-3 text-sm leading-6 text-[#c4dab0]">
-          {message}
-        </p>
-      )}
+      <div className="mt-4 min-h-14">
+        {message && <TransferStatus tone="success" message={message} />}
+      </div>
     </section>
   );
 }

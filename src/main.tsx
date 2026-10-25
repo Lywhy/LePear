@@ -1,19 +1,37 @@
-import { StrictMode } from "react";
+import App from "@/App.tsx";
+import { SiteLayout } from "@/components/layout/site-layout";
+import { AppMotion } from "@/components/motion/app-motion";
+import ContactPage from "@/pages/contact";
+import EditorPage from "@/pages/editor";
+import { Suspense, lazy } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css";
-import App from "@/App.tsx";
-import ContactPage from "@/pages/contact";
-import EditorPage from "@/pages/editor";
+
+const DesignFoundationPage = import.meta.env.DEV
+  ? lazy(() => import("@/pages/design-foundation"))
+  : null;
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+  <AppMotion>
     <BrowserRouter>
       <Routes>
-        <Route path="/editor" element={<EditorPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/*" element={<App />} />
+        {DesignFoundationPage && (
+          <Route
+            path="/design-foundation"
+            element={
+              <Suspense fallback={<p className="p-6">Загрузка образцов…</p>}>
+                <DesignFoundationPage />
+              </Suspense>
+            }
+          />
+        )}
+        <Route element={<SiteLayout />}>
+          <Route path="/editor" element={<EditorPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/*" element={<App />} />
+        </Route>
       </Routes>
     </BrowserRouter>
-  </StrictMode>,
+  </AppMotion>
 );

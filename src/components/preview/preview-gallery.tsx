@@ -1,4 +1,6 @@
 import { useId, useState, type FormEvent, type RefObject } from "react";
+import { motion, useReducedMotion } from "motion/react";
+import { motionTransitions } from "@/lib/motion-presets";
 import { Check, Plus, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -50,6 +52,10 @@ const roles = [
 
 export function PreviewGallery({ portalContainer }: GalleryProps) {
   const id = useId();
+  const reduced = useReducedMotion();
+  const [activeTab, setActiveTab] = useState("components");
+  const transition =
+    reduced !== false ? { duration: 0 } : motionTransitions.feedback;
   const [role, setRole] = useState("editor");
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -73,33 +79,62 @@ export function PreviewGallery({ portalContainer }: GalleryProps) {
       className="mt-[calc(var(--preview-component-gap)*2)] border-t pt-[var(--preview-component-padding)]"
       aria-label="Каталог компонентов темы"
     >
+      <p className="mb-2 text-[length:var(--preview-small-size)] text-muted-foreground">
+        03 / Каталог
+      </p>
       <h3 className={previewHeadingClass}>Компоненты и состояния</h3>
       <p className="mt-2 text-[length:var(--preview-small-size)] leading-[var(--preview-line-height)] text-muted-foreground">
         Наводите курсор, переходите клавишей Tab, открывайте списки и диалог.
         Все действия выполняются только в примерах.
       </p>
       <Tabs
-        defaultValue="components"
+        value={activeTab}
+        onValueChange={(next) => {
+          if (typeof next === "string") setActiveTab(next);
+        }}
         className="mt-[var(--preview-component-gap)] gap-[var(--preview-component-gap)]"
       >
         <TabsList
           aria-label="Разделы каталога компонентов"
-          className="min-h-11 w-full flex-wrap justify-start gap-2 group-data-horizontal/tabs:h-auto rounded-[calc(var(--radius)*.7)]"
+          className="h-auto min-h-[var(--preview-control-safe-height)] w-full flex-wrap justify-start gap-[calc(var(--preview-component-gap)*.5)] rounded-[calc(var(--radius)*.7)] border bg-muted p-[calc(var(--preview-component-gap)*.25)] group-data-horizontal/tabs:h-auto"
         >
-          <TabsTrigger value="components" className={previewControlClass}>
+          <TabsTrigger
+            value="components"
+            className={
+              previewControlClass +
+              " transition-colors motion-reduce:transition-none"
+            }
+          >
             Компоненты
           </TabsTrigger>
-          <TabsTrigger value="table" className={previewControlClass}>
+          <TabsTrigger
+            value="table"
+            className={
+              previewControlClass +
+              " transition-colors motion-reduce:transition-none"
+            }
+          >
             Таблица
           </TabsTrigger>
         </TabsList>
         <TabsContent
+          keepMounted
           value="components"
           className="min-w-0 text-[length:var(--preview-font-size)]"
         >
-          <div className="grid gap-[var(--preview-component-gap)] @min-[650px]:grid-cols-2">
+          <motion.div
+            initial={false}
+            animate={{ opacity: activeTab === "components" ? 1 : 0.92 }}
+            transition={transition}
+            className="grid gap-[var(--preview-component-gap)] @min-[650px]:grid-cols-2"
+          >
             <Card className={previewCardClass}>
-              <h4 className={previewHeadingClass}>Кнопки</h4>
+              <div className="border-b pb-[var(--preview-component-gap)]">
+                <p className="mb-2 text-[length:var(--preview-small-size)] text-muted-foreground">
+                  Действия
+                </p>
+                <h4 className={previewHeadingClass}>Кнопки и диалог</h4>
+              </div>
               <div className="flex flex-wrap gap-[var(--preview-component-gap)]">
                 <Button
                   className={previewControlClass}
@@ -158,7 +193,12 @@ export function PreviewGallery({ portalContainer }: GalleryProps) {
               />
             </Card>
             <Card className={previewCardClass}>
-              <h4 className={previewHeadingClass}>Поля и выбор</h4>
+              <div className="border-b pb-[var(--preview-component-gap)]">
+                <p className="mb-2 text-[length:var(--preview-small-size)] text-muted-foreground">
+                  Ввод данных
+                </p>
+                <h4 className={previewHeadingClass}>Поля и выбор</h4>
+              </div>
               <form
                 noValidate
                 className="space-y-[var(--preview-component-gap)]"
@@ -312,21 +352,37 @@ export function PreviewGallery({ portalContainer }: GalleryProps) {
                 </div>
               </form>
             </Card>
-          </div>
+          </motion.div>
         </TabsContent>
         <TabsContent
+          keepMounted
           value="table"
           className="min-w-0 text-[length:var(--preview-font-size)]"
         >
-          <PreviewTable onMessage={setMessage} />
+          <motion.div
+            initial={false}
+            animate={{ opacity: activeTab === "table" ? 1 : 0.92 }}
+            transition={transition}
+          >
+            <PreviewTable onMessage={setMessage} />
+          </motion.div>
         </TabsContent>
       </Tabs>
-      <p
-        role="status"
-        className="mt-[var(--preview-component-gap)] min-h-7 text-[length:var(--preview-small-size)] leading-[var(--preview-line-height)] text-muted-foreground"
-      >
-        {message}
-      </p>
+      <div className="mt-[var(--preview-component-gap)] rounded-[calc(var(--radius)*.7)] border bg-muted/40 p-[var(--preview-component-padding)]">
+        <p className="text-[length:var(--preview-small-size)] font-[number:var(--preview-heading-weight)]">
+          Демонстрационный режим
+        </p>
+        <p className="mt-2 text-[length:var(--preview-small-size)] text-muted-foreground">
+          Можно заполнять формы и изменять таблицу. Данные остаются в примерах и
+          не отправляются на сервер.
+        </p>
+        <p
+          role="status"
+          className="mt-[var(--preview-component-gap)] min-h-7 text-[length:var(--preview-small-size)] leading-[var(--preview-line-height)] text-muted-foreground"
+        >
+          {message || "Здесь появится результат действия в примере."}
+        </p>
+      </div>
     </section>
   );
 }
@@ -474,7 +530,16 @@ function PreviewTable({ onMessage }: { onMessage: (message: string) => void }) {
           Восстановить
         </Button>
       </div>
-      <Table className="text-[length:var(--preview-small-size)] [&_th]:h-[var(--preview-control-safe-height)] [&_td]:h-[var(--preview-control-safe-height)] [&_th]:px-[var(--preview-control-padding)] [&_td]:px-[var(--preview-control-padding)] [&_th]:py-[var(--preview-control-padding-block)] [&_td]:py-[var(--preview-control-padding-block)]">
+      <Table
+        containerProps={{
+          tabIndex: 0,
+          role: "region",
+          "aria-label": "Проекты команды — таблица с горизонтальной прокруткой",
+          className:
+            "rounded-[calc(var(--radius)*.7)] border focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+        }}
+        className="text-[length:var(--preview-small-size)] [&_th]:h-[var(--preview-control-safe-height)] [&_td]:h-[var(--preview-control-safe-height)] [&_th]:px-[var(--preview-control-padding)] [&_td]:px-[var(--preview-control-padding)] [&_th]:py-[var(--preview-control-padding-block)] [&_td]:py-[var(--preview-control-padding-block)]"
+      >
         <TableCaption className="text-[length:var(--preview-font-size)] leading-[var(--preview-line-height)]">
           Выделяйте строки чекбоксами. В узком режиме таблица прокручивается
           горизонтально.
@@ -532,7 +597,7 @@ function PreviewTable({ onMessage }: { onMessage: (message: string) => void }) {
                 <TableCell>
                   <Badge
                     variant={row.status === "Готово" ? "default" : "secondary"}
-                    className="rounded-[calc(var(--radius)*.5)] text-[length:var(--preview-small-size)]"
+                    className="max-w-full rounded-[calc(var(--radius)*.5)] text-[length:var(--preview-small-size)] whitespace-normal"
                   >
                     {row.status}
                   </Badge>

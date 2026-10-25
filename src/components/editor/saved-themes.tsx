@@ -1,4 +1,8 @@
 import { useId, useState, type Dispatch, type SetStateAction } from "react";
+import { Check, Copy, Pencil, Save, Trash2 } from "lucide-react";
+import { controlClasses as controls } from "@/components/editor/control-classes";
+import { SelectionFeedback } from "@/components/editor/selection-feedback";
+import { fontFamilies } from "@/lib/site-theme";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -38,6 +42,7 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
   );
   const [name, setName] = useState(selected?.name ?? "");
   const [message, setMessage] = useState("");
+  const [feedbackRevision, setFeedbackRevision] = useState(0);
   const [error, setError] = useState("");
   const dirty =
     selected &&
@@ -49,8 +54,7 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
       label: item.name,
     })),
   ];
-  const buttonClass =
-    "h-auto min-h-11 border-white/20 bg-transparent px-3 py-2 text-sm whitespace-normal";
+  const buttonClass = controls.action;
   function validName(excludeId?: string) {
     const result = name.trim();
     if (!result || result.length > 60) {
@@ -117,21 +121,18 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
             onSelect();
           }}
         >
-          <SelectTrigger
-            id={`${id}-select`}
-            className="h-auto min-h-11 w-full border-white/20 bg-[#22291e] px-3 text-base text-[#edf1e7] dark:bg-[#22291e] *:data-[slot=select-value]:line-clamp-none *:data-[slot=select-value]:whitespace-normal"
-          >
+          <SelectTrigger id={`${id}-select`} className={controls.trigger}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent
             alignItemWithTrigger={false}
-            className="dark rounded-lg border border-white/15 bg-[#22291e] p-1 font-sans text-[#edf1e7] shadow-xl ring-0 motion-reduce:animate-none [&_[data-slot=select-scroll-up-button]]:bg-[#22291e] [&_[data-slot=select-scroll-down-button]]:bg-[#22291e]"
+            className={controls.popup}
           >
             {options.map((option) => (
               <SelectItem
                 key={option.value}
                 value={option.value}
-                className="min-h-11 rounded-md pl-3 text-base text-[#edf1e7] data-highlighted:bg-[#343e2a] data-highlighted:text-[#edf1e7] data-selected:text-[#d3ed9a] *:min-w-0 *:shrink *:whitespace-normal *:break-words"
+                className={controls.option}
               >
                 {option.label}
               </SelectItem>
@@ -139,14 +140,81 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
           </SelectContent>
         </Select>
       </div>
+      <div className="rounded-xl border border-white/15 bg-[#10160f] p-4">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-sm leading-6 text-[#b1bda7]">
+              {selected ? "Выбранная копия" : "Рабочий вариант"}
+            </p>
+            <p className="mt-1 text-base leading-7 font-medium wrap-anywhere">
+              {selected?.name ?? "Без названия"}
+            </p>
+          </div>
+          {selected && (
+            <SelectionFeedback className="mt-1 inline-flex shrink-0 rounded-full bg-[#d3ed9a]/10 p-1.5 text-[#d3ed9a]">
+              <Check size={16} aria-hidden="true" />
+            </SelectionFeedback>
+          )}
+        </div>
+        {selected && (
+          <div
+            className="mt-3 grid grid-cols-2 gap-2"
+            aria-label="Палитры сохранённой копии"
+          >
+            {(["light", "dark"] as const).map((mode) => (
+              <div
+                key={mode}
+                className="min-w-0 rounded-lg border border-white/10 p-2"
+              >
+                <p className="text-sm leading-6 text-[#b1bda7]">
+                  {mode === "light" ? "Светлая" : "Тёмная"}
+                </p>
+                <div
+                  className="mt-1 flex overflow-hidden rounded-md border border-white/15"
+                  aria-hidden="true"
+                >
+                  {(["background", "card", "primary"] as const).map((token) => (
+                    <span
+                      key={token}
+                      className="h-6 flex-1"
+                      style={{
+                        backgroundColor: selected.theme.palettes[mode][token],
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        {selected && (
+          <p
+            className="mt-2 text-base leading-7 wrap-anywhere"
+            style={{ fontFamily: fontFamilies[selected.theme.typography.font] }}
+          >
+            {selected.theme.typography.font} · Аа / Aa
+          </p>
+        )}
+        <p
+          className={
+            "mt-3 min-h-24 rounded-lg border px-3 py-2 text-sm leading-6 " +
+            (dirty
+              ? "border-[#ffd29c]/25 bg-[#ffd29c]/5 text-[#ffd29c]"
+              : "border-[#d3ed9a]/20 bg-[#d3ed9a]/5 text-[#d3ed9a]")
+          }
+        >
+          {selected
+            ? dirty
+              ? "Есть изменения. Копия ещё не обновлена."
+              : "Рабочая тема совпадает с копией."
+            : "Черновик сохраняется автоматически в этом браузере."}
+        </p>
+      </div>
       <p className="text-sm leading-6 text-[#b1bda7]">
-        {selected
-          ? dirty
-            ? "Есть изменения относительно копии. Рабочий вариант сохраняется автоматически; обновите копию отдельной кнопкой."
-            : "Рабочий вариант совпадает с выбранной копией."
-          : "Рабочий черновик сохраняется автоматически."}{" "}
-        Выбор другой темы заменяет рабочий вариант. Для сохранения нескольких
-        вариантов создавайте именованные копии.
+        {selected &&
+          "Изменения автоматически сохраняются в рабочем варианте. Нажмите «Обновить копию», чтобы записать их в выбранную тему. "}
+        Выбор другой копии заменяет рабочий вариант. Чтобы сохранить несколько
+        вариантов, создайте именованные копии.
       </p>
       <div>
         <Label htmlFor={`${id}-name`} className="mb-2 text-sm">
@@ -164,26 +232,21 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
             setName(event.target.value);
             setError("");
           }}
-          className="h-11 w-full text-base"
+          className={controls.input + " w-full"}
         />
-        {error && (
-          <p
-            id={`${id}-error`}
-            role="alert"
-            className="mt-2 text-sm leading-6 text-[#ffb4b0]"
-          >
-            {error}
-          </p>
-        )}
       </div>
-      <div className="flex flex-wrap gap-2">
+      <div className="grid grid-cols-1 gap-2 min-[380px]:grid-cols-2">
         <Button
           type="button"
           variant="outline"
-          className={buttonClass}
+          className={
+            buttonClass +
+            " border-[#d3ed9a]/40 bg-[#d3ed9a] text-[#182112] hover:bg-[#e0f4b5] hover:text-[#182112] dark:border-[#d3ed9a]/40 dark:bg-[#d3ed9a] dark:hover:bg-[#e0f4b5]"
+          }
           disabled={workspace.savedThemes.length >= MAX_SAVED_THEMES}
           onClick={createCopy}
         >
+          <Copy size={16} aria-hidden="true" className="shrink-0" />
           Создать копию
         </Button>
         <Button
@@ -201,8 +264,10 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
               ),
             }));
             setMessage("Выбранная копия обновлена.");
+            setFeedbackRevision((revision) => revision + 1);
           }}
         >
+          <Save size={16} aria-hidden="true" className="shrink-0" />
           Обновить копию
         </Button>
         <Button
@@ -223,12 +288,16 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
             }));
           }}
         >
+          <Pencil size={16} aria-hidden="true" className="shrink-0" />
           Переименовать
         </Button>
         <Button
           type="button"
           variant="outline"
-          className={`${buttonClass} text-[#ffb4b0]`}
+          className={
+            buttonClass +
+            " border-[#ffb4b0]/25 text-[#ffb4b0] hover:border-[#ffb4b0]/50 hover:bg-[#ffb4b0]/10 hover:text-[#ffb4b0] dark:border-[#ffb4b0]/25 dark:hover:bg-[#ffb4b0]/10"
+          }
           disabled={!selected}
           onClick={() => {
             onChange((current) => ({
@@ -241,6 +310,7 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
             onSelect();
           }}
         >
+          <Trash2 size={16} aria-hidden="true" className="shrink-0" />
           Удалить копию
         </Button>
       </div>
@@ -250,11 +320,22 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
         также не удаляет копии. Данные доступны в этом браузере по текущему
         адресу сайта.
       </p>
-      {message && (
-        <p role="status" className="text-sm leading-6 text-[#c4dab0]">
-          {message}
+      <div className="min-h-18 text-sm leading-6">
+        <p id={id + "-error"} role="alert" className="text-[#ffb4b0]">
+          {error}
         </p>
-      )}
+        <p role="status" className="text-[#c4dab0]">
+          {message && !dirty && (
+            <SelectionFeedback
+              key={feedbackRevision}
+              className="inline-flex items-start gap-2"
+            >
+              <Check size={16} aria-hidden="true" className="mt-1 shrink-0" />
+              {message}
+            </SelectionFeedback>
+          )}
+        </p>
+      </div>
     </div>
   );
 }

@@ -2,7 +2,8 @@ import { useId } from "react";
 import { RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
+import { SettingsRange } from "@/components/editor/settings-range";
+import { controlClasses as controls } from "@/components/editor/control-classes";
 import {
   Select,
   SelectContent,
@@ -127,19 +128,19 @@ export function TypographyEditor({
           <SelectTrigger
             id={`${id}-font`}
             aria-describedby={`${id}-font-hint`}
-            className="min-h-11 w-full border-white/20 bg-[#22291e] px-3 text-base text-[#edf1e7] hover:bg-[#2b3426] focus-visible:border-[#d3ed9a] focus-visible:ring-[#d3ed9a]/30 dark:bg-[#22291e] dark:hover:bg-[#2b3426]"
+            className={controls.trigger}
           >
             <SelectValue />
           </SelectTrigger>
           <SelectContent
             alignItemWithTrigger={false}
-            className="dark rounded-lg border border-white/15 bg-[#22291e] p-1 font-sans text-[#edf1e7] shadow-xl ring-0 motion-reduce:animate-none [&_[data-slot=select-scroll-up-button]]:bg-[#22291e] [&_[data-slot=select-scroll-down-button]]:bg-[#22291e]"
+            className={controls.popup}
           >
             {fonts.map((font) => (
               <SelectItem
                 key={font.value}
                 value={font.value}
-                className="min-h-11 rounded-md pl-3 text-base text-[#edf1e7] hover:bg-[#343e2a] focus:bg-[#343e2a] focus:text-[#edf1e7] data-highlighted:bg-[#343e2a] data-highlighted:text-[#edf1e7] data-selected:bg-[#343e2a] data-selected:text-[#d3ed9a] not-data-[variant=destructive]:focus:**:text-[#edf1e7]"
+                className={controls.option}
               >
                 <span style={{ fontFamily: fontFamilies[font.value] }}>
                   {font.label}
@@ -148,6 +149,15 @@ export function TypographyEditor({
             ))}
           </SelectContent>
         </Select>
+        <div className="mt-3 rounded-xl border border-white/10 bg-[#10160f] p-4">
+          <p className="text-sm leading-6 text-[#b1bda7]">Образец шрифта</p>
+          <p
+            className="mt-2 text-2xl leading-9 text-[#edf1e7] wrap-anywhere"
+            style={{ fontFamily: fontFamilies[value.font] }}
+          >
+            Своя тема. Your style. 0123
+          </p>
+        </div>
         <p
           id={`${id}-font-hint`}
           className="mt-3 text-sm leading-6 text-[#b1bda7]"
@@ -155,53 +165,21 @@ export function TypographyEditor({
           {fonts.find((font) => font.value === value.font)?.description}
         </p>
       </div>
-      {ranges.map((range) => {
-        const limits = themeLimits[range.key];
-        const controlId = `${id}-${range.key}`;
-        return (
-          <div key={range.key}>
-            <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-sm">
-              <span id={`${controlId}-label`}>{range.label}</span>
-              <output htmlFor={controlId} className="font-mono">
-                {Number(value[range.key].toFixed(3))} {range.unit}
-              </output>
-            </div>
-            <Slider
-              id={controlId}
-              aria-labelledby={`${controlId}-label`}
-              aria-describedby={`${controlId}-hint`}
-              min={limits.min}
-              max={limits.max}
-              step={limits.step}
-              value={[value[range.key]]}
-              onValueChange={(next) => {
-                const number = typeof next === "number" ? next : next[0];
-                if (number !== undefined)
-                  onChange({ [range.key]: Number(number.toFixed(3)) });
-              }}
-              className="py-3 **:data-[slot=slider-range]:bg-[#d3ed9a]"
-            />
-            <div className="mt-1 flex justify-between gap-2 text-sm text-[#b1bda7]">
-              <span>
-                {limits.min} {range.unit}
-              </span>
-              <span>
-                {limits.max} {range.unit}
-              </span>
-            </div>
-            <p
-              id={`${controlId}-hint`}
-              className="mt-2 text-sm leading-6 text-[#b1bda7]"
-            >
-              {range.hint}
-            </p>
-          </div>
-        );
-      })}
+      {ranges.map((range) => (
+        <SettingsRange
+          key={range.key}
+          label={range.label}
+          hint={range.hint}
+          value={value[range.key]}
+          {...themeLimits[range.key]}
+          unit={range.unit}
+          onChange={(number) => onChange({ [range.key]: number })}
+        />
+      ))}
       <Button
         type="button"
         variant="outline"
-        className="h-auto min-h-11 w-full gap-2 border-white/20 bg-transparent px-3 py-2 text-sm whitespace-normal"
+        className={controls.action + " w-full"}
         onClick={() => onChange(createInitialTheme().typography)}
       >
         <RotateCcw size={16} className="shrink-0" />

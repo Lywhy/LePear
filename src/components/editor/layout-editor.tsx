@@ -1,7 +1,8 @@
-import { useId } from "react";
-import { RotateCcw } from "lucide-react";
+import { Check, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
+import { SettingsRange } from "@/components/editor/settings-range";
+import { SelectionFeedback } from "@/components/editor/selection-feedback";
+import { controlClasses as controls } from "@/components/editor/control-classes";
 import {
   createInitialTheme,
   themeLimits,
@@ -67,7 +68,6 @@ export function LayoutEditor({
   theme: SiteTheme;
   onChange: (update: ThemeUpdate) => void;
 }) {
-  const id = useId();
   const activeDensity = densities.find((density) =>
     (Object.keys(density.layout) as (keyof ThemeLayout)[]).every(
       (key) => density.layout[key] === theme.layout[key],
@@ -89,8 +89,20 @@ export function LayoutEditor({
             variant="outline"
             aria-pressed={activeDensity?.label === density.label}
             onClick={() => onChange({ layout: { ...density.layout } })}
-            className={`h-auto min-h-11 px-3 py-2 text-sm ${activeDensity?.label === density.label ? "border-[#d3ed9a]/50 bg-[#343e2a] text-[#edf1e7]" : "border-white/20 bg-transparent text-[#c5d1b9]"}`}
+            className={
+              controls.action +
+              (activeDensity?.label === density.label
+                ? " border-[#d3ed9a]/50 bg-[#343e2a]"
+                : "")
+            }
           >
+            {activeDensity?.label === density.label && (
+              <span className="grid size-4 shrink-0 place-items-center">
+                <SelectionFeedback className="inline-flex">
+                  <Check size={16} aria-hidden="true" />
+                </SelectionFeedback>
+              </span>
+            )}
             {density.label}
           </Button>
         ))}
@@ -102,53 +114,27 @@ export function LayoutEditor({
         Вариант плотности меняет только четыре параметра отступов и высоты.
         Закругление и типографика сохраняются.
       </p>
-      {settings.map((setting) => {
-        const current =
-          setting.key === "radius"
-            ? theme.shape.radius
-            : theme.layout[setting.key];
-        const limits = themeLimits[setting.key];
-        const controlId = `${id}-${setting.key}`;
-        return (
-          <div key={setting.key}>
-            <div className="mb-2 flex flex-wrap justify-between gap-2 text-sm">
-              <span id={`${controlId}-label`}>{setting.label}</span>
-              <output htmlFor={controlId} className="font-mono">
-                {current} px
-              </output>
-            </div>
-            <Slider
-              id={controlId}
-              aria-labelledby={`${controlId}-label`}
-              aria-describedby={`${controlId}-hint`}
-              min={limits.min}
-              max={limits.max}
-              step={limits.step}
-              value={[current]}
-              onValueChange={(next) => {
-                const value = typeof next === "number" ? next : next[0];
-                if (value === undefined) return;
-                onChange(
-                  setting.key === "radius"
-                    ? { shape: { radius: value } }
-                    : { layout: { [setting.key]: value } },
-                );
-              }}
-              className="py-3 **:data-[slot=slider-range]:bg-[#d3ed9a]"
-            />
-            <div className="mt-1 flex justify-between text-sm text-[#b1bda7]">
-              <span>{limits.min} px</span>
-              <span>{limits.max} px</span>
-            </div>
-            <p
-              id={`${controlId}-hint`}
-              className="mt-2 text-sm leading-6 text-[#b1bda7]"
-            >
-              {setting.hint}
-            </p>
-          </div>
-        );
-      })}
+      {settings.map((setting) => (
+        <SettingsRange
+          key={setting.key}
+          label={setting.label}
+          hint={setting.hint}
+          value={
+            setting.key === "radius"
+              ? theme.shape.radius
+              : theme.layout[setting.key]
+          }
+          {...themeLimits[setting.key]}
+          unit="px"
+          onChange={(number) =>
+            onChange(
+              setting.key === "radius"
+                ? { shape: { radius: number } }
+                : { layout: { [setting.key]: number } },
+            )
+          }
+        />
+      ))}
       <p className="rounded-lg border border-white/15 p-3 text-sm leading-6 text-[#c4dab0]">
         Расчётный минимум высоты: {safeHeight} px
         {safeHeight > theme.layout.controlHeight
@@ -159,7 +145,7 @@ export function LayoutEditor({
       <Button
         type="button"
         variant="outline"
-        className="h-auto min-h-11 w-full gap-2 border-white/20 bg-transparent px-3 py-2 text-sm whitespace-normal"
+        className={controls.action + " w-full"}
         onClick={() => {
           const initial = createInitialTheme();
           onChange({ shape: initial.shape, layout: initial.layout });
