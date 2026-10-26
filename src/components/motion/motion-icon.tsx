@@ -1,4 +1,5 @@
-import { useRef, useSyncExternalStore } from "react";
+import { useDocumentVisible } from "@/hooks/use-document-visible";
+import { useRef } from "react";
 import { motion, useInView, useReducedMotion } from "motion/react";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "cn";
@@ -17,17 +18,10 @@ const interactions: Record<IconEffect, string> = {
   close:
     "group-hover/icon-action:rotate-90 group-focus-visible/icon-action:rotate-90",
 };
-function subscribeVisibility(notify: () => void) {
-  document.addEventListener("visibilitychange", notify);
-  return () => document.removeEventListener("visibilitychange", notify);
-}
-const visible = () => document.visibilityState === "visible";
-const hidden = () => false;
-
 function LoadingGlyph({ icon: Icon }: { icon: LucideIcon }) {
   const scope = useRef<HTMLSpanElement>(null);
   const inView = useInView(scope, { amount: 0.1 });
-  const tabVisible = useSyncExternalStore(subscribeVisibility, visible, hidden);
+  const tabVisible = useDocumentVisible();
   const reduced = useReducedMotion();
   const running = reduced === false && inView && tabVisible;
   return (

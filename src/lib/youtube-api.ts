@@ -1,3 +1,4 @@
+import { apiErrorMessage } from "@/lib/api-error-message";
 export type MediaSize = { bytes: number; approximate: boolean } | null;
 export type VideoFormat = {
   id: string;
@@ -67,9 +68,10 @@ export async function fetchYouTubeMetadata(
   }
   if (!response.ok)
     throw new Error(
-      typeof data?.error?.message === "string"
-        ? data.error.message.slice(0, 600)
-        : "Не удалось получить данные ролика. Повторите запрос позже.",
+      apiErrorMessage(
+        data,
+        "Не удалось получить данные ролика. Повторите запрос позже.",
+      ),
     );
   if (
     data?.apiVersion !== 1 ||

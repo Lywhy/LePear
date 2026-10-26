@@ -1,3 +1,4 @@
+import { apiErrorMessage } from "@/lib/api-error-message";
 export class YouTubeJobError extends Error {
   readonly retryAt: number | null;
   readonly status: number;
@@ -73,9 +74,7 @@ export async function jobRequest<T>(
   }
   if (!response.ok)
     throw new YouTubeJobError(
-      typeof data?.error?.message === "string"
-        ? data.error.message.slice(0, 600)
-        : "Не удалось выполнить запрос.",
+      apiErrorMessage(data, "Не удалось выполнить запрос."),
       Number.isFinite(data?.error?.retryAt) ? data.error.retryAt : null,
       response.status,
       typeof data?.error?.code === "string" ? data.error.code : "",

@@ -1,3 +1,4 @@
+import { youtubeDownloadFilename } from "./download-filename.mjs";
 import { stat, readdir, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { config, ApiError } from "./config.mjs";
@@ -276,26 +277,11 @@ export async function runVideoJob(job) {
         await rm(join(job.directory, entry), { force: true });
     job.file = output;
     job.bytes = file.size;
-    job.filename =
-      (
-        "LePear-" +
-        job.videoId +
-        "-" +
-        data.video.title
-          .normalize("NFC")
-          .split("")
-          .filter((character) => {
-            const code = character.charCodeAt(0);
-            return code >= 32 && code !== 127;
-          })
-          .join("")
-          .replace(/[<>:"/\\|?*]/g, "")
-          .replace(/^\.+|[.\s]+$/g, "")
-          .slice(0, 90)
-          .toWellFormed()
-      ).trim() +
-      "." +
-      selected.ext;
+    job.filename = youtubeDownloadFilename(
+      job.videoId,
+      data.video.title,
+      selected.ext,
+    );
   } finally {
     monitoring = false;
     clearInterval(watcher);

@@ -1,3 +1,4 @@
+import { abortableDelay } from "@/lib/abortable-delay";
 import { useEffect, useRef, useState } from "react";
 import {
   fileUrl,
@@ -32,20 +33,6 @@ function requestId() {
   return Array.from(crypto.getRandomValues(new Uint8Array(16)), (byte) =>
     byte.toString(16).padStart(2, "0"),
   ).join("");
-}
-function delay(signal: AbortSignal) {
-  return new Promise<void>((resolve, reject) => {
-    const abort = () => {
-      clearTimeout(timer);
-      reject(signal.reason);
-    };
-    const timer = setTimeout(() => {
-      signal.removeEventListener("abort", abort);
-      resolve();
-    }, 1000);
-    signal.addEventListener("abort", abort, { once: true });
-    if (signal.aborted) abort();
-  });
 }
 export function useVideoDownload(
   videoId: string,
@@ -204,7 +191,7 @@ export function useVideoDownload(
           rememberRetry(job.error?.retryAt ?? null);
           return;
         }
-        await delay(signal);
+        await abortableDelay(1000, signal);
         job = await jobRequest<VideoJob>("jobs/" + job.id, { signal });
       }
     } catch (error) {

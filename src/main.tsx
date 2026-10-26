@@ -1,3 +1,4 @@
+import { toolPaths } from "@/lib/tool-catalog";
 import { initializeShellSettings } from "@/lib/shell-settings";
 import App from "@/App.tsx";
 import { SiteLayout } from "@/components/layout/site-layout";
@@ -33,9 +34,9 @@ createRoot(document.getElementById("root")!).render(
           />
         )}
         <Route element={<SiteLayout />}>
-          <Route path="/editor" element={<EditorPage />} />
-          <Route path="/youtube" element={<YouTubePage />} />
-          <Route path="/converter" element={<ConverterPage />} />
+          <Route path={toolPaths.theme} element={<EditorPage />} />
+          <Route path={toolPaths.youtube} element={<YouTubePage />} />
+          <Route path={toolPaths.converter} element={<ConverterPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/*" element={<App />} />

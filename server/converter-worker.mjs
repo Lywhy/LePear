@@ -1,3 +1,4 @@
+import { sanitizeFilenamePart } from "./download-filename.mjs";
 import { open, stat, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { ApiError } from "./config.mjs";
@@ -533,20 +534,10 @@ export async function convertFile(job) {
     monitoring = false;
     clearInterval(watcher);
     await rm(input, { force: true });
-    const name = job.inputName
-      .replace(/\.[^.]*$/, "")
-      .normalize("NFC")
-      .split("")
-      .filter((character) => {
-        const code = character.charCodeAt(0);
-        return code >= 32 && code !== 127;
-      })
-      .join("")
-      .replace(/[<>:"/\\|?*]/g, "")
-      .replace(/^\.+|[.\s]+$/g, "")
-      .slice(0, 90)
-      .toWellFormed()
-      .trim();
+    const name = sanitizeFilenamePart(
+      job.inputName.replace(/\.[^.]*$/, ""),
+      90,
+    ).trim();
     job.result = {
       filename: "LePear-" + (name || "file") + "." + job.target.id,
       bytes,

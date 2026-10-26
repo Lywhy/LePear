@@ -56,12 +56,14 @@ export function initializeShellSettings() {
 }
 export function selectShellSeason(value: string) {
   const season = findShellSeason(value);
-  if (!season?.palette) return;
+  if (!season?.palette || (season.id === snapshot.season && snapshot.saved))
+    return;
   apply(season.id, snapshot.mode);
   for (const listener of listeners) listener();
 }
 export function selectShellMode(value: string) {
   if (value !== "light" && value !== "dark") return;
+  if (value === snapshot.mode && snapshot.saved) return;
   apply(snapshot.season, value);
   for (const listener of listeners) listener();
 }

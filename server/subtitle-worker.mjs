@@ -1,3 +1,4 @@
+import { youtubeDownloadFilename } from "./download-filename.mjs";
 import {
   assertSubtitleCooldown,
   noteSubtitleRateLimit,
@@ -233,30 +234,19 @@ export async function runSubtitleJob(job) {
       if (entry !== "result." + job.ext)
         await rm(join(job.directory, entry), { force: true });
     job.file = output;
-    job.filename =
-      (
-        "LePear-" +
-        job.videoId +
-        "-" +
-        data.video.title
-          .normalize("NFC")
-          .split("")
-          .filter((character) => {
-            const code = character.charCodeAt(0);
-            return code >= 32 && code !== 127;
-          })
-          .join("")
-          .replace(/[<>:"/\\|?*]/g, "")
-          .replace(/^\.+|[.\s]+$/g, "")
-          .slice(0, 65)
-          .toWellFormed()
-      ).trim() +
-      "-" +
-      track.language +
-      "-" +
-      (track.source === "manual" ? "author" : "auto") +
-      "." +
-      job.ext;
+    job.filename = youtubeDownloadFilename(
+      job.videoId,
+      data.video.title,
+      job.ext,
+      {
+        titleLimit: 65,
+        suffix:
+          "-" +
+          track.language +
+          "-" +
+          (track.source === "manual" ? "author" : "auto"),
+      },
+    );
   } finally {
     monitoring = false;
     clearInterval(watcher);

@@ -1,0 +1,51 @@
+/** Tool routes and public descriptions shared by navigation and landing cards. */
+export const toolPaths = {
+  theme: "/editor",
+  youtube: "/youtube",
+  converter: "/converter",
+} as const;
+
+export const tools = [
+  {
+    id: "theme",
+    navigationLabel: "Редактор",
+    pageTitle: "Редактор темы — LePear",
+    shortLabel: "Редактор тем",
+    image: "theme",
+    number: "01",
+    label: "СТИЛЬ",
+    title: "Сайт с вашим характером",
+    text: "Соберите палитру, подберите шрифт и настройте форму компонентов. Примерьте тему в редакторе, сохраните её и заберите CSS или JSON.",
+    action: "Открыть редактор",
+    to: toolPaths.theme,
+    detail: "Цвета · Типографика · Размеры",
+  },
+  {
+    id: "youtube",
+    navigationLabel: "YouTube",
+    pageTitle: "YouTube — LePear",
+    shortLabel: "YouTube",
+    image: "media",
+    number: "02",
+    label: "МЕДИА",
+    title: "Из ссылки — в ваш файл",
+    text: "Вставьте ссылку на YouTube. Выберите видео со звуком, только аудио или доступные субтитры — и скачайте то, что нужно.",
+    action: "Перейти к YouTube",
+    to: toolPaths.youtube,
+    detail: "Видео · Аудио · Субтитры",
+  },
+  {
+    id: "converter",
+    navigationLabel: "Конвертер",
+    pageTitle: "Конвертер файлов — LePear",
+    shortLabel: "Конвертер",
+    image: "converter",
+    number: "03",
+    label: "ФОРМАТЫ",
+    title: "Тот же файл. Новые возможности",
+    text: "Преобразуйте музыку или изображение. Список форматов подстроится под исходник: от MP3 и FLAC до PNG, JPEG и WebP.",
+    action: "Открыть конвертер",
+    to: toolPaths.converter,
+    detail: "Музыка · Изображения",
+  },
+] as const;

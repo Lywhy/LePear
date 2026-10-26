@@ -1,3 +1,4 @@
+import { tools } from "@/lib/tool-catalog";
 import { MotionIcon } from "@/components/motion/motion-icon";
 import GlareHover from "@/components/react-bits/glare-hover";
 import { useRef } from "react";
@@ -25,38 +26,6 @@ import type { CSSProperties } from "react";
 import { Link } from "react-router-dom";
 
 const section = ui.container + " scroll-mt-8 py-16 sm:py-20 lg:py-24";
-const tools = [
-  {
-    id: "theme",
-    number: "01",
-    label: "СТИЛЬ",
-    title: "Сайт с вашим характером",
-    text: "Соберите палитру, подберите шрифт и настройте форму компонентов. Примерьте тему в редакторе, сохраните её и заберите CSS или JSON.",
-    action: "Открыть редактор",
-    to: "/editor",
-    detail: "Цвета · Типографика · Размеры",
-  },
-  {
-    id: "youtube",
-    number: "02",
-    label: "МЕДИА",
-    title: "Из ссылки — в ваш файл",
-    text: "Вставьте ссылку на YouTube. Выберите видео со звуком, только аудио или доступные субтитры — и скачайте то, что нужно.",
-    action: "Перейти к YouTube",
-    to: "/youtube",
-    detail: "Видео · Аудио · Субтитры",
-  },
-  {
-    id: "converter",
-    number: "03",
-    label: "ФОРМАТЫ",
-    title: "Тот же файл. Новые возможности",
-    text: "Преобразуйте музыку или изображение. Список форматов подстроится под исходник: от MP3 и FLAC до PNG, JPEG и WebP.",
-    action: "Открыть конвертер",
-    to: "/converter",
-    detail: "Музыка · Изображения",
-  },
-];
 const steps = [
   {
     number: "01",
@@ -118,9 +87,7 @@ const faqs = [
       "В редакторе скачайте CSS для shadcn/ui и Tailwind CSS v4 и подключите его по инструкции экспорта. Для продолжения работы в LePear используйте JSON. Светлая и тёмная палитры независимы; шрифты и размещение порталов меню/диалогов подключаются в вашем проекте отдельно.",
   },
 ];
-function FeatureVisual({ kind }: { kind: string }) {
-  const asset: LandingImageId =
-    kind === "theme" ? "theme" : kind === "youtube" ? "media" : "converter";
+function FeatureVisual({ asset }: { asset: LandingImageId }) {
   return (
     <figure className="m-0 grid h-64 min-w-0 grid-rows-[12rem_4rem] overflow-hidden bg-shell-deep/60">
       <div className="min-h-0 overflow-hidden">
@@ -197,7 +164,7 @@ export function LandingFeatures() {
                   } as CSSProperties
                 }
               >
-                <FeatureVisual kind={tool.id} />
+                <FeatureVisual asset={tool.image} />
                 <div className="flex flex-col p-6 sm:p-7">
                   <p className="flex items-center justify-between gap-3 text-sm leading-6 text-shell-muted">
                     <span>
@@ -404,11 +371,7 @@ export function LandingCta() {
                   : " border-shell-divider/20 bg-shell-deep text-shell-soft hover:bg-shell-raised")
               }
             >
-              {tool.id === "theme"
-                ? "Редактор тем"
-                : tool.id === "youtube"
-                  ? "YouTube"
-                  : "Конвертер"}
+              {tool.shortLabel}
             </Link>
           ))}
         </div>

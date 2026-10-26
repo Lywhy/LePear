@@ -1,3 +1,4 @@
+import { tools } from "@/lib/tool-catalog";
 export const settingsLink = {
   to: "/settings",
   label: "Настройки",
@@ -5,9 +6,11 @@ export const settingsLink = {
 } as const;
 export const pageLinks = [
   { to: "/", label: "Главная", title: "LePear — темы, YouTube и конвертер" },
-  { to: "/editor", label: "Редактор", title: "Редактор темы — LePear" },
-  { to: "/youtube", label: "YouTube", title: "YouTube — LePear" },
-  { to: "/converter", label: "Конвертер", title: "Конвертер файлов — LePear" },
+  ...tools.map((tool) => ({
+    to: tool.to,
+    label: tool.navigationLabel,
+    title: tool.pageTitle,
+  })),
   { to: "/contact", label: "Обратная связь", title: "Обратная связь — LePear" },
 ] as const;
 export const allPageLinks = [...pageLinks, settingsLink] as const;

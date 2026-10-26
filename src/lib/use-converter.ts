@@ -1,3 +1,4 @@
+import { abortableDelay } from "@/lib/abortable-delay";
 import { formatForName, targetsForName } from "@/lib/converter-formats";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
@@ -22,19 +23,6 @@ type View = {
   message: string;
 };
 const idle: View = { phase: "idle", job: null, upload: null, message: "" };
-const wait = (ms: number, signal: AbortSignal) =>
-  new Promise<void>((resolve, reject) => {
-    const abort = () => {
-      clearTimeout(timer);
-      reject(signal.reason);
-    };
-    const timer = setTimeout(() => {
-      signal.removeEventListener("abort", abort);
-      resolve();
-    }, ms);
-    signal.addEventListener("abort", abort, { once: true });
-    if (signal.aborted) abort();
-  });
 async function cancelRequest(run: Run) {
   if (!run.posted) return;
   try {
@@ -44,7 +32,7 @@ async function cancelRequest(run: Run) {
     );
     const signal = AbortSignal.timeout(10000);
     while (job.id && job.status === "cancelling") {
-      await wait(250, signal);
+      await abortableDelay(250, signal);
       job = await converterRequest<ConverterJob>("jobs/" + job.id, { signal });
     }
   } catch (error) {
@@ -216,7 +204,7 @@ export function useConverter() {
             job.error?.message ||
               "Задание завершено. Запустите конвертацию заново.",
           );
-        await wait(1000, signal);
+        await abortableDelay(1000, signal);
       }
     } catch (error) {
       if (!current()) return;
