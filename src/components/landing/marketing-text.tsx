@@ -1,4 +1,4 @@
-import { shellColors } from "@/lib/shell-palette";
+import { useShellPalette } from "@/lib/shell-settings";
 import { useRef } from "react";
 import { useReducedMotion } from "motion/react";
 import ShinyText from "@/components/react-bits/shiny-text";
@@ -12,6 +12,7 @@ export function AccentText({
   text: string;
   className?: string;
 }) {
+  const shellColors = useShellPalette();
   const scope = useRef<HTMLSpanElement>(null);
   const enabled = useDecorativeMotion(scope);
   return (

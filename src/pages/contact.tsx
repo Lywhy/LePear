@@ -1,5 +1,5 @@
 import { TextReveal } from "@/components/motion/text-reveal";
-import { shellColors } from "@/lib/shell-palette";
+import { useShellPalette } from "@/lib/shell-settings";
 import { useRef, type CSSProperties } from "react";
 import {
   ArrowUpRight,
@@ -34,6 +34,7 @@ const topics = [
 ];
 
 export default function ContactPage() {
+  const shellColors = useShellPalette();
   const scope = useRef<HTMLDivElement>(null);
   const effectsEnabled = useDecorativeMotion(scope);
   return (

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { DecorativeBoundary } from "@/components/motion/decorative-boundary";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { TextReveal } from "@/components/motion/text-reveal";
-import { shellColors } from "@/lib/shell-palette";
+import { useShellPalette } from "@/lib/shell-settings";
 import { AccentText } from "@/components/landing/marketing-text";
 import { Reveal } from "@/components/motion/reveal";
 import { useDecorativeMotionState } from "@/hooks/use-decorative-motion";
@@ -14,6 +14,7 @@ import { lazy, Suspense, useRef } from "react";
 const Aurora = lazy(() => import("@/components/react-bits/aurora"));
 
 export function LandingHero() {
+  const shellColors = useShellPalette();
   const scope = useRef<HTMLElement>(null);
   const { supported: canShowAurora, active: animateBackground } =
     useDecorativeMotionState(scope);

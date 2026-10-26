@@ -1,5 +1,6 @@
 import { TextReveal } from "@/components/motion/text-reveal";
-import { shellColors, shellSwatches } from "@/lib/shell-palette";
+import { shellSwatches } from "@/lib/shell-palette";
+import { useShellPalette } from "@/lib/shell-settings";
 import { AccentText, RevealText } from "@/components/landing/marketing-text";
 import { Kicker } from "@/components/landing/shared";
 import CountUp from "@/components/react-bits/count-up";
@@ -197,6 +198,7 @@ function FeatureVisual({ kind }: { kind: string }) {
   );
 }
 export function LandingFeatures() {
+  const shellColors = useShellPalette();
   const reduced = useReducedMotion();
   return (
     <section

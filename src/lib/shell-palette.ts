@@ -1,74 +1,49 @@
 import type { CSSProperties } from "react";
-/** App chrome only. User themes and exported tokens remain independent. */
-export const shellColors = {
-  background: "#0d0906",
-  deep: "#070503",
-  surface: "#171009",
-  raised: "#24190f",
-  hover: "#382719",
-  accent: "#ff9b45",
-  "accent-hover": "#ffb567",
-  "accent-ink": "#23180d",
-  text: "#fff1dd",
-  soft: "#e5d6c1",
-  muted: "#c4b39f",
-  dim: "#a28b74",
-  teal: "#dc8846",
-  sand: "#e8b789",
-  success: "#efbd77",
-  warning: "#f6d58f",
-  danger: "#ffb6aa",
-  "light-surface": "#fff0da",
-  "light-ink": "#382315",
-  line: "#59412b",
-  "glow-amber": "#ff9b450f",
-  "glow-teal": "#dc88460d",
-  grid: "#dc884608",
-  "glow-soft": "#ff9b450a",
-  "spotlight-border": "#ff9b4529",
-  "hero-shade": "#070503e6",
-  "hero-shade-soft": "#07050399",
-} as const;
+import { autumnPalette, type ShellPalette } from "@/lib/shell-seasons";
 
+/** Fixed illustration palette. Live app components use useShellPalette instead. */
+export const shellColors = autumnPalette;
 export const shellSwatches = [
-  { name: "Orange", value: shellColors.accent, className: "bg-shell-accent" },
-  { name: "Copper", value: shellColors.teal, className: "bg-shell-teal" },
-  { name: "Sand", value: shellColors.sand, className: "bg-shell-sand" },
-  { name: "Ember", value: shellColors.hover, className: "bg-shell-hover" },
-  { name: "Cloud", value: shellColors.text, className: "bg-shell-text" },
+  { name: "Accent", className: "bg-shell-accent" },
+  { name: "Secondary accent", className: "bg-shell-teal" },
+  { name: "Soft accent", className: "bg-shell-sand" },
+  { name: "Surface", className: "bg-shell-hover" },
+  { name: "Text", className: "bg-shell-text" },
 ];
 
-/** shadcn chrome defaults; the live preview overrides these with its own palette. */
+/** References remain live in overlays, independent of the editor's local tokens. */
 export const shellThemeStyle = {
-  "--background": shellColors.background,
-  "--foreground": shellColors.text,
-  "--card": shellColors.surface,
-  "--card-foreground": shellColors.text,
-  "--popover": shellColors.raised,
-  "--popover-foreground": shellColors.text,
-  "--primary": shellColors.accent,
-  "--primary-foreground": shellColors["accent-ink"],
-  "--secondary": shellColors.raised,
-  "--secondary-foreground": shellColors.soft,
-  "--muted": shellColors.raised,
-  "--muted-foreground": shellColors.muted,
-  "--accent": shellColors.hover,
-  "--accent-foreground": shellColors.text,
-  "--destructive": shellColors.danger,
-  "--border": shellColors.line + "66",
-  "--input": shellColors.line,
-  "--ring": shellColors.accent,
+  "--background": "var(--shell-background)",
+  "--foreground": "var(--shell-text)",
+  "--card": "var(--shell-surface)",
+  "--card-foreground": "var(--shell-text)",
+  "--popover": "var(--shell-raised)",
+  "--popover-foreground": "var(--shell-text)",
+  "--primary": "var(--shell-accent)",
+  "--primary-foreground": "var(--shell-accent-ink)",
+  "--secondary": "var(--shell-raised)",
+  "--secondary-foreground": "var(--shell-soft)",
+  "--muted": "var(--shell-raised)",
+  "--muted-foreground": "var(--shell-muted)",
+  "--accent": "var(--shell-hover)",
+  "--accent-foreground": "var(--shell-text)",
+  "--destructive": "var(--shell-danger)",
+  "--border": "color-mix(in srgb, var(--shell-line) 40%, transparent)",
+  "--input": "var(--shell-line)",
+  "--ring": "var(--shell-accent)",
 } as CSSProperties;
 
-/** Set inherited palette before mounting React, including body-level portals. */
-export function installShellPalette() {
-  for (const [role, value] of Object.entries(shellColors)) {
-    document.documentElement.style.setProperty("--shell-" + role, value);
-  }
-  for (const [name, value] of Object.entries(shellThemeStyle)) {
-    document.documentElement.style.setProperty(name, String(value));
-  }
+export function installShellPalette(palette: ShellPalette, season: string) {
+  const root = document.documentElement;
+  for (const [role, value] of Object.entries(palette))
+    root.style.setProperty("--shell-" + role, value);
+  for (const [name, value] of Object.entries(shellThemeStyle))
+    root.style.setProperty(name, String(value));
+  root.dataset.shellSeason = season;
   document.body.classList.add("bg-shell-background", "text-shell-text");
-  document.documentElement.style.colorScheme = "dark";
-  document.documentElement.style.backgroundColor = shellColors.background;
+  root.style.colorScheme = "dark";
+  root.style.backgroundColor = palette.background;
+  document
+    .querySelector('meta[name="theme-color"]')
+    ?.setAttribute("content", palette.background);
 }

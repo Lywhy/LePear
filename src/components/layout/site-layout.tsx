@@ -9,7 +9,7 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { designClasses as ui } from "@/lib/design-system";
 import { motionTransitions } from "@/lib/motion-presets";
-import { pageLinks } from "@/lib/navigation";
+import { allPageLinks } from "@/lib/navigation";
 
 export function SiteLayout() {
   const location = useLocation();
@@ -18,8 +18,8 @@ export function SiteLayout() {
   useSiteScroll(content);
   useLayoutEffect(() => {
     document.title =
-      pageLinks.find((link) => link.to === location.pathname)?.title ??
-      pageLinks[0].title;
+      allPageLinks.find((link) => link.to === location.pathname)?.title ??
+      allPageLinks[0].title;
   }, [location.pathname]);
   return (
     <div

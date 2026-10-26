@@ -1,10 +1,11 @@
-import { shellColors } from "@/lib/shell-palette";
+import { useShellPalette } from "@/lib/shell-settings";
 import { lazy, Suspense, useRef } from "react";
 import { useDecorativeMotion } from "@/hooks/use-decorative-motion";
 const ShapeGrid = lazy(() => import("@/components/react-bits/shape-grid"));
 
 /** Shell decoration only. Pointer events and exported theme tokens stay independent. */
 export function SiteBackdrop() {
+  const shellColors = useShellPalette();
   const scope = useRef<HTMLDivElement>(null);
   const enabled = useDecorativeMotion(scope);
   return (

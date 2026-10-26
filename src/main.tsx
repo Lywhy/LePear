@@ -1,4 +1,4 @@
-import { installShellPalette } from "@/lib/shell-palette";
+import { initializeShellSettings } from "@/lib/shell-settings";
 import App from "@/App.tsx";
 import { SiteLayout } from "@/components/layout/site-layout";
 import { AppMotion } from "@/components/motion/app-motion";
@@ -6,6 +6,7 @@ import ContactPage from "@/pages/contact";
 import EditorPage from "@/pages/editor";
 import YouTubePage from "@/pages/youtube";
 import ConverterPage from "@/pages/converter";
+import SettingsPage from "@/pages/settings";
 import { Suspense, lazy } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -15,7 +16,7 @@ const DesignFoundationPage = import.meta.env.DEV
   ? lazy(() => import("@/pages/design-foundation"))
   : null;
 
-installShellPalette();
+initializeShellSettings();
 
 createRoot(document.getElementById("root")!).render(
   <AppMotion>
@@ -35,6 +36,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/editor" element={<EditorPage />} />
           <Route path="/youtube" element={<YouTubePage />} />
           <Route path="/converter" element={<ConverterPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/*" element={<App />} />
         </Route>

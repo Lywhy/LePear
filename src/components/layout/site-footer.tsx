@@ -1,7 +1,7 @@
 import { NavLink, Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { designClasses as ui } from "@/lib/design-system";
-import { pageLinks, landingLinks } from "@/lib/navigation";
+import { allPageLinks, landingLinks } from "@/lib/navigation";
 
 export function SiteFooter() {
   return (
@@ -26,7 +26,7 @@ export function SiteFooter() {
           aria-label="Навигация в подвале"
           className="flex flex-wrap gap-x-6 gap-y-1"
         >
-          {pageLinks.map((link) => (
+          {allPageLinks.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}

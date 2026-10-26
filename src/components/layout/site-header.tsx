@@ -1,6 +1,6 @@
 import { shellThemeStyle } from "@/lib/shell-palette";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
-import { ArrowLeft, Menu, X } from "lucide-react";
+import { ArrowLeft, Menu, X, Settings } from "lucide-react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,7 +13,12 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { designClasses as ui } from "@/lib/design-system";
-import { pageLinks, landingLinks } from "@/lib/navigation";
+import {
+  pageLinks,
+  allPageLinks,
+  settingsLink,
+  landingLinks,
+} from "@/lib/navigation";
 
 export function SiteHeader({ pathname }: { pathname: string }) {
   const [open, setOpen] = useState(false);
@@ -60,8 +65,8 @@ export function SiteHeader({ pathname }: { pathname: string }) {
     return () => desktop.removeEventListener("change", closeOnDesktop);
   }, []);
   const current =
-    pageLinks.find((link) => link.to === pathname) ?? pageLinks[0];
-  const editor = pathname === "/editor";
+    allPageLinks.find((link) => link.to === pathname) ?? pageLinks[0];
+
   return (
     <header className="relative z-30 border-b border-white/10 bg-shell-background">
       <div
@@ -99,11 +104,21 @@ export function SiteHeader({ pathname }: { pathname: string }) {
           ))}
         </nav>
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          {editor && (
-            <span className={`hidden sm:inline ${ui.caption}`}>
-              Рабочее пространство
-            </span>
-          )}
+          <NavLink
+            to={settingsLink.to}
+            end
+            aria-label={settingsLink.label}
+            title={settingsLink.label}
+            className={({ isActive }) =>
+              "inline-flex size-11 items-center justify-center rounded-lg " +
+              ui.focus +
+              (isActive
+                ? " bg-shell-raised text-shell-accent"
+                : " text-shell-soft hover:bg-white/5 hover:text-shell-text")
+            }
+          >
+            <Settings size={20} aria-hidden="true" />
+          </NavLink>
           <Sheet
             open={open}
             onOpenChange={changeOpen}
@@ -155,7 +170,7 @@ export function SiteHeader({ pathname }: { pathname: string }) {
               </SheetHeader>
               <div className="min-h-0 flex-1 overflow-y-auto p-5">
                 <nav className="space-y-2" aria-label="Мобильная навигация">
-                  {pageLinks.map((link) => (
+                  {allPageLinks.map((link) => (
                     <Link
                       key={link.to}
                       to={link.to}
