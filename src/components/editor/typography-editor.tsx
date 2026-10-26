@@ -1,3 +1,4 @@
+import { MotionIcon } from "@/components/motion/motion-icon";
 import { fontCatalog, fontInfo } from "@/lib/font-catalog";
 import { useThemeFont } from "@/lib/use-theme-font";
 import { useId } from "react";
@@ -179,7 +180,12 @@ export function TypographyEditor({
         className={controls.action + " w-full"}
         onClick={() => onChange(createInitialTheme().typography)}
       >
-        <RotateCcw size={16} className="shrink-0" />
+        <MotionIcon
+          icon={RotateCcw}
+          effect="turn"
+          size={16}
+          className="shrink-0"
+        />
         Сбросить типографику
       </Button>
       <p className="text-sm leading-6 text-shell-muted">

@@ -25,9 +25,21 @@ export function LandingHero() {
       aria-labelledby="hero-title"
       className="relative isolate mx-2 overflow-hidden rounded-b-3xl bg-shell-surface px-4 pt-10 pb-44 sm:mx-4 sm:px-8 sm:pt-14 sm:pb-52 lg:pt-16 lg:pb-56"
     >
-      <div
+      <img
+        src="/assets/landing/hero-v1-1440.webp"
+        srcSet="/assets/landing/hero-v1-768.webp 768w, /assets/landing/hero-v1-1440.webp 1440w"
+        sizes="100vw"
+        width={1440}
+        height={960}
+        alt=""
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-30 bg-[url('/assets/lepear-landscape.webp')] bg-cover bg-center"
+        loading="eager"
+        fetchPriority="high"
+        decoding="async"
+        className="pointer-events-none absolute inset-0 -z-30 h-full w-full object-cover object-center"
+        onError={(event) => {
+          event.currentTarget.hidden = true;
+        }}
       />
       <div
         aria-hidden="true"

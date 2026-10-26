@@ -1,3 +1,5 @@
+import { DownloadStateIcon } from "@/components/youtube/download-state-icon";
+import { MotionIcon } from "@/components/motion/motion-icon";
 import { useId, useState } from "react";
 import { Download, LoaderCircle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -254,13 +256,9 @@ export function VideoDownload({
           }}
         >
           {download.busy ? (
-            <LoaderCircle
-              size={18}
-              className="animate-spin motion-reduce:animate-none"
-              aria-hidden="true"
-            />
+            <MotionIcon icon={LoaderCircle} size={18} state="loading" />
           ) : (
-            <Download size={18} aria-hidden="true" />
+            <MotionIcon icon={Download} effect="download" size={18} />
           )}
           {download.busy ? "Скачивание…" : "Скачать"}
         </Button>
@@ -272,7 +270,7 @@ export function VideoDownload({
             onClick={download.cancel}
             disabled={download.cancelling}
           >
-            <X size={16} aria-hidden="true" />
+            <MotionIcon icon={X} effect="close" size={16} />
             {download.cancelling ? "Отменяем…" : "Отменить"}
           </Button>
         )}
@@ -282,13 +280,24 @@ export function VideoDownload({
           <p
             role="status"
             aria-atomic="true"
-            className="text-base leading-7 text-shell-accent"
+            className="flex items-start gap-2 text-base leading-7 text-shell-accent"
           >
-            {job
-              ? audioMode && job.step === "ready"
-                ? "Аудиофайл готов"
-                : (stages[job.step] ?? "Обрабатываем…")
-              : "Запрошена отмена. Сервер останавливает обработку и удаляет временные файлы."}
+            <DownloadStateIcon
+              status={
+                download.cancelling
+                  ? "cancelling"
+                  : download.phase === "cancelled"
+                    ? "cancelled"
+                    : (job?.status ?? "cancelling")
+              }
+            />
+            <span>
+              {job
+                ? audioMode && job.step === "ready"
+                  ? "Аудиофайл готов"
+                  : (stages[job.step] ?? "Обрабатываем…")
+                : "Запрошена отмена. Сервер останавливает обработку и удаляет временные файлы."}
+            </span>
           </p>
           {job?.status === "downloading" && progress && (
             <div>

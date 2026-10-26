@@ -1,3 +1,4 @@
+import { MotionIcon } from "@/components/motion/motion-icon";
 import { scrollToSection } from "@/lib/anchor-scroll";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { TextReveal } from "@/components/motion/text-reveal";
@@ -133,9 +134,9 @@ export default function EditorPage() {
   return (
     <div className="font-sans text-shell-text">
       <main className="mx-auto max-w-[1600px] px-4 py-6 sm:px-8 sm:py-10 lg:px-10">
-        <div className="mb-6 grid items-start gap-5 lg:grid-cols-[1fr_auto] rounded-2xl border border-shell-divider/10 bg-shell-deep p-5 sm:mb-8 sm:p-6">
+        <div className="mb-6 grid items-start gap-5 lg:grid-cols-[1fr_auto] rounded-3xl border border-shell-divider/10 bg-shell-surface/80 p-5 sm:mb-8 sm:p-8">
           <div>
-            <p className="text-sm leading-6 font-medium tracking-wide text-shell-muted">
+            <p className="inline-flex max-w-full rounded-full border border-shell-accent/20 bg-shell-accent/5 px-3 py-1 font-mono text-sm leading-6 text-shell-muted">
               LEPEAR / МАСТЕРСКАЯ ТЕМЫ
             </p>
             <TextReveal
@@ -185,7 +186,7 @@ export default function EditorPage() {
             }}
             className="h-11 gap-2 border-shell-divider/20 bg-transparent px-4 text-sm text-shell-soft hover:bg-shell-divider/5"
           >
-            <RotateCcw size={16} />
+            <MotionIcon icon={RotateCcw} effect="turn" size={16} />
             Сбросить всю тему
           </Button>
         </div>
@@ -388,7 +389,8 @@ export default function EditorPage() {
                 onClick={() => jumpTo("editor-settings")}
                 className="min-h-11 gap-2 px-3 text-sm text-shell-soft"
               >
-                <ArrowUp size={16} aria-hidden="true" />К настройкам
+                <MotionIcon icon={ArrowUp} effect="press" size={16} />К
+                настройкам
               </Button>
             </div>
             <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-shell-divider/10 bg-shell-surface p-2 lg:sticky lg:top-4 lg:z-20">

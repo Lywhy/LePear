@@ -1,3 +1,4 @@
+import { MotionIcon } from "@/components/motion/motion-icon";
 import { Check, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SettingsRange } from "@/components/editor/settings-range";
@@ -151,7 +152,12 @@ export function LayoutEditor({
           onChange({ shape: initial.shape, layout: initial.layout });
         }}
       >
-        <RotateCcw size={16} className="shrink-0" />
+        <MotionIcon
+          icon={RotateCcw}
+          effect="turn"
+          size={16}
+          className="shrink-0"
+        />
         Сбросить размеры
       </Button>
       <p className="text-sm leading-6 text-shell-muted">

@@ -1,6 +1,11 @@
+import { MotionIcon } from "@/components/motion/motion-icon";
+import GlareHover from "@/components/react-bits/glare-hover";
+import { useRef } from "react";
+import { useDecorativeMotion } from "@/hooks/use-decorative-motion";
 import { TextReveal } from "@/components/motion/text-reveal";
-import { shellSwatches } from "@/lib/shell-palette";
-import { useShellPalette } from "@/lib/shell-settings";
+import { LandingImage } from "@/components/landing/landing-image";
+import { landingImages, type LandingImageId } from "@/lib/landing-images";
+import { useShellPalette, useShellSettings } from "@/lib/shell-settings";
 import { AccentText, RevealText } from "@/components/landing/marketing-text";
 import { Kicker } from "@/components/landing/shared";
 import CountUp from "@/components/react-bits/count-up";
@@ -15,7 +20,7 @@ import {
 import { designClasses as ui } from "@/lib/design-system";
 import { converterFormats } from "@/lib/converter-formats";
 import { ArrowRight, MessageCircle } from "lucide-react";
-import { useReducedMotion } from "motion/react";
+
 import type { CSSProperties } from "react";
 import { Link } from "react-router-dom";
 
@@ -114,77 +119,24 @@ const faqs = [
   },
 ];
 function FeatureVisual({ kind }: { kind: string }) {
+  const asset: LandingImageId =
+    kind === "theme" ? "theme" : kind === "youtube" ? "media" : "converter";
   return (
-    <div
-      aria-hidden="true"
-      className="flex h-64 flex-col justify-center bg-shell-deep/60 p-6 sm:p-7"
-    >
-      {kind === "theme" ? (
-        <>
-          <p className="font-[family-name:Arial_Black,Arial,sans-serif] text-6xl leading-none font-black tracking-[-0.06em] text-shell-text">
-            Aa<span className="text-shell-accent">.</span>
-          </p>
-          <div className="mt-5 flex gap-2">
-            {shellSwatches.map((color) => (
-              <span
-                key={color.name}
-                className={
-                  "h-10 min-w-0 flex-1 rounded-lg border border-shell-divider/15 " +
-                  color.className
-                }
-              />
-            ))}
-          </div>
-          <p className="mt-4 text-sm leading-6 text-shell-muted">
-            Палитра + шрифт + форма
-          </p>
-        </>
-      ) : kind === "youtube" ? (
-        <>
-          <div className="flex h-24 items-center justify-center rounded-xl border border-shell-accent/25 bg-linear-to-br from-shell-hover to-shell-surface">
-            <span className="font-mono text-sm tracking-[0.2em] text-shell-accent">
-              YOUTUBE
-            </span>
-          </div>
-          <div className="mt-4 grid grid-cols-3 gap-2 text-sm leading-6">
-            {["Видео", "Аудио", "Субтитры"].map((label) => (
-              <span
-                key={label}
-                className="min-w-0 rounded-lg border border-shell-divider/15 bg-shell-raised px-1 py-2 text-center break-words text-shell-soft"
-              >
-                {label}
-              </span>
-            ))}
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="space-y-3">
-            {[
-              { from: "MP3", to: "WAV" },
-              { from: "PNG", to: "WebP" },
-            ].map((sample) => (
-              <div
-                key={sample.from}
-                className="grid grid-cols-3 items-center justify-items-center gap-3 rounded-xl border border-shell-divider/10 bg-shell-raised px-4 py-4 font-mono text-lg"
-              >
-                <span className="text-shell-muted">{sample.from}</span>
-                <ArrowRight className="size-5 text-shell-dim" />
-                <span className="text-shell-accent">{sample.to}</span>
-              </div>
-            ))}
-          </div>
-          <p className="mt-4 text-sm leading-6 text-shell-muted">
-            Форматы под выбранный файл
-          </p>
-        </>
-      )}
-    </div>
+    <figure className="m-0 grid h-64 min-w-0 grid-rows-[12rem_4rem] overflow-hidden bg-shell-deep/60">
+      <div className="min-h-0 overflow-hidden">
+        <LandingImage key={asset} asset={asset} />
+      </div>
+      <figcaption className="flex items-center px-6 text-sm leading-6 text-shell-muted sm:px-7">
+        {landingImages[asset].label}
+      </figcaption>
+    </figure>
   );
 }
 export function LandingFeatures() {
   const shellColors = useShellPalette();
-  const reduced = useReducedMotion();
+  const { mode } = useShellSettings();
+  const scope = useRef<HTMLDivElement>(null);
+  const effectsEnabled = useDecorativeMotion(scope);
   return (
     <section
       id="features"
@@ -207,62 +159,80 @@ export function LandingFeatures() {
           проекту. Выберите свой инструмент — всё остальное уже под рукой.
         </TextReveal>
       </div>
-      <div className={ui.grid + " lg:grid-cols-3"}>
+      <div ref={scope} className={ui.grid + " lg:grid-cols-3"}>
         {tools.map((tool, index) => (
           <ScrollReveal
             key={tool.id}
             delay={index * 0.08}
             className="h-full min-w-0"
           >
-            <SpotlightCard
-              role="article"
-              aria-labelledby={"feature-" + tool.id}
-              effectsEnabled={reduced === false}
-              spotlightColor={shellColors["accent"]}
-              intensity={0.2}
-              borderGlow={0.8}
-              proximity={48}
-              smoothing={0.2}
-              ambient={false}
-              flare={false}
-              className="grid h-full min-w-0 grid-rows-[16rem_1fr] p-0 focus-within:outline-2 focus-within:outline-offset-4 focus-within:outline-shell-accent"
-              style={
-                {
-                  "--spotlight-card-surface": shellColors["surface"],
-                  "--spotlight-card-border": shellColors["spotlight-border"],
-                } as CSSProperties
-              }
+            <GlareHover
+              effectsEnabled={effectsEnabled}
+              width="100%"
+              height="100%"
+              borderRadius="16px"
+              glareColor="#ffffff"
+              glareOpacity={mode === "light" ? 0.1 : 0.14}
+              playOnce
+              intro={false}
+              className="h-full min-w-0"
             >
-              <FeatureVisual kind={tool.id} />
-              <div className="flex flex-col p-6 sm:p-7">
-                <p className="flex items-center justify-between gap-3 text-sm leading-6 text-shell-muted">
-                  <span>
-                    {tool.number} / {tool.label}
-                  </span>
-                </p>
-                <TextReveal
-                  as="h3"
-                  id={"feature-" + tool.id}
-                  className={"mt-4 " + ui.cardTitle}
-                >
-                  {tool.title}
-                </TextReveal>
-                <TextReveal className={"mt-3 flex-1 " + ui.body}>
-                  {tool.text}
-                </TextReveal>
-                <p className={"mt-4 " + ui.caption}>{tool.detail}</p>
-                <Link
-                  to={tool.to}
-                  className={
-                    "mt-5 inline-flex min-h-11 items-center justify-between gap-3 rounded text-base text-shell-accent hover:text-shell-accent-hover " +
-                    ui.focus
-                  }
-                >
-                  {tool.action}
-                  <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
-                </Link>
-              </div>
-            </SpotlightCard>
+              <SpotlightCard
+                role="article"
+                aria-labelledby={"feature-" + tool.id}
+                effectsEnabled={effectsEnabled}
+                theme={mode}
+                spotlightColor={shellColors["accent"]}
+                intensity={0.2}
+                borderGlow={0.8}
+                proximity={48}
+                smoothing={0.2}
+                ambient={false}
+                flare={false}
+                className="grid h-full min-w-0 grid-rows-[16rem_1fr] p-0 focus-within:outline-2 focus-within:outline-offset-4 focus-within:outline-shell-accent"
+                style={
+                  {
+                    "--spotlight-card-surface": shellColors["surface"],
+                    "--spotlight-card-border": shellColors["spotlight-border"],
+                  } as CSSProperties
+                }
+              >
+                <FeatureVisual kind={tool.id} />
+                <div className="flex flex-col p-6 sm:p-7">
+                  <p className="flex items-center justify-between gap-3 text-sm leading-6 text-shell-muted">
+                    <span>
+                      {tool.number} / {tool.label}
+                    </span>
+                  </p>
+                  <TextReveal
+                    as="h3"
+                    id={"feature-" + tool.id}
+                    className={"mt-4 " + ui.cardTitle}
+                  >
+                    {tool.title}
+                  </TextReveal>
+                  <TextReveal className={"mt-3 flex-1 " + ui.body}>
+                    {tool.text}
+                  </TextReveal>
+                  <p className={"mt-4 " + ui.caption}>{tool.detail}</p>
+                  <Link
+                    to={tool.to}
+                    className={
+                      "mt-5 group/icon-action inline-flex min-h-11 items-center justify-between gap-3 rounded text-base text-shell-accent hover:text-shell-accent-hover " +
+                      ui.focus
+                    }
+                  >
+                    {tool.action}
+                    <MotionIcon
+                      icon={ArrowRight}
+                      effect="nudge"
+                      size={16}
+                      className="shrink-0"
+                    />
+                  </Link>
+                </div>
+              </SpotlightCard>
+            </GlareHover>
           </ScrollReveal>
         ))}
       </div>
@@ -306,12 +276,12 @@ export function LandingWorkflow() {
           <Link
             to="/#features"
             className={
-              "mt-6 inline-flex min-h-12 items-center gap-3 rounded-lg bg-shell-accent px-5 py-3 text-base font-medium text-shell-accent-ink hover:bg-shell-accent-hover " +
+              "mt-6 group/icon-action inline-flex min-h-12 items-center gap-3 rounded-lg bg-shell-accent px-5 py-3 text-base font-medium text-shell-accent-ink hover:bg-shell-accent-hover " +
               ui.focus
             }
           >
             К инструментам
-            <ArrowRight size={18} aria-hidden="true" />
+            <MotionIcon icon={ArrowRight} effect="nudge" size={18} />
           </Link>
         </div>
         <ol className="min-w-0">
@@ -373,7 +343,7 @@ export function LandingFaq() {
         <Link
           to="/contact"
           className={
-            "mt-4 inline-flex min-h-11 items-center gap-2 rounded text-sm text-shell-accent hover:text-shell-accent-hover " +
+            "mt-4 group/icon-action inline-flex min-h-11 items-center gap-2 rounded text-sm text-shell-accent hover:text-shell-accent-hover " +
             ui.focus
           }
         >

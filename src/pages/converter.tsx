@@ -1,3 +1,5 @@
+import { MotionIcon } from "@/components/motion/motion-icon";
+import { ToolPageHeader } from "@/components/layout/tool-page-header";
 import {
   useId,
   useRef,
@@ -15,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { TextReveal } from "@/components/motion/text-reveal";
+
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { controlClasses as controls } from "@/components/editor/control-classes";
 import { designClasses as ui } from "@/lib/design-system";
@@ -121,20 +123,12 @@ export default function ConverterPage() {
       : stages[conversion.job?.status ?? ""] || "Подключение к конвертеру";
   return (
     <main className={ui.container + " py-8 sm:py-12 lg:py-16"}>
-      <header className="mb-8 grid items-end gap-5 lg:grid-cols-[1fr_0.8fr] lg:gap-12">
-        <div>
-          <p className={ui.eyebrow}>LEPEAR / КОНВЕРТЕР</p>
-          <TextReveal as="h1" className={"mt-4 " + ui.heroTitle}>
-            Ваш файл.
-            <br />
-            <span className="text-shell-accent">Новый формат.</span>
-          </TextReveal>
-        </div>
-        <TextReveal className={"max-w-lg " + ui.body}>
-          Музыка и изображения — в формате, который нужен вам. Выберите файл, и
-          мы покажем подходящие варианты.
-        </TextReveal>
-      </header>
+      <ToolPageHeader
+        eyebrow="LEPEAR / КОНВЕРТЕР"
+        title="Ваш файл."
+        accent="Новый формат."
+        description="Музыка и изображения — в формате, который нужен вам. Выберите файл, и мы покажем подходящие варианты."
+      />
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,0.8fr)] lg:items-start">
         <ScrollReveal
           className={ui.surface + " relative overflow-hidden sm:p-8"}
@@ -203,7 +197,12 @@ export default function ConverterPage() {
                     disabled={busy}
                     aria-label={"Убрать файл " + file.name}
                   >
-                    <X aria-hidden="true" className="size-4" />
+                    <MotionIcon
+                      icon={X}
+                      effect="close"
+                      size={16}
+                      className=""
+                    />
                     Убрать
                   </Button>
                 )}
@@ -268,12 +267,14 @@ export default function ConverterPage() {
                 disabled={!file || !selected || busy}
               >
                 {busy ? (
-                  <LoaderCircle
-                    aria-hidden="true"
-                    className="size-4 animate-spin motion-reduce:animate-none"
-                  />
+                  <MotionIcon icon={LoaderCircle} size={16} state="loading" />
                 ) : (
-                  <ArrowRight aria-hidden="true" className="size-4" />
+                  <MotionIcon
+                    icon={ArrowRight}
+                    effect="nudge"
+                    size={16}
+                    className=""
+                  />
                 )}
                 {conversion.phase === "ready"
                   ? "Скачать " + result?.format
@@ -363,9 +364,11 @@ export default function ConverterPage() {
                     {conversion.phase === "ready" && result && (
                       <>
                         <p className="flex items-start gap-2 text-base leading-7 break-all">
-                          <CircleCheck
-                            aria-hidden="true"
-                            className="mt-1 size-5 shrink-0 text-shell-accent"
+                          <MotionIcon
+                            icon={CircleCheck}
+                            size={20}
+                            state="success"
+                            className="mt-1 text-shell-accent"
                           />
                           {result.filename}
                         </p>
@@ -411,7 +414,12 @@ export default function ConverterPage() {
             <span className="font-mono text-xl text-shell-muted">
               {inputFormat?.label ?? "ФАЙЛ"}
             </span>
-            <ArrowRight className="size-6 shrink-0 text-shell-accent" />
+            <MotionIcon
+              icon={ArrowRight}
+              effect="nudge"
+              size={24}
+              className="shrink-0 text-shell-accent"
+            />
             <span className="font-mono text-xl text-shell-accent">
               {selected?.label ?? "ФОРМАТ"}
             </span>

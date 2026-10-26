@@ -1,3 +1,4 @@
+import { MotionIcon } from "@/components/motion/motion-icon";
 import { fontInfo, type ThemeFont } from "@/lib/font-catalog";
 import { TextReveal } from "@/components/motion/text-reveal";
 import { controlClasses as controls } from "@/components/editor/control-classes";
@@ -5,7 +6,7 @@ import { TransferStatus } from "@/components/editor/transfer-status";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Code2, Copy, Download, FileJson } from "lucide-react";
+import { Code2, Copy, Download, FileJson, Check } from "lucide-react";
 
 export function ThemeExport({
   themeFont,
@@ -73,7 +74,7 @@ export function ThemeExport({
                 className={controls.action}
                 onClick={() => onDownload(format)}
               >
-                <Download size={16} aria-hidden="true" />
+                <MotionIcon icon={Download} effect="download" size={16} />
                 Скачать {name}
               </Button>
               <Button
@@ -82,7 +83,12 @@ export function ThemeExport({
                 className={controls.action}
                 onClick={() => onCopy(format)}
               >
-                <Copy size={16} aria-hidden="true" />
+                <MotionIcon
+                  icon={format === "css" && copied ? Check : Copy}
+                  state={format === "css" && copied ? "success" : "idle"}
+                  effect="press"
+                  size={16}
+                />
                 {format === "css" && copied
                   ? "Скопировано"
                   : "Копировать " + name}

@@ -1,3 +1,4 @@
+import { MotionIcon } from "@/components/motion/motion-icon";
 import { CircleCheck, CircleAlert, Info, LoaderCircle } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { feedbackMotion } from "@/lib/motion-presets";
@@ -37,15 +38,19 @@ export function TransferStatus({
         className="flex min-w-0 items-start gap-2.5"
         {...feedbackMotion(reduced !== false)}
       >
-        <Icon
+        <MotionIcon
+          icon={Icon}
           size={18}
-          aria-hidden="true"
-          className={
-            "mt-0.5 shrink-0 " +
-            (tone === "loading"
-              ? "animate-spin motion-reduce:animate-none"
-              : "")
+          state={
+            tone === "loading"
+              ? "loading"
+              : tone === "success"
+                ? "success"
+                : tone === "error" || tone === "warning"
+                  ? "error"
+                  : "idle"
           }
+          className="mt-0.5"
         />
         <span className="min-w-0 wrap-anywhere">{message}</span>
       </motion.div>

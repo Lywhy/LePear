@@ -1,3 +1,6 @@
+import { MotionIcon } from "@/components/motion/motion-icon";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ToolPageHeader } from "@/components/layout/tool-page-header";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { TextReveal } from "@/components/motion/text-reveal";
 import { useId, useRef, useState, type FormEvent } from "react";
@@ -68,20 +71,12 @@ export default function YouTubePage() {
   }
   return (
     <main className={ui.container + " py-8 sm:py-12 lg:py-16"}>
-      <header className="mb-8 grid items-end gap-5 lg:grid-cols-[1fr_0.8fr] lg:gap-12">
-        <div>
-          <p className={ui.eyebrow}>LEPEAR / YOUTUBE</p>
-          <TextReveal as="h1" className={"mt-4 " + ui.heroTitle}>
-            Одна ссылка.
-            <br />
-            <span className="text-shell-accent">Три формата.</span>
-          </TextReveal>
-        </div>
-        <TextReveal className={"max-w-lg " + ui.body}>
-          Видео, звук или субтитры — выберите то, что нужно для вашей работы.
-          Начните со ссылки на один ролик.
-        </TextReveal>
-      </header>
+      <ToolPageHeader
+        eyebrow="LEPEAR / YOUTUBE"
+        title="Одна ссылка."
+        accent="Три формата."
+        description="Видео, звук или субтитры — выберите то, что нужно для вашей работы. Начните со ссылки на один ролик."
+      />
       <div className="grid min-w-0 items-start gap-5 lg:grid-cols-[1.2fr_0.8fr] lg:gap-7">
         <div className="min-w-0 space-y-5">
           <ScrollReveal
@@ -95,7 +90,7 @@ export default function YouTubePage() {
               className="flex items-center gap-3 text-xl leading-7 font-medium"
             >
               <span className="grid size-10 shrink-0 place-items-center rounded-lg border border-shell-accent/20 bg-shell-accent/10 text-shell-accent">
-                <Link2 size={20} aria-hidden="true" />
+                <MotionIcon icon={Link2} effect="press" size={20} />
               </span>
               Ссылка на ролик
             </TextReveal>
@@ -143,13 +138,9 @@ export default function YouTubePage() {
                   }
                 >
                   {loading ? (
-                    <LoaderCircle
-                      size={18}
-                      aria-hidden="true"
-                      className="animate-spin motion-reduce:animate-none"
-                    />
+                    <MotionIcon icon={LoaderCircle} size={18} state="loading" />
                   ) : (
-                    <Link2 size={18} aria-hidden="true" />
+                    <MotionIcon icon={Link2} effect="press" size={18} />
                   )}
                   {loading
                     ? "Получаем данные…"
@@ -167,7 +158,7 @@ export default function YouTubePage() {
                       " w-full dark:bg-transparent sm:w-auto"
                     }
                   >
-                    <X size={16} aria-hidden="true" />
+                    <MotionIcon icon={X} effect="close" size={16} />
                     Отменить
                   </Button>
                 )}
@@ -265,13 +256,13 @@ export default function YouTubePage() {
             <Tabs defaultValue="video" className="mt-4 gap-5">
               <TabsList
                 aria-label="Тип скачивания"
-                className="h-auto min-h-12 w-full flex-wrap gap-1 rounded-xl border border-shell-divider/10 bg-shell-deep p-1 group-data-horizontal/tabs:h-auto"
+                className="h-auto min-h-12 w-full flex-wrap gap-1 rounded-full border border-shell-divider/10 bg-shell-deep p-1 group-data-horizontal/tabs:h-auto"
               >
                 {modes.map(({ value, label, Icon }) => (
                   <TabsTrigger
                     key={value}
                     value={value}
-                    className="h-auto min-h-11 min-w-0 flex-1 gap-2 rounded-lg px-3 py-2 text-sm whitespace-normal text-shell-muted data-active:bg-shell-hover data-active:text-shell-accent dark:data-active:bg-shell-hover dark:data-active:text-shell-accent motion-reduce:transition-none"
+                    className="h-auto min-h-11 min-w-0 flex-1 gap-2 rounded-full px-3 py-2 text-sm whitespace-normal text-shell-muted data-active:bg-shell-accent data-active:text-shell-accent-ink dark:data-active:bg-shell-accent dark:data-active:text-shell-accent-ink motion-reduce:transition-none"
                   >
                     <Icon size={17} aria-hidden="true" />
                     {label}
@@ -314,10 +305,7 @@ export default function YouTubePage() {
               aria-hidden="true"
             >
               {loading ? (
-                <LoaderCircle
-                  size={26}
-                  className="animate-spin motion-reduce:animate-none"
-                />
+                <MotionIcon icon={LoaderCircle} size={26} state="loading" />
               ) : (
                 <Play size={26} />
               )}
@@ -335,12 +323,23 @@ export default function YouTubePage() {
               />
             )}
           </div>
+          {loading && !data && (
+            <div className="mt-5 space-y-3" aria-hidden="true">
+              <Skeleton className="h-5 w-4/5" />
+              <Skeleton className="h-4 w-3/5" />
+              <Skeleton className="h-4 w-2/5" />
+            </div>
+          )}
           <h2
             id={id + "-video-title"}
             className="mt-5 text-xl leading-7 font-medium wrap-anywhere"
           >
             {data?.video.title ||
-              (loading ? "Получаем сведения…" : "Здесь будет ваш ролик")}
+              (loading
+                ? "Получаем сведения…"
+                : error
+                  ? "Не удалось получить сведения"
+                  : "Здесь будет ваш ролик")}
           </h2>
           {data ? (
             <>
@@ -378,8 +377,13 @@ export default function YouTubePage() {
             </>
           ) : (
             <p className={"mt-3 " + ui.body}>
-              Введите ссылку и нажмите «Получить данные». Здесь появятся
-              название, канал, длительность и доступные дорожки.
+              {loading
+                ? "Ожидаем название, канал и доступные дорожки. Точного процента у этого этапа нет."
+                : error
+                  ? "Проверьте ссылку и сообщение об ошибке слева, затем повторите запрос."
+                  : phase === "cancelled"
+                    ? "Запрос остановлен. Ссылку можно изменить и отправить снова."
+                    : "Введите ссылку и нажмите «Получить данные». Здесь появятся название, канал, длительность и доступные дорожки."}
             </p>
           )}
           <p className="mt-5 rounded-lg border border-shell-divider/10 bg-shell-deep p-3 text-sm leading-6 text-shell-muted">

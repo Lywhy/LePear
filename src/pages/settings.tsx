@@ -1,3 +1,4 @@
+import { ToolPageHeader } from "@/components/layout/tool-page-header";
 import { useId } from "react";
 import { Check } from "lucide-react";
 import {
@@ -6,7 +7,7 @@ import {
   RadioGroupIndicator,
 } from "@/components/ui/radio-group";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
-import { TextReveal } from "@/components/motion/text-reveal";
+
 import { designClasses as ui } from "@/lib/design-system";
 import {
   shellSeasons,
@@ -26,20 +27,12 @@ export default function SettingsPage() {
   const hasUpcoming = availableSeasons.length < shellSeasons.length;
   return (
     <main className={ui.container + " py-8 sm:py-12 lg:py-16"}>
-      <header className="mb-8 grid items-end gap-5 lg:grid-cols-[1fr_0.8fr] lg:gap-12">
-        <div>
-          <p className={ui.eyebrow}>LEPEAR / НАСТРОЙКИ</p>
-          <TextReveal as="h1" className={"mt-4 " + ui.heroTitle}>
-            Настройки.
-            <br />
-            <span className="text-shell-accent">По-вашему.</span>
-          </TextReveal>
-        </div>
-        <TextReveal className={"max-w-lg " + ui.body}>
-          Настройте внешний вид LePear. Выбор сохраняется в этом браузере и
-          остаётся с вами на всех страницах.
-        </TextReveal>
-      </header>
+      <ToolPageHeader
+        eyebrow="LEPEAR / НАСТРОЙКИ"
+        title="Настройки."
+        accent="По-вашему."
+        description="Настройте внешний вид LePear. Выбор сохраняется в этом браузере и остаётся с вами на всех страницах."
+      />
       <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,0.7fr)]">
         <ScrollReveal
           as="section"
@@ -69,7 +62,7 @@ export default function SettingsPage() {
               value={mode}
               onValueChange={selectShellMode}
               aria-label="Светлая или тёмная тема LePear"
-              className="grid-cols-2"
+              className="grid-cols-2 gap-1 rounded-full border border-shell-divider/10 bg-shell-deep p-1"
             >
               {[
                 { value: "light", label: "Светлая" },
@@ -78,7 +71,7 @@ export default function SettingsPage() {
                 <RadioGroupItem
                   key={item.value}
                   value={item.value}
-                  className="px-4 py-3"
+                  className="rounded-full border-0 px-4 py-3 data-checked:bg-shell-accent data-checked:text-shell-accent-ink"
                 >
                   <span className="flex items-center justify-between gap-2">
                     <span>{item.label}</span>

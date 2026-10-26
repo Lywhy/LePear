@@ -23,8 +23,11 @@ export function EditorLink({
 }
 export function Kicker({ children }: { children: ReactNode }) {
   return (
-    <p className="flex items-center gap-2 font-mono text-sm leading-6 tracking-wide text-shell-muted">
-      <span className="size-1.5 shrink-0 bg-shell-accent" aria-hidden="true" />
+    <p className="inline-flex max-w-full items-center gap-2 rounded-full border border-shell-accent/20 bg-shell-accent/5 px-3 py-1 font-mono text-sm leading-6 tracking-wide text-shell-muted">
+      <span
+        className="size-1.5 shrink-0 rounded-full bg-shell-accent"
+        aria-hidden="true"
+      />
       {children}
     </p>
   );

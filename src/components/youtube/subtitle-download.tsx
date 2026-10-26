@@ -1,3 +1,5 @@
+import { DownloadStateIcon } from "@/components/youtube/download-state-icon";
+import { MotionIcon } from "@/components/motion/motion-icon";
 import { useId, useState } from "react";
 import { Download, LoaderCircle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -180,13 +182,9 @@ export function SubtitleDownload({ data }: { data: YouTubeMetadata }) {
           onClick={start}
         >
           {download.busy ? (
-            <LoaderCircle
-              size={18}
-              aria-hidden="true"
-              className="animate-spin motion-reduce:animate-none"
-            />
+            <MotionIcon icon={LoaderCircle} size={18} state="loading" />
           ) : (
-            <Download size={18} aria-hidden="true" />
+            <MotionIcon icon={Download} effect="download" size={18} />
           )}
           {download.retryAfterSeconds > 0
             ? "Повторить через " +
@@ -206,7 +204,7 @@ export function SubtitleDownload({ data }: { data: YouTubeMetadata }) {
             onClick={download.cancel}
             disabled={download.cancelling}
           >
-            <X size={16} aria-hidden="true" />
+            <MotionIcon icon={X} effect="close" size={16} />
             {download.cancelling ? "Отменяем…" : "Отменить"}
           </Button>
         )}
@@ -216,11 +214,22 @@ export function SubtitleDownload({ data }: { data: YouTubeMetadata }) {
           <p
             role="status"
             aria-atomic="true"
-            className="text-base leading-7 text-shell-accent"
+            className="flex items-start gap-2 text-base leading-7 text-shell-accent"
           >
-            {job
-              ? (stages[job.step] ?? "Обрабатываем…")
-              : "Запрошена отмена. Временные файлы будут удалены."}
+            <DownloadStateIcon
+              status={
+                download.cancelling
+                  ? "cancelling"
+                  : download.phase === "cancelled"
+                    ? "cancelled"
+                    : (job?.status ?? "cancelling")
+              }
+            />
+            <span>
+              {job
+                ? (stages[job.step] ?? "Обрабатываем…")
+                : "Запрошена отмена. Временные файлы будут удалены."}
+            </span>
           </p>
           {job?.error && (
             <p role="alert" className="text-sm leading-6 text-shell-danger">

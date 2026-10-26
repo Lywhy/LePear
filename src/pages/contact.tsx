@@ -1,5 +1,5 @@
 import { TextReveal } from "@/components/motion/text-reveal";
-import { useShellPalette } from "@/lib/shell-settings";
+import { useShellPalette, useShellSettings } from "@/lib/shell-settings";
 import { useRef, type CSSProperties } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -27,6 +27,7 @@ const topics = [
 
 export default function ContactPage() {
   const shellColors = useShellPalette();
+  const { mode } = useShellSettings();
   const scope = useRef<HTMLDivElement>(null);
   const effectsEnabled = useDecorativeMotion(scope);
   return (
@@ -34,7 +35,9 @@ export default function ContactPage() {
       <div className="grid min-w-0 items-start gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12 xl:gap-20">
         <div ref={scope} className="min-w-0 lg:sticky lg:top-8">
           <div>
-            <p className={ui.eyebrow}>03 / ОБРАТНАЯ СВЯЗЬ</p>
+            <p className="inline-flex max-w-full rounded-full border border-shell-accent/20 bg-shell-accent/5 px-3 py-1 font-mono text-sm leading-6 text-shell-muted">
+              03 / ОБРАТНАЯ СВЯЗЬ
+            </p>
             <h1 className={"mt-4 " + ui.heroTitle}>
               <RevealText text="Ваши идеи." />
               <br />
@@ -50,6 +53,7 @@ export default function ContactPage() {
           <ScrollReveal className="mt-7">
             <SpotlightCard
               effectsEnabled={effectsEnabled}
+              theme={mode}
               spotlightColor={shellColors["accent"]}
               intensity={0.12}
               borderGlow={0.5}

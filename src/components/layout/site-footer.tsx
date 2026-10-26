@@ -1,3 +1,4 @@
+import { MotionIcon } from "@/components/motion/motion-icon";
 import { NavLink, Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { designClasses as ui } from "@/lib/design-system";
@@ -12,13 +13,13 @@ export function SiteFooter() {
         <div className="space-y-2">
           <p className="text-sm text-shell-soft">© 2026 LePear</p>
           <a
-            className={`inline-flex min-h-11 items-center gap-2 text-sm text-shell-muted hover:text-shell-text ${ui.focus}`}
+            className={`group/icon-action inline-flex min-h-11 items-center gap-2 text-sm text-shell-muted hover:text-shell-text ${ui.focus}`}
             href="https://ui.shadcn.com"
             target="_blank"
             rel="noreferrer"
           >
             На основе shadcn/ui
-            <ArrowUpRight size={14} aria-hidden="true" />
+            <MotionIcon icon={ArrowUpRight} effect="nudge" size={14} />
             <span className="sr-only"> (в новой вкладке)</span>
           </a>
         </div>
@@ -32,7 +33,7 @@ export function SiteFooter() {
               to={link.to}
               end
               className={({ isActive }) =>
-                `inline-flex min-h-11 items-center text-sm ${ui.focus} ${isActive ? "text-shell-accent" : "text-shell-muted hover:text-shell-text"}`
+                `group/icon-action inline-flex min-h-11 items-center text-sm ${ui.focus} ${isActive ? "text-shell-accent" : "text-shell-muted hover:text-shell-text"}`
               }
             >
               {link.label}
@@ -47,7 +48,7 @@ export function SiteFooter() {
             <Link
               key={link.to}
               to={link.to}
-              className={`inline-flex min-h-11 items-center text-sm text-shell-muted hover:text-shell-text ${ui.focus}`}
+              className={`group/icon-action inline-flex min-h-11 items-center text-sm text-shell-muted hover:text-shell-text ${ui.focus}`}
             >
               {link.label}
             </Link>

@@ -1,3 +1,4 @@
+import { MotionIcon } from "@/components/motion/motion-icon";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { selectShellMode, useShellSettings } from "@/lib/shell-settings";
@@ -23,7 +24,7 @@ export function ShellModeToggle() {
       }
       onClick={() => selectShellMode(next)}
     >
-      <Icon size={20} aria-hidden="true" />
+      <MotionIcon key={mode} icon={Icon} size={20} effect="turn" />
     </Button>
   );
 }

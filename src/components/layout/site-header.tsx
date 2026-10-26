@@ -1,3 +1,4 @@
+import { MotionIcon } from "@/components/motion/motion-icon";
 import { ShellModeToggle } from "@/components/layout/shell-mode-toggle";
 import { shellThemeStyle } from "@/lib/shell-palette";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
@@ -77,9 +78,9 @@ export function SiteHeader({ pathname }: { pathname: string }) {
           {pathname !== "/" ? (
             <Link
               to="/"
-              className={`inline-flex min-h-11 items-center gap-2 text-sm text-shell-soft ${ui.focus}`}
+              className={`group/icon-action inline-flex min-h-11 items-center gap-2 text-sm text-shell-soft ${ui.focus}`}
             >
-              <ArrowLeft size={16} aria-hidden="true" />
+              <MotionIcon icon={ArrowLeft} effect="back" size={16} />
               <span className="sm:hidden">Домой</span>
               <span className="hidden sm:inline">На главную</span>
             </Link>
@@ -87,8 +88,18 @@ export function SiteHeader({ pathname }: { pathname: string }) {
             <span className="text-base font-medium">Главная</span>
           )}
         </div>
+        <Link
+          to="/"
+          aria-label="LePear — на главную"
+          className={
+            "hidden shrink-0 rounded-lg font-[Arial_Black,Arial,sans-serif] text-xl font-black tracking-tight text-shell-text lg:inline-flex " +
+            ui.focus
+          }
+        >
+          LePear<span className="text-shell-accent">.</span>
+        </Link>
         <nav
-          className="hidden items-center gap-2 lg:flex"
+          className="hidden items-center gap-1 rounded-full border border-shell-divider/10 bg-shell-deep/60 p-1 lg:flex"
           aria-label="Основная навигация"
         >
           {pageLinks.map((link) => (
@@ -97,7 +108,7 @@ export function SiteHeader({ pathname }: { pathname: string }) {
               to={link.to}
               end
               className={({ isActive }) =>
-                `inline-flex min-h-11 items-center rounded-lg px-4 text-sm ${ui.focus} ${isActive ? "bg-shell-raised text-shell-accent" : "text-shell-muted hover:bg-shell-divider/5 hover:text-shell-text"}`
+                `group/icon-action inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-sm transition-colors motion-reduce:transition-none ${ui.focus} ${isActive ? "bg-shell-accent text-shell-accent-ink" : "text-shell-muted hover:bg-shell-divider/5 hover:text-shell-text"}`
               }
             >
               {link.label}
@@ -112,14 +123,14 @@ export function SiteHeader({ pathname }: { pathname: string }) {
             aria-label={settingsLink.label}
             title={settingsLink.label}
             className={({ isActive }) =>
-              "inline-flex size-11 items-center justify-center rounded-lg " +
+              "group/icon-action inline-flex size-11 items-center justify-center rounded-lg " +
               ui.focus +
               (isActive
                 ? " bg-shell-raised text-shell-accent"
                 : " text-shell-soft hover:bg-shell-divider/5 hover:text-shell-text")
             }
           >
-            <Settings size={20} aria-hidden="true" />
+            <MotionIcon icon={Settings} effect="turn" size={20} />
           </NavLink>
           <Sheet
             open={open}
@@ -139,7 +150,7 @@ export function SiteHeader({ pathname }: { pathname: string }) {
               aria-expanded={open}
               aria-controls="site-mobile-navigation"
             >
-              <Menu aria-hidden="true" />
+              <MotionIcon icon={Menu} effect="press" size={16} />
             </SheetTrigger>
             <SheetContent
               style={shellThemeStyle}
@@ -167,7 +178,7 @@ export function SiteHeader({ pathname }: { pathname: string }) {
                   }
                   aria-label="Закрыть меню"
                 >
-                  <X aria-hidden="true" />
+                  <MotionIcon icon={X} effect="close" size={16} />
                 </SheetClose>
               </SheetHeader>
               <div className="min-h-0 flex-1 overflow-y-auto p-5">

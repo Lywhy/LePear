@@ -1,3 +1,4 @@
+import { MotionIcon } from "@/components/motion/motion-icon";
 import { ColorField } from "@/components/editor/color-field";
 import {
   Select,
@@ -287,7 +288,12 @@ export function PaletteEditor({
           setRevision((n) => n + 1);
         }}
       >
-        <RotateCcw size={16} className="shrink-0" />
+        <MotionIcon
+          icon={RotateCcw}
+          effect="turn"
+          size={16}
+          className="shrink-0"
+        />
         Исходные цвета режима
       </Button>
       <p className="text-sm leading-6 text-shell-muted">

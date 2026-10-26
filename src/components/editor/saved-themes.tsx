@@ -1,3 +1,4 @@
+import { MotionIcon } from "@/components/motion/motion-icon";
 import { useThemeFont } from "@/lib/use-theme-font";
 import { useId, useState, type Dispatch, type SetStateAction } from "react";
 import { Check, Copy, Pencil, Save, Trash2 } from "lucide-react";
@@ -248,7 +249,12 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
           disabled={workspace.savedThemes.length >= MAX_SAVED_THEMES}
           onClick={createCopy}
         >
-          <Copy size={16} aria-hidden="true" className="shrink-0" />
+          <MotionIcon
+            icon={Copy}
+            effect="press"
+            size={16}
+            className="shrink-0"
+          />
           Создать копию
         </Button>
         <Button
@@ -269,7 +275,12 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
             setFeedbackRevision((revision) => revision + 1);
           }}
         >
-          <Save size={16} aria-hidden="true" className="shrink-0" />
+          <MotionIcon
+            icon={Save}
+            effect="download"
+            size={16}
+            className="shrink-0"
+          />
           Обновить копию
         </Button>
         <Button
@@ -290,7 +301,12 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
             }));
           }}
         >
-          <Pencil size={16} aria-hidden="true" className="shrink-0" />
+          <MotionIcon
+            icon={Pencil}
+            effect="turn"
+            size={16}
+            className="shrink-0"
+          />
           Переименовать
         </Button>
         <Button
@@ -312,7 +328,12 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
             onSelect();
           }}
         >
-          <Trash2 size={16} aria-hidden="true" className="shrink-0" />
+          <MotionIcon
+            icon={Trash2}
+            effect="turn"
+            size={16}
+            className="shrink-0"
+          />
           Удалить копию
         </Button>
       </div>
