@@ -6,6 +6,7 @@
 @custom-variant dark (&:where(.dark, .dark *):not(:where([data-theme="light"], [data-theme="light"] *)));
 
 @theme inline {
+  --color-shell-divider: var(--shell-divider);
   --color-shell-background: var(--shell-background);
   --color-shell-deep: var(--shell-deep);
   --color-shell-surface: var(--shell-surface);

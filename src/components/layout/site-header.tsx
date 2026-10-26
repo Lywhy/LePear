@@ -1,3 +1,4 @@
+import { ShellModeToggle } from "@/components/layout/shell-mode-toggle";
 import { shellThemeStyle } from "@/lib/shell-palette";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { ArrowLeft, Menu, X, Settings } from "lucide-react";
@@ -68,7 +69,7 @@ export function SiteHeader({ pathname }: { pathname: string }) {
     allPageLinks.find((link) => link.to === pathname) ?? pageLinks[0];
 
   return (
-    <header className="relative z-30 border-b border-white/10 bg-shell-background">
+    <header className="relative z-30 border-b border-shell-divider/10 bg-shell-background">
       <div
         className={`${ui.container} flex min-h-20 items-center justify-between gap-3 py-3`}
       >
@@ -96,7 +97,7 @@ export function SiteHeader({ pathname }: { pathname: string }) {
               to={link.to}
               end
               className={({ isActive }) =>
-                `inline-flex min-h-11 items-center rounded-lg px-4 text-sm ${ui.focus} ${isActive ? "bg-shell-raised text-shell-accent" : "text-shell-muted hover:bg-white/5 hover:text-shell-text"}`
+                `inline-flex min-h-11 items-center rounded-lg px-4 text-sm ${ui.focus} ${isActive ? "bg-shell-raised text-shell-accent" : "text-shell-muted hover:bg-shell-divider/5 hover:text-shell-text"}`
               }
             >
               {link.label}
@@ -104,6 +105,7 @@ export function SiteHeader({ pathname }: { pathname: string }) {
           ))}
         </nav>
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          <ShellModeToggle />
           <NavLink
             to={settingsLink.to}
             end
@@ -114,7 +116,7 @@ export function SiteHeader({ pathname }: { pathname: string }) {
               ui.focus +
               (isActive
                 ? " bg-shell-raised text-shell-accent"
-                : " text-shell-soft hover:bg-white/5 hover:text-shell-text")
+                : " text-shell-soft hover:bg-shell-divider/5 hover:text-shell-text")
             }
           >
             <Settings size={20} aria-hidden="true" />
@@ -145,9 +147,9 @@ export function SiteHeader({ pathname }: { pathname: string }) {
               id="site-mobile-navigation"
               side="right"
               showCloseButton={false}
-              className="dark w-[min(100%,24rem)] gap-0 border-white/15 bg-shell-surface text-shell-text data-[side=right]:w-[min(100%,24rem)] motion-reduce:transition-none motion-reduce:data-starting-style:translate-x-0 motion-reduce:data-ending-style:translate-x-0"
+              className="w-[min(100%,24rem)] gap-0 border-shell-divider/15 bg-shell-surface text-shell-text data-[side=right]:w-[min(100%,24rem)] motion-reduce:transition-none motion-reduce:data-starting-style:translate-x-0 motion-reduce:data-ending-style:translate-x-0"
             >
-              <SheetHeader className="relative border-b border-white/10 p-5 pr-16">
+              <SheetHeader className="relative border-b border-shell-divider/10 p-5 pr-16">
                 <SheetTitle className="text-xl text-shell-text">
                   Навигация
                 </SheetTitle>
@@ -176,14 +178,14 @@ export function SiteHeader({ pathname }: { pathname: string }) {
                       to={link.to}
                       onClick={(event) => closeAndNavigate(event, link.to)}
                       aria-current={pathname === link.to ? "page" : undefined}
-                      className={`flex min-h-12 items-center justify-between gap-3 rounded-lg px-4 py-3 text-base ${ui.focus} ${pathname === link.to ? "bg-shell-raised text-shell-accent" : "text-shell-soft hover:bg-white/5"}`}
+                      className={`flex min-h-12 items-center justify-between gap-3 rounded-lg px-4 py-3 text-base ${ui.focus} ${pathname === link.to ? "bg-shell-raised text-shell-accent" : "text-shell-soft hover:bg-shell-divider/5"}`}
                     >
                       {link.label}
                     </Link>
                   ))}
                 </nav>
                 <nav
-                  className="mt-6 space-y-1 border-t border-white/10 pt-5"
+                  className="mt-6 space-y-1 border-t border-shell-divider/10 pt-5"
                   aria-label="Разделы главной страницы"
                 >
                   {landingLinks.map((link) => (
@@ -191,7 +193,7 @@ export function SiteHeader({ pathname }: { pathname: string }) {
                       key={link.to}
                       to={link.to}
                       onClick={(event) => closeAndNavigate(event, link.to)}
-                      className={`flex min-h-11 items-center rounded-lg px-4 py-2 text-sm text-shell-muted hover:bg-white/5 hover:text-shell-text ${ui.focus}`}
+                      className={`flex min-h-11 items-center rounded-lg px-4 py-2 text-sm text-shell-muted hover:bg-shell-divider/5 hover:text-shell-text ${ui.focus}`}
                     >
                       {link.label}
                     </Link>

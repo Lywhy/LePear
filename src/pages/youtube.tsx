@@ -46,7 +46,7 @@ const modes = [
   },
 ] as const;
 const fieldClass =
-  "h-12 w-full min-w-0 rounded-lg border-white/20 bg-shell-deep px-3 text-base text-shell-text placeholder:text-shell-dim focus-visible:border-shell-accent focus-visible:ring-shell-accent/25 aria-invalid:border-shell-danger dark:bg-shell-deep";
+  "h-12 w-full min-w-0 rounded-lg border-shell-divider/20 bg-shell-deep px-3 text-base text-shell-text placeholder:text-shell-dim focus-visible:border-shell-accent focus-visible:ring-shell-accent/25 aria-invalid:border-shell-danger dark:bg-shell-deep";
 
 export default function YouTubePage() {
   const id = useId();
@@ -87,7 +87,7 @@ export default function YouTubePage() {
           <ScrollReveal
             as="section"
             aria-labelledby={id + "-link-title"}
-            className="min-w-0 rounded-2xl border border-white/15 bg-linear-to-b from-shell-raised to-shell-surface p-5 sm:p-7"
+            className="min-w-0 rounded-2xl border border-shell-divider/15 bg-linear-to-b from-shell-raised to-shell-surface p-5 sm:p-7"
           >
             <TextReveal
               as="h2"
@@ -183,7 +183,7 @@ export default function YouTubePage() {
                   }}
                   className={
                     ui.secondaryAction +
-                    " w-full dark:border-white/20 dark:bg-transparent dark:hover:bg-white/5 sm:w-auto"
+                    " w-full dark:border-shell-divider/20 dark:bg-transparent dark:hover:bg-shell-divider/5 sm:w-auto"
                   }
                 >
                   Очистить
@@ -232,7 +232,7 @@ export default function YouTubePage() {
                       : ""}
               </p>
               {result?.success && (
-                <div className="mt-3 rounded-xl border border-white/15 bg-shell-deep p-4">
+                <div className="mt-3 rounded-xl border border-shell-divider/15 bg-shell-deep p-4">
                   <p className="flex items-center gap-2 text-sm leading-6 text-shell-accent">
                     <CircleCheck size={18} aria-hidden="true" />
                     Выбранный ролик
@@ -241,7 +241,7 @@ export default function YouTubePage() {
                     {result.url}
                   </p>
                   {result.hasPlaylist && (
-                    <p className="mt-3 border-t border-white/10 pt-3 text-sm leading-6 text-shell-warning">
+                    <p className="mt-3 border-t border-shell-divider/10 pt-3 text-sm leading-6 text-shell-warning">
                       В ссылке есть плейлист. Обрабатывается только этот ролик.
                     </p>
                   )}
@@ -265,7 +265,7 @@ export default function YouTubePage() {
             <Tabs defaultValue="video" className="mt-4 gap-5">
               <TabsList
                 aria-label="Тип скачивания"
-                className="h-auto min-h-12 w-full flex-wrap gap-1 rounded-xl border border-white/10 bg-shell-deep p-1 group-data-horizontal/tabs:h-auto"
+                className="h-auto min-h-12 w-full flex-wrap gap-1 rounded-xl border border-shell-divider/10 bg-shell-deep p-1 group-data-horizontal/tabs:h-auto"
               >
                 {modes.map(({ value, label, Icon }) => (
                   <TabsTrigger
@@ -306,7 +306,7 @@ export default function YouTubePage() {
           delay={0.12}
           aria-labelledby={id + "-video-title"}
           aria-busy={loading}
-          className="min-w-0 rounded-2xl border border-white/15 bg-shell-surface p-5 sm:p-6 lg:sticky lg:top-6"
+          className="min-w-0 rounded-2xl border border-shell-divider/15 bg-shell-surface p-5 sm:p-6 lg:sticky lg:top-6"
         >
           <div className="relative flex aspect-video items-center justify-center overflow-hidden rounded-xl border border-shell-line/30 bg-linear-to-br from-shell-raised to-shell-deep">
             <span
@@ -344,7 +344,7 @@ export default function YouTubePage() {
           </h2>
           {data ? (
             <>
-              <dl className="mt-4 grid gap-4 border-t border-white/10 pt-4 text-sm leading-6">
+              <dl className="mt-4 grid gap-4 border-t border-shell-divider/10 pt-4 text-sm leading-6">
                 <div>
                   <dt className="text-shell-dim">Канал</dt>
                   <dd className="mt-1 text-base text-shell-text wrap-anywhere">
@@ -382,7 +382,7 @@ export default function YouTubePage() {
               название, канал, длительность и доступные дорожки.
             </p>
           )}
-          <p className="mt-5 rounded-lg border border-white/10 bg-shell-deep p-3 text-sm leading-6 text-shell-muted">
+          <p className="mt-5 rounded-lg border border-shell-divider/10 bg-shell-deep p-3 text-sm leading-6 text-shell-muted">
             Получение данных не начинает скачивание. Во вкладке «Видео» можно
             подготовить файл со звуком. Отдельное сохранение аудио и субтитров
             появится позже.

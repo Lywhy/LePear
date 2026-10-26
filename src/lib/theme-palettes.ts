@@ -1,3 +1,5 @@
+import { seasonalColorPresets } from "@/lib/seasonal-color-presets";
+import { additionalColorPresets } from "@/lib/additional-color-presets";
 import {
   createInitialTheme,
   type ThemeMode,
@@ -162,6 +164,8 @@ export const colorPresets: ColorPreset[] = [
       }),
     },
   },
+  ...additionalColorPresets,
+  ...seasonalColorPresets,
 ];
 export function normalizeColor(value: string, opaque = false): string | null {
   const hex = value.trim().toLowerCase();

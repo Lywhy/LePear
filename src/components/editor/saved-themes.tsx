@@ -1,3 +1,4 @@
+import { useThemeFont } from "@/lib/use-theme-font";
 import { useId, useState, type Dispatch, type SetStateAction } from "react";
 import { Check, Copy, Pencil, Save, Trash2 } from "lucide-react";
 import { controlClasses as controls } from "@/components/editor/control-classes";
@@ -40,6 +41,7 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
   const selected = workspace.savedThemes.find(
     (item) => item.id === workspace.selectedId,
   );
+  useThemeFont(selected?.theme.typography.font);
   const [name, setName] = useState(selected?.name ?? "");
   const [message, setMessage] = useState("");
   const [feedbackRevision, setFeedbackRevision] = useState(0);
@@ -140,7 +142,7 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
           </SelectContent>
         </Select>
       </div>
-      <div className="rounded-xl border border-white/15 bg-shell-deep p-4">
+      <div className="rounded-xl border border-shell-divider/15 bg-shell-deep p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <p className="text-sm leading-6 text-shell-muted">
@@ -164,13 +166,13 @@ function SavedThemesForm({ workspace, onChange, onSelect }: SavedThemesProps) {
             {(["light", "dark"] as const).map((mode) => (
               <div
                 key={mode}
-                className="min-w-0 rounded-lg border border-white/10 p-2"
+                className="min-w-0 rounded-lg border border-shell-divider/10 p-2"
               >
                 <p className="text-sm leading-6 text-shell-muted">
                   {mode === "light" ? "Светлая" : "Тёмная"}
                 </p>
                 <div
-                  className="mt-1 flex overflow-hidden rounded-md border border-white/15"
+                  className="mt-1 flex overflow-hidden rounded-md border border-shell-divider/15"
                   aria-hidden="true"
                 >
                   {(["background", "card", "primary"] as const).map((token) => (

@@ -28,7 +28,7 @@ export function ThemeImport({
   return (
     <section
       aria-labelledby={`${id}-title`}
-      className="mt-6 min-w-0 rounded-xl border border-white/15 bg-shell-surface p-4 sm:p-5"
+      className="mt-6 min-w-0 rounded-xl border border-shell-divider/15 bg-shell-surface p-4 sm:p-5"
     >
       <TextReveal className="mb-2 inline-flex items-center gap-2 text-sm leading-6 text-shell-muted">
         Из JSON в редактор
@@ -84,7 +84,7 @@ export function ThemeImport({
           }
         }}
       />
-      <div className="flex min-w-0 flex-wrap items-center gap-3 rounded-xl border border-dashed border-white/25 bg-shell-deep p-4">
+      <div className="flex min-w-0 flex-wrap items-center gap-3 rounded-xl border border-dashed border-shell-divider/25 bg-shell-deep p-4">
         <Button
           id={`${id}-choose`}
           type="button"
@@ -189,7 +189,7 @@ export function ThemeImport({
               </div>
             ))}
           </dl>
-          <p className="mt-4 border-t border-white/10 pt-3 text-sm leading-6 text-shell-muted">
+          <p className="mt-4 border-t border-shell-divider/10 pt-3 text-sm leading-6 text-shell-muted">
             Будут заменены все настройки рабочего варианта. Именованные копии
             останутся в библиотеке.
           </p>

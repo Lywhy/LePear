@@ -153,7 +153,7 @@ export function SubtitleDownload({ data }: { data: YouTubeMetadata }) {
       {!tracks.length && (
         <p
           role="status"
-          className="rounded-xl border border-white/10 bg-shell-deep p-4 text-sm leading-6 text-shell-muted"
+          className="rounded-xl border border-shell-divider/10 bg-shell-deep p-4 text-sm leading-6 text-shell-muted"
         >
           {data.subtitles.length
             ? "Для доступных дорожек пока нет поддержки VTT/SRT."

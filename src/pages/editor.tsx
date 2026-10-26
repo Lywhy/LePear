@@ -133,7 +133,7 @@ export default function EditorPage() {
   return (
     <div className="font-sans text-shell-text">
       <main className="mx-auto max-w-[1600px] px-4 py-6 sm:px-8 sm:py-10 lg:px-10">
-        <div className="mb-6 grid items-start gap-5 lg:grid-cols-[1fr_auto] rounded-2xl border border-white/10 bg-shell-deep p-5 sm:mb-8 sm:p-6">
+        <div className="mb-6 grid items-start gap-5 lg:grid-cols-[1fr_auto] rounded-2xl border border-shell-divider/10 bg-shell-deep p-5 sm:mb-8 sm:p-6">
           <div>
             <p className="text-sm leading-6 font-medium tracking-wide text-shell-muted">
               LEPEAR / МАСТЕРСКАЯ ТЕМЫ
@@ -152,10 +152,10 @@ export default function EditorPage() {
               className="mt-4 flex flex-wrap gap-2 text-sm leading-6 text-shell-soft"
               aria-label="Текущие параметры темы"
             >
-              <span className="rounded-full border border-white/10 bg-shell-raised px-3 py-1">
+              <span className="rounded-full border border-shell-divider/10 bg-shell-raised px-3 py-1">
                 {theme.mode === "dark" ? "Тёмный режим" : "Светлый режим"}
               </span>
-              <span className="rounded-full border border-white/10 bg-shell-raised px-3 py-1">
+              <span className="rounded-full border border-shell-divider/10 bg-shell-raised px-3 py-1">
                 {theme.typography.font === "System"
                   ? "Системный"
                   : theme.typography.font}{" "}
@@ -163,7 +163,7 @@ export default function EditorPage() {
               </span>
               <span
                 title={storageMessage}
-                className={`inline-flex items-center gap-2 rounded-full border border-white/10 px-3 py-1 ${storageOk ? "text-shell-success" : "text-shell-warning"}`}
+                className={`inline-flex items-center gap-2 rounded-full border border-shell-divider/10 px-3 py-1 ${storageOk ? "text-shell-success" : "text-shell-warning"}`}
               >
                 {storageOk ? (
                   <CircleCheck size={15} aria-hidden="true" />
@@ -183,7 +183,7 @@ export default function EditorPage() {
               setStatusTone("success");
               setStatus("Исходная тема восстановлена для обоих режимов");
             }}
-            className="h-11 gap-2 border-white/20 bg-transparent px-4 text-sm text-shell-soft hover:bg-white/5"
+            className="h-11 gap-2 border-shell-divider/20 bg-transparent px-4 text-sm text-shell-soft hover:bg-shell-divider/5"
           >
             <RotateCcw size={16} />
             Сбросить всю тему
@@ -191,7 +191,7 @@ export default function EditorPage() {
         </div>
         <nav
           aria-label="Быстрые переходы в редакторе"
-          className="sticky top-0 z-30 mb-5 grid grid-cols-3 gap-1 rounded-xl border border-white/15 bg-shell-deep p-1 shadow-lg shadow-black/20 lg:hidden"
+          className="sticky top-0 z-30 mb-5 grid grid-cols-3 gap-1 rounded-xl border border-shell-divider/15 bg-shell-deep p-1 shadow-lg shadow-black/20 lg:hidden"
         >
           {[
             { id: "editor-settings", label: "Настройки" },
@@ -215,7 +215,7 @@ export default function EditorPage() {
             as="aside"
             id="editor-settings"
             tabIndex={-1}
-            className="min-w-0 scroll-mt-24 rounded-2xl border border-white/10 bg-shell-deep p-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shell-accent sm:p-4"
+            className="min-w-0 scroll-mt-24 rounded-2xl border border-shell-divider/10 bg-shell-deep p-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shell-accent sm:p-4"
             aria-label="Настройки темы"
           >
             <div className="mb-3 px-1 pt-1">
@@ -237,7 +237,7 @@ export default function EditorPage() {
             </div>
             <div className="space-y-3">
               <div
-                className="grid grid-cols-2 gap-1 rounded-lg border border-white/10 bg-shell-surface p-1"
+                className="grid grid-cols-2 gap-1 rounded-lg border border-shell-divider/10 bg-shell-surface p-1"
                 role="group"
                 aria-label="Видимость блоков настроек"
               >
@@ -245,7 +245,7 @@ export default function EditorPage() {
                   type="button"
                   variant="ghost"
                   onClick={() => setOpenSettings([...settingsSections])}
-                  className="min-h-11 px-2 text-sm text-shell-soft hover:bg-white/5"
+                  className="min-h-11 px-2 text-sm text-shell-soft hover:bg-shell-divider/5"
                 >
                   Раскрыть всё
                 </Button>
@@ -253,7 +253,7 @@ export default function EditorPage() {
                   type="button"
                   variant="ghost"
                   onClick={() => setOpenSettings([])}
-                  className="min-h-11 px-2 text-sm text-shell-soft hover:bg-white/5"
+                  className="min-h-11 px-2 text-sm text-shell-soft hover:bg-shell-divider/5"
                 >
                   Свернуть всё
                 </Button>
@@ -294,7 +294,7 @@ export default function EditorPage() {
                           onClick={() => patch({ mode })}
                           aria-pressed={theme.mode === mode}
                           variant="default"
-                          className={`min-h-11 gap-2 border-white/15 px-2 text-sm ${theme.mode === mode ? "bg-shell-accent text-shell-accent-ink hover:bg-shell-accent-hover" : "bg-transparent text-shell-soft hover:bg-white/5"}`}
+                          className={`min-h-11 gap-2 border-shell-divider/15 px-2 text-sm ${theme.mode === mode ? "bg-shell-accent text-shell-accent-ink hover:bg-shell-accent-hover" : "bg-transparent text-shell-soft hover:bg-shell-divider/5"}`}
                         >
                           {mode === "dark" ? (
                             <Moon size={16} />
@@ -341,7 +341,7 @@ export default function EditorPage() {
                 </SettingsSection>
               </Accordion>
             </div>
-            <div className="mt-4 space-y-3 rounded-xl border border-white/10 bg-shell-surface p-4">
+            <div className="mt-4 space-y-3 rounded-xl border border-shell-divider/10 bg-shell-surface p-4">
               <TransferStatus
                 message={storageMessage}
                 tone={storageOk ? "success" : "warning"}
@@ -351,7 +351,7 @@ export default function EditorPage() {
                   type="button"
                   variant="outline"
                   onClick={retrySaving}
-                  className="h-auto min-h-11 border-white/20 bg-transparent px-3 py-2 text-sm whitespace-normal"
+                  className="h-auto min-h-11 border-shell-divider/20 bg-transparent px-3 py-2 text-sm whitespace-normal"
                 >
                   {blocked
                     ? "Заменить повреждённые данные текущими"
@@ -391,9 +391,9 @@ export default function EditorPage() {
                 <ArrowUp size={16} aria-hidden="true" />К настройкам
               </Button>
             </div>
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-white/10 bg-shell-surface p-2 lg:sticky lg:top-4 lg:z-20">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-shell-divider/10 bg-shell-surface p-2 lg:sticky lg:top-4 lg:z-20">
               <div
-                className="flex min-w-0 flex-wrap gap-1 rounded-lg border border-white/10 bg-shell-surface p-1"
+                className="flex min-w-0 flex-wrap gap-1 rounded-lg border border-shell-divider/10 bg-shell-surface p-1"
                 aria-label="Вид предпросмотра"
               >
                 {[
@@ -421,7 +421,7 @@ export default function EditorPage() {
                 <div
                   role="group"
                   aria-label="Ширина предпросмотра"
-                  className="flex flex-wrap gap-1 rounded-lg border border-white/10 bg-shell-surface p-1"
+                  className="flex flex-wrap gap-1 rounded-lg border border-shell-divider/10 bg-shell-surface p-1"
                 >
                   <Button
                     variant="ghost"
@@ -447,8 +447,8 @@ export default function EditorPage() {
                 shadcn/ui · Nova
               </span>
             </div>
-            <div className="overflow-hidden rounded-2xl border border-white/15 bg-shell-deep">
-              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 px-4 py-3 text-sm leading-6">
+            <div className="overflow-hidden rounded-2xl border border-shell-divider/15 bg-shell-deep">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-shell-divider/10 px-4 py-3 text-sm leading-6">
                 <span className="inline-flex items-center gap-2 text-shell-text">
                   <Layers3 size={16} aria-hidden="true" />
                   {view === "components" ? "Витрина темы" : "Код темы"}
@@ -478,7 +478,7 @@ export default function EditorPage() {
                   initial={false}
                   animate={{ maxWidth: previewWidth === "narrow" ? 390 : 1600 }}
                   transition={previewTransition}
-                  className="mx-auto w-full rounded-lg border border-white/10"
+                  className="mx-auto w-full rounded-lg border border-shell-divider/10"
                 >
                   <ThemePreview
                     theme={theme}
@@ -497,7 +497,7 @@ export default function EditorPage() {
                 <TextReveal as="h2" className="mb-4 text-lg font-medium">
                   CSS-переменные темы
                 </TextReveal>
-                <pre className="max-h-175 overflow-auto rounded-lg border border-white/10 bg-shell-deep p-4 font-mono text-sm leading-7 whitespace-pre-wrap wrap-break-word text-shell-accent">
+                <pre className="max-h-175 overflow-auto rounded-lg border border-shell-divider/10 bg-shell-deep p-4 font-mono text-sm leading-7 whitespace-pre-wrap wrap-break-word text-shell-accent">
                   <code>{exportTheme(theme)}</code>
                 </pre>
                 <p className="mt-4 text-sm leading-7 text-shell-muted">
@@ -512,7 +512,7 @@ export default function EditorPage() {
               id="editor-export"
               tabIndex={-1}
               aria-labelledby="editor-export-title"
-              className="mt-6 scroll-mt-24 rounded-2xl border border-white/10 bg-shell-deep p-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shell-accent sm:p-5"
+              className="mt-6 scroll-mt-24 rounded-2xl border border-shell-divider/10 bg-shell-deep p-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shell-accent sm:p-5"
             >
               <TextReveal
                 as="h2"
@@ -525,6 +525,7 @@ export default function EditorPage() {
                 Скачайте тему для своего сайта или сохраните резервную копию.
               </TextReveal>
               <ThemeExport
+                themeFont={workspace.theme.typography.font}
                 onCopy={copy}
                 onDownload={download}
                 copied={copied}

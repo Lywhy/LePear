@@ -14,18 +14,7 @@ import {
 } from "@/components/ui/accordion";
 import { designClasses as ui } from "@/lib/design-system";
 import { converterFormats } from "@/lib/converter-formats";
-import {
-  ArrowRight,
-  Check,
-  Download,
-  Layers3,
-  MessageCircle,
-  Palette,
-  Play,
-  RefreshCw,
-  SlidersHorizontal,
-  Video,
-} from "lucide-react";
+import { ArrowRight, MessageCircle } from "lucide-react";
 import { useReducedMotion } from "motion/react";
 import type { CSSProperties } from "react";
 import { Link } from "react-router-dom";
@@ -34,7 +23,6 @@ const section = ui.container + " scroll-mt-8 py-16 sm:py-20 lg:py-24";
 const tools = [
   {
     id: "theme",
-    icon: Palette,
     number: "01",
     label: "СТИЛЬ",
     title: "Сайт с вашим характером",
@@ -45,7 +33,6 @@ const tools = [
   },
   {
     id: "youtube",
-    icon: Video,
     number: "02",
     label: "МЕДИА",
     title: "Из ссылки — в ваш файл",
@@ -56,7 +43,6 @@ const tools = [
   },
   {
     id: "converter",
-    icon: RefreshCw,
     number: "03",
     label: "ФОРМАТЫ",
     title: "Тот же файл. Новые возможности",
@@ -69,19 +55,16 @@ const tools = [
 const steps = [
   {
     number: "01",
-    icon: Layers3,
     title: "Выберите задачу",
     text: "Откройте редактор для оформления сайта, YouTube для скачивания или конвертер для смены формата файла.",
   },
   {
     number: "02",
-    icon: SlidersHorizontal,
     title: "Задайте нужный результат",
     text: "Настройте тему, вставьте ссылку или выберите файл. Инструмент покажет доступные параметры — работа начнётся по вашей команде.",
   },
   {
     number: "03",
-    icon: Download,
     title: "Заберите и используйте",
     text: "Экспортируйте тему в CSS/JSON или скачайте готовый файл. Темы можно сохранить в браузере, а медиафайлы доступны ограниченное время.",
   },
@@ -146,7 +129,7 @@ function FeatureVisual({ kind }: { kind: string }) {
               <span
                 key={color.name}
                 className={
-                  "h-10 min-w-0 flex-1 rounded-lg border border-white/15 " +
+                  "h-10 min-w-0 flex-1 rounded-lg border border-shell-divider/15 " +
                   color.className
                 }
               />
@@ -159,13 +142,15 @@ function FeatureVisual({ kind }: { kind: string }) {
       ) : kind === "youtube" ? (
         <>
           <div className="flex h-24 items-center justify-center rounded-xl border border-shell-accent/25 bg-linear-to-br from-shell-hover to-shell-surface">
-            <Play className="size-9 text-shell-accent" />
+            <span className="font-mono text-sm tracking-[0.2em] text-shell-accent">
+              YOUTUBE
+            </span>
           </div>
           <div className="mt-4 grid grid-cols-3 gap-2 text-sm leading-6">
             {["Видео", "Аудио", "Субтитры"].map((label) => (
               <span
                 key={label}
-                className="min-w-0 rounded-lg border border-white/15 bg-shell-raised px-1 py-2 text-center break-words text-shell-soft"
+                className="min-w-0 rounded-lg border border-shell-divider/15 bg-shell-raised px-1 py-2 text-center break-words text-shell-soft"
               >
                 {label}
               </span>
@@ -181,7 +166,7 @@ function FeatureVisual({ kind }: { kind: string }) {
             ].map((sample) => (
               <div
                 key={sample.from}
-                className="grid grid-cols-3 items-center justify-items-center gap-3 rounded-xl border border-white/10 bg-shell-raised px-4 py-4 font-mono text-lg"
+                className="grid grid-cols-3 items-center justify-items-center gap-3 rounded-xl border border-shell-divider/10 bg-shell-raised px-4 py-4 font-mono text-lg"
               >
                 <span className="text-shell-muted">{sample.from}</span>
                 <ArrowRight className="size-5 text-shell-dim" />
@@ -254,7 +239,6 @@ export function LandingFeatures() {
                   <span>
                     {tool.number} / {tool.label}
                   </span>
-                  <tool.icon size={18} aria-hidden="true" />
                 </p>
                 <TextReveal
                   as="h3"
@@ -282,18 +266,13 @@ export function LandingFeatures() {
           </ScrollReveal>
         ))}
       </div>
-      <ScrollReveal className="mt-6 flex flex-wrap gap-x-8 gap-y-3 rounded-xl border border-white/10 bg-shell-deep px-5 py-4 text-sm leading-6 text-shell-muted">
+      <ScrollReveal className="mt-6 flex flex-wrap gap-x-8 gap-y-3 rounded-xl border border-shell-divider/10 bg-shell-deep px-5 py-4 text-sm leading-6 text-shell-muted">
         {[
           "Без аккаунта LePear",
           "Отдельная страница для каждой задачи",
           "Темы в браузере, медиа — через локальный сервис",
         ].map((text) => (
           <p key={text} className="flex items-start gap-2">
-            <Check
-              size={16}
-              aria-hidden="true"
-              className="mt-1 shrink-0 text-shell-accent"
-            />
             {text}
           </p>
         ))}
@@ -353,11 +332,6 @@ export function LandingWorkflow() {
                     >
                       {step.title}
                     </TextReveal>
-                    <step.icon
-                      size={21}
-                      aria-hidden="true"
-                      className="mt-1 shrink-0 text-shell-sand"
-                    />
                   </div>
                   <TextReveal className={"mt-3 max-w-lg " + ui.body}>
                     {step.text}
@@ -410,7 +384,7 @@ export function LandingFaq() {
       <ScrollReveal>
         <Accordion
           multiple
-          className="rounded-2xl border border-white/10 bg-shell-surface px-4 sm:px-6 motion-reduce:**:data-[slot=accordion-content]:animate-none motion-reduce:**:data-[slot=accordion-trigger]:transition-none"
+          className="rounded-2xl border border-shell-divider/10 bg-shell-surface px-4 sm:px-6 motion-reduce:**:data-[slot=accordion-content]:animate-none motion-reduce:**:data-[slot=accordion-trigger]:transition-none"
         >
           {faqs.map((item) => (
             <AccordionItem key={item.id} value={item.id} className="border-0">
@@ -457,10 +431,9 @@ export function LandingCta() {
                 ui.focus +
                 (index === 0
                   ? " border-transparent bg-shell-accent text-shell-accent-ink hover:bg-shell-accent-hover"
-                  : " border-white/20 bg-shell-deep text-shell-soft hover:bg-shell-raised")
+                  : " border-shell-divider/20 bg-shell-deep text-shell-soft hover:bg-shell-raised")
               }
             >
-              <tool.icon size={18} aria-hidden="true" />
               {tool.id === "theme"
                 ? "Редактор тем"
                 : tool.id === "youtube"

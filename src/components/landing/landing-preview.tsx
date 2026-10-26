@@ -1,13 +1,4 @@
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
-import {
-  Palette,
-  Video,
-  RefreshCw,
-  ArrowRight,
-  Play,
-  AudioLines,
-  ImageIcon,
-} from "lucide-react";
 
 /** Static illustrations only; all tools live on their dedicated pages. */
 export function LandingPreview() {
@@ -22,7 +13,7 @@ export function LandingPreview() {
           <span className="font-mono">LEPEAR / ВОЗМОЖНОСТИ</span>
           <span>Три инструмента. Одна оболочка.</span>
         </div>
-        <div className="grid divide-y divide-white/10 md:grid-cols-3 md:divide-x md:divide-y-0">
+        <div className="grid divide-y divide-shell-divider/10 md:grid-cols-3 md:divide-x md:divide-y-0">
           <div
             role="img"
             aria-label="Пример редактора: цветовая палитра и типографика"
@@ -30,7 +21,6 @@ export function LandingPreview() {
           >
             <div aria-hidden="true">
               <p className="flex items-center gap-2 text-base font-medium text-shell-soft">
-                <Palette className="size-4 text-shell-accent" />
                 Редактор тем
               </p>
               <p className="mt-6 font-[family-name:Arial_Black,Arial,sans-serif] text-5xl font-black tracking-tight text-shell-text">
@@ -46,7 +36,7 @@ export function LandingPreview() {
                   <span
                     key={color}
                     className={
-                      "h-10 rounded-lg border border-white/15 " + color
+                      "h-10 rounded-lg border border-shell-divider/15 " + color
                     }
                   />
                 ))}
@@ -63,17 +53,18 @@ export function LandingPreview() {
           >
             <div aria-hidden="true">
               <p className="flex items-center gap-2 text-base font-medium text-shell-soft">
-                <Video className="size-4 text-shell-accent" />
                 YouTube
               </p>
               <div className="mt-6 flex h-24 items-center justify-center rounded-xl border border-shell-accent/20 bg-linear-to-br from-shell-hover to-shell-deep">
-                <Play className="size-9 text-shell-accent" />
+                <span className="font-mono text-sm tracking-[0.2em] text-shell-accent">
+                  YOUTUBE
+                </span>
               </div>
               <div className="mt-4 grid grid-cols-3 gap-2 text-sm leading-6">
                 {["Видео", "Аудио", "Субтитры"].map((mode) => (
                   <span
                     key={mode}
-                    className="min-w-0 rounded-md border border-white/10 bg-shell-raised px-1 py-2 text-center break-words text-shell-soft"
+                    className="min-w-0 rounded-md border border-shell-divider/10 bg-shell-raised px-1 py-2 text-center break-words text-shell-soft"
                   >
                     {mode}
                   </span>
@@ -91,21 +82,21 @@ export function LandingPreview() {
           >
             <div aria-hidden="true">
               <p className="flex items-center gap-2 text-base font-medium text-shell-soft">
-                <RefreshCw className="size-4 text-shell-accent" />
                 Конвертер
               </p>
               <div className="mt-6 space-y-3">
                 {[
-                  { Icon: AudioLines, from: "MP3", to: "WAV" },
-                  { Icon: ImageIcon, from: "PNG", to: "WebP" },
+                  { from: "MP3", to: "WAV" },
+                  { from: "PNG", to: "WebP" },
                 ].map((sample) => (
                   <div
                     key={sample.from}
-                    className="grid grid-cols-4 items-center justify-items-center gap-2 rounded-xl border border-white/10 bg-shell-raised px-3 py-4 font-mono text-base"
+                    className="grid grid-cols-3 items-center justify-items-center gap-2 rounded-xl border border-shell-divider/10 bg-shell-raised px-3 py-4 font-mono text-base"
                   >
-                    <sample.Icon className="size-4 shrink-0 text-shell-dim" />
                     <span className="text-shell-soft">{sample.from}</span>
-                    <ArrowRight className="size-4 shrink-0 text-shell-dim" />
+                    <span aria-hidden="true" className="text-shell-dim">
+                      →
+                    </span>
                     <span className="text-shell-accent">{sample.to}</span>
                   </div>
                 ))}

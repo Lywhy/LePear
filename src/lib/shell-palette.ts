@@ -1,5 +1,9 @@
 import type { CSSProperties } from "react";
-import { autumnPalette, type ShellPalette } from "@/lib/shell-seasons";
+import {
+  autumnPalette,
+  type ShellPalette,
+  type ShellMode,
+} from "@/lib/shell-seasons";
 
 /** Fixed illustration palette. Live app components use useShellPalette instead. */
 export const shellColors = autumnPalette;
@@ -33,15 +37,21 @@ export const shellThemeStyle = {
   "--ring": "var(--shell-accent)",
 } as CSSProperties;
 
-export function installShellPalette(palette: ShellPalette, season: string) {
+export function installShellPalette(
+  palette: ShellPalette,
+  season: string,
+  mode: ShellMode = "dark",
+) {
   const root = document.documentElement;
   for (const [role, value] of Object.entries(palette))
     root.style.setProperty("--shell-" + role, value);
   for (const [name, value] of Object.entries(shellThemeStyle))
     root.style.setProperty(name, String(value));
   root.dataset.shellSeason = season;
+  root.dataset.shellMode = mode;
+  root.classList.toggle("dark", mode === "dark");
   document.body.classList.add("bg-shell-background", "text-shell-text");
-  root.style.colorScheme = "dark";
+  root.style.colorScheme = mode;
   root.style.backgroundColor = palette.background;
   document
     .querySelector('meta[name="theme-color"]')

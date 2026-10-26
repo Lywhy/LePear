@@ -5,7 +5,7 @@ import { allPageLinks, landingLinks } from "@/lib/navigation";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-10 shrink-0 border-t border-white/10 bg-shell-background">
+    <footer className="mt-10 shrink-0 border-t border-shell-divider/10 bg-shell-background">
       <div
         className={`${ui.container} flex flex-wrap items-start justify-between gap-6 py-8`}
       >

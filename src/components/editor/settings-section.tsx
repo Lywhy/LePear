@@ -36,12 +36,12 @@ export function SettingsSection({
   return (
     <AccordionItem
       value={value}
-      className="min-w-0 rounded-xl border border-white/10 bg-shell-surface"
+      className="min-w-0 rounded-xl border border-shell-divider/10 bg-shell-surface"
     >
       <AccordionTrigger className="min-h-20 items-center gap-3 rounded-xl px-4 py-4 text-base text-shell-text transition-none hover:no-underline focus-visible:border-shell-accent focus-visible:ring-shell-accent/30 **:data-[slot=accordion-trigger-icon]:text-shell-sand">
         <span
           aria-hidden="true"
-          className="grid size-9 shrink-0 place-items-center rounded-lg border border-white/10 bg-shell-raised text-shell-sand"
+          className="grid size-9 shrink-0 place-items-center rounded-lg border border-shell-divider/10 bg-shell-raised text-shell-sand"
         >
           <Icon size={18} />
         </span>

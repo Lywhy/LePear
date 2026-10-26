@@ -1,3 +1,4 @@
+import { useThemeFont } from "@/lib/use-theme-font";
 import { useId, useRef, useState, type CSSProperties } from "react";
 import { Check, Layers3, PanelLeft, Plus, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ export function ThemePreview({
   staticView?: boolean;
   narrowView?: boolean;
 }) {
+  useThemeFont(theme.typography.font);
   const id = useId();
   const previewScope = useRef<HTMLDivElement>(null);
   const [submitted, setSubmitted] = useState(false);

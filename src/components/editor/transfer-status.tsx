@@ -25,7 +25,7 @@ export function TransferStatus({
         ? "border-shell-warning/25 bg-shell-warning/5 text-shell-warning"
         : tone === "success"
           ? "border-shell-accent/25 bg-shell-accent/5 text-shell-accent"
-          : "border-white/15 bg-shell-deep text-shell-soft";
+          : "border-shell-divider/15 bg-shell-deep text-shell-soft";
   return (
     <div
       role={tone === "error" ? "alert" : "status"}

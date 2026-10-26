@@ -5,16 +5,7 @@ import {
   type ChangeEvent,
   type FormEvent,
 } from "react";
-import {
-  ArrowRight,
-  AudioLines,
-  CircleCheck,
-  FileAudio,
-  ImageIcon,
-  LoaderCircle,
-  Upload,
-  X,
-} from "lucide-react";
+import { ArrowRight, CircleCheck, LoaderCircle, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {
@@ -64,7 +55,6 @@ export default function ConverterPage() {
   const targets = file ? targetsForName(file.name) : [];
   const selected = targets.find((target) => target.id === format);
   const isImage = inputFormat?.category === "image";
-  const FileIcon = isImage ? ImageIcon : FileAudio;
   const percent =
     conversion.upload ??
     (conversion.job?.status === "converting"
@@ -163,10 +153,6 @@ export default function ConverterPage() {
                 <p className={ui.eyebrow}>01 / ИСХОДНИК</p>
                 <h2 className={ui.cardTitle + " mt-2"}>Начнём с файла</h2>
               </div>
-              <FileIcon
-                aria-hidden="true"
-                className="size-7 shrink-0 text-shell-accent"
-              />
             </div>
             <input
               ref={picker}
@@ -275,7 +261,7 @@ export default function ConverterPage() {
                       : "Сжатие с потерями: MP3 VBR, OGG Vorbis или AAC 192 кбит/с в M4A/AAC. Каналы сохраним, частоту при необходимости приведём к совместимой."}
               </p>
             </div>
-            <div className="flex flex-wrap gap-3 border-t border-white/10 pt-5">
+            <div className="flex flex-wrap gap-3 border-t border-shell-divider/10 pt-5">
               <Button
                 type="submit"
                 className={ui.primaryAction}
@@ -341,7 +327,7 @@ export default function ConverterPage() {
                               "h-full min-w-0 flex-1 rounded-sm transition-colors motion-reduce:transition-none " +
                               (index < Math.ceil((percent / 100) * 24)
                                 ? "bg-shell-accent"
-                                : "bg-white/8")
+                                : "bg-shell-divider/8")
                             }
                           />
                         ))}
@@ -441,10 +427,6 @@ export default function ConverterPage() {
           <div className="space-y-4">
             <div className={ui.inset}>
               <h3 className="flex items-center gap-2 text-base font-medium">
-                <AudioLines
-                  aria-hidden="true"
-                  className="size-5 text-shell-accent"
-                />
                 Музыка
               </h3>
               <p className={ui.body + " mt-2"}>
@@ -460,10 +442,6 @@ export default function ConverterPage() {
             </div>
             <div className={ui.inset}>
               <h3 className="flex items-center gap-2 text-base font-medium">
-                <ImageIcon
-                  aria-hidden="true"
-                  className="size-5 text-shell-accent"
-                />
                 Изображения
               </h3>
               <p className={ui.body + " mt-2"}>
@@ -479,7 +457,7 @@ export default function ConverterPage() {
               </p>
             </div>
           </div>
-          <div className="border-t border-white/10 pt-5">
+          <div className="border-t border-shell-divider/10 pt-5">
             <h3 className="text-base font-medium">Файлы временные</h3>
             <p className={ui.caption + " mt-2"}>
               Один файл за раз, результат до{" "}

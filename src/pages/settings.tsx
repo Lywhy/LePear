@@ -1,14 +1,5 @@
 import { useId } from "react";
-import {
-  Check,
-  Leaf,
-  Snowflake,
-  Flower2,
-  Sun,
-  Palette,
-  Monitor,
-  HardDrive,
-} from "lucide-react";
+import { Check } from "lucide-react";
 import {
   RadioGroup,
   RadioGroupItem,
@@ -17,18 +8,19 @@ import {
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { TextReveal } from "@/components/motion/text-reveal";
 import { designClasses as ui } from "@/lib/design-system";
-import { shellSeasons, findShellSeason } from "@/lib/shell-seasons";
-import { selectShellSeason, useShellSettings } from "@/lib/shell-settings";
-const seasonIcons = {
-  autumn: Leaf,
-  winter: Snowflake,
-  spring: Flower2,
-  summer: Sun,
-};
-
+import {
+  shellSeasons,
+  findShellSeason,
+  paletteForSeason,
+} from "@/lib/shell-seasons";
+import {
+  selectShellMode,
+  selectShellSeason,
+  useShellSettings,
+} from "@/lib/shell-settings";
 export default function SettingsPage() {
   const id = useId();
-  const { season, saved } = useShellSettings();
+  const { season, mode, saved } = useShellSettings();
   const current = findShellSeason(season);
   const availableSeasons = shellSeasons.filter((item) => item.palette);
   const hasUpcoming = availableSeasons.length < shellSeasons.length;
@@ -61,10 +53,6 @@ export default function SettingsPage() {
                 Сезонная тема
               </h2>
             </div>
-            <Palette
-              aria-hidden="true"
-              className="size-6 shrink-0 text-shell-accent"
-            />
           </div>
           <p id={id + "-description"} className={ui.body + " mt-3 max-w-2xl"}>
             Палитра для всего приложения: фон, текст, кнопки и декоративные
@@ -73,6 +61,35 @@ export default function SettingsPage() {
             {hasUpcoming &&
               " Остальные сезоны появятся в следующих обновлениях."}
           </p>
+          <fieldset className="mt-6">
+            <legend className="mb-3 text-base font-medium text-shell-text">
+              Режим оформления
+            </legend>
+            <RadioGroup
+              value={mode}
+              onValueChange={selectShellMode}
+              aria-label="Светлая или тёмная тема LePear"
+              className="grid-cols-2"
+            >
+              {[
+                { value: "light", label: "Светлая" },
+                { value: "dark", label: "Тёмная" },
+              ].map((item) => (
+                <RadioGroupItem
+                  key={item.value}
+                  value={item.value}
+                  className="px-4 py-3"
+                >
+                  <span className="flex items-center justify-between gap-2">
+                    <span>{item.label}</span>
+                    <RadioGroupIndicator>
+                      <Check size={16} aria-hidden="true" />
+                    </RadioGroupIndicator>
+                  </span>
+                </RadioGroupItem>
+              ))}
+            </RadioGroup>
+          </fieldset>
           <RadioGroup
             value={season}
             onValueChange={selectShellSeason}
@@ -81,9 +98,15 @@ export default function SettingsPage() {
             className="mt-6 sm:grid-cols-2"
           >
             {shellSeasons.map((item) => {
-              const Icon = seasonIcons[item.id];
               const available = item.palette !== null;
               const selected = season === item.id;
+              const colors = paletteForSeason(item.id, mode);
+              const preview = [
+                colors.background,
+                colors.accent,
+                colors.teal,
+                colors.sand,
+              ];
               return (
                 <RadioGroupItem
                   key={item.id}
@@ -97,10 +120,6 @@ export default function SettingsPage() {
                       id={id + "-" + item.id + "-name"}
                       className="flex items-center gap-2 text-lg font-medium text-shell-text"
                     >
-                      <Icon
-                        aria-hidden="true"
-                        className="size-5 shrink-0 text-shell-accent"
-                      />
                       {item.name}
                     </span>
                     <span
@@ -108,7 +127,7 @@ export default function SettingsPage() {
                         "rounded-full border px-2.5 py-1 text-sm leading-6 " +
                         (selected
                           ? "border-shell-accent/30 text-shell-accent"
-                          : "border-white/15 text-shell-muted")
+                          : "border-shell-divider/15 text-shell-muted")
                       }
                     >
                       {available
@@ -125,10 +144,10 @@ export default function SettingsPage() {
                       (available ? "" : "opacity-60")
                     }
                   >
-                    {item.preview.map((color, index) => (
+                    {preview.map((color, index) => (
                       <span
                         key={index}
-                        className="h-12 rounded-md border border-white/15"
+                        className="h-12 rounded-md border border-shell-divider/15"
                         style={{ backgroundColor: color }}
                       />
                     ))}
@@ -160,8 +179,10 @@ export default function SettingsPage() {
             {saved
               ? "Выбрана тема «" +
                 current?.name +
-                "». Сохранено в этом браузере."
-              : "Тема применяется, но браузер не разрешил сохранить настройки. После перезагрузки вернётся осень."}
+                "», " +
+                (mode === "light" ? "светлый" : "тёмный") +
+                " режим. Сохранено в этом браузере."
+              : "Тема применяется, но браузер не разрешил сохранить настройки. После перезагрузки вернутся настройки по умолчанию."}
           </p>
         </ScrollReveal>
         <ScrollReveal
@@ -171,7 +192,6 @@ export default function SettingsPage() {
           aria-label="Как работают настройки оформления"
         >
           <div>
-            <Monitor aria-hidden="true" className="size-6 text-shell-accent" />
             <h2 className={ui.cardTitle + " mt-4"}>Ваш LePear</h2>
             <p className={ui.body + " mt-3"}>
               Оформление едино для главной, редактора, YouTube, конвертера и
@@ -188,10 +208,6 @@ export default function SettingsPage() {
             </p>
           </div>
           <div className="flex items-start gap-3">
-            <HardDrive
-              aria-hidden="true"
-              className="mt-1 size-5 shrink-0 text-shell-dim"
-            />
             <p className={ui.caption}>
               Выбор хранится на этом устройстве без аккаунта. Очистка данных
               сайта удалит и настройки оформления.

@@ -75,7 +75,7 @@ export function LayoutEditor({
   );
   const safeHeight = effectiveControlHeight(theme);
   return (
-    <fieldset className="min-w-0 space-y-5 border-t border-white/15 pt-6">
+    <fieldset className="min-w-0 space-y-5 border-t border-shell-divider/15 pt-6">
       <legend className="px-1 text-base font-medium">Размеры и отступы</legend>
       <div
         role="group"
@@ -135,7 +135,7 @@ export function LayoutEditor({
           }
         />
       ))}
-      <p className="rounded-lg border border-white/15 p-3 text-sm leading-6 text-shell-success">
+      <p className="rounded-lg border border-shell-divider/15 p-3 text-sm leading-6 text-shell-success">
         Расчётный минимум высоты: {safeHeight} px
         {safeHeight > theme.layout.controlHeight
           ? " — увеличен под текущий размер текста и межстрочный интервал"

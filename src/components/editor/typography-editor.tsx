@@ -1,3 +1,5 @@
+import { fontCatalog, fontInfo } from "@/lib/font-catalog";
+import { useThemeFont } from "@/lib/use-theme-font";
 import { useId } from "react";
 import { RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,50 +21,10 @@ import {
   type ThemeTypography,
 } from "@/lib/site-theme";
 
-const fonts: { value: ThemeFont; label: string; description: string }[] = [
-  {
-    value: "Geist",
-    label: "Geist",
-    description:
-      "Локальный variable-шрифт с кириллицей. При недоступности: system-ui, Arial, sans-serif.",
-  },
-  {
-    value: "System",
-    label: "Системный",
-    description:
-      "Шрифт интерфейса вашей ОС. Fallback: Segoe UI, Arial, sans-serif. Доступные начертания зависят от системы.",
-  },
-  {
-    value: "Georgia",
-    label: "Georgia",
-    description:
-      "Шрифт с устройства. Если не установлен: Times New Roman, serif. Промежуточные насыщенности могут отображаться ближайшим доступным начертанием.",
-  },
-  {
-    value: "Arial",
-    label: "Arial",
-    description:
-      "Нейтральный шрифт без засечек с устройства. Если не установлен: Helvetica, sans-serif. Насыщенности зависят от доступных начертаний.",
-  },
-  {
-    value: "Verdana",
-    label: "Verdana",
-    description:
-      "Широкий экранный шрифт с устройства. Если не установлен: Geneva, sans-serif. Насыщенности зависят от доступных начертаний.",
-  },
-  {
-    value: "Times New Roman",
-    label: "Times New Roman",
-    description:
-      "Классический шрифт с засечками с устройства. Если не установлен: Georgia, serif. Насыщенности зависят от доступных начертаний.",
-  },
-  {
-    value: "Courier New",
-    label: "Courier New",
-    description:
-      "Моноширинный шрифт с устройства. Если не установлен: Courier, monospace. Насыщенности зависят от доступных начертаний.",
-  },
-];
+const fonts = fontCatalog.map((font) => ({
+  value: font.id,
+  label: font.label,
+}));
 const ranges = [
   {
     key: "fontSize",
@@ -110,8 +72,10 @@ export function TypographyEditor({
   onChange: (value: Partial<ThemeTypography>) => void;
 }) {
   const id = useId();
+  const selectedFont = fontInfo(value.font);
+  const fontPhase = useThemeFont(value.font);
   return (
-    <fieldset className="min-w-0 space-y-5 border-t border-white/15 pt-6">
+    <fieldset className="min-w-0 space-y-5 border-t border-shell-divider/15 pt-6">
       <legend className="px-1 text-base font-medium">Типографика</legend>
       <div>
         <Label htmlFor={`${id}-font`} className="mb-3 text-sm">
@@ -134,7 +98,7 @@ export function TypographyEditor({
           </SelectTrigger>
           <SelectContent
             alignItemWithTrigger={false}
-            className={controls.popup}
+            className={controls.popup + " max-h-80"}
           >
             {fonts.map((font) => (
               <SelectItem
@@ -142,27 +106,60 @@ export function TypographyEditor({
                 value={font.value}
                 className={controls.option}
               >
-                <span style={{ fontFamily: fontFamilies[font.value] }}>
-                  {font.label}
-                </span>
+                <span>{font.label}</span>
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
-        <div className="mt-3 rounded-xl border border-white/10 bg-shell-deep p-4">
-          <p className="text-sm leading-6 text-shell-muted">Образец шрифта</p>
+        <div className="mt-3 rounded-xl border border-shell-divider/10 bg-shell-deep p-4">
+          <p className="text-sm leading-6 text-shell-muted">
+            Образец: кириллица и латиница
+          </p>
           <p
             className="mt-2 text-2xl leading-9 text-shell-text wrap-anywhere"
-            style={{ fontFamily: fontFamilies[value.font] }}
+            style={{
+              fontFamily: fontFamilies[value.font],
+              fontWeight: value.fontWeight,
+              lineHeight: value.lineHeight,
+              letterSpacing: value.letterSpacing + "em",
+            }}
           >
-            Своя тема. Your style. 0123
+            Своя тема. Your style. 0123456789
+          </p>
+          <p
+            className="mt-2 text-base leading-7 text-shell-text wrap-anywhere"
+            style={{
+              fontFamily: fontFamilies[value.font],
+              fontWeight: value.headingWeight,
+            }}
+          >
+            Съешь ещё этих мягких булок. The quick brown fox.
+          </p>
+          <p
+            className="mt-3 min-h-12 text-sm leading-6 text-shell-muted"
+            role="status"
+          >
+            {fontPhase === "loading"
+              ? "Шрифт загружается, пока используется запасной."
+              : fontPhase === "error"
+                ? "Не удалось загрузить шрифт. Сейчас используется запасной; выберите семейство снова или обновите страницу."
+                : fontPhase === "system"
+                  ? "Системное семейство: фактический шрифт и начертания зависят от устройства."
+                  : "Веб-шрифт загружен с этого сайта."}
           </p>
         </div>
         <p
           id={`${id}-font-hint`}
           className="mt-3 text-sm leading-6 text-shell-muted"
         >
-          {fonts.find((font) => font.value === value.font)?.description}
+          {selectedFont.kind}. {selectedFont.description}{" "}
+          {selectedFont.weights
+            ? "Доступные насыщенности: " +
+              selectedFont.weights[0] +
+              "–" +
+              selectedFont.weights[1] +
+              ". В редакторе: 300–700."
+            : "В редакторе: 300–700; браузер может использовать ближайшее начертание."}
         </p>
       </div>
       {ranges.map((range) => (

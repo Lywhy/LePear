@@ -2,19 +2,20 @@ import { Link } from "react-router-dom";
 import { DecorativeBoundary } from "@/components/motion/decorative-boundary";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { TextReveal } from "@/components/motion/text-reveal";
-import { useShellPalette } from "@/lib/shell-settings";
+import { useShellPalette, useShellSettings } from "@/lib/shell-settings";
 import { AccentText } from "@/components/landing/marketing-text";
 import { Reveal } from "@/components/motion/reveal";
 import { useDecorativeMotionState } from "@/hooks/use-decorative-motion";
 import { designClasses as ui } from "@/lib/design-system";
 import TiltedCard from "@/components/react-bits/tilted-card";
-import { ArrowDown, Check, Palette, Video, RefreshCw } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { lazy, Suspense, useRef } from "react";
 
 const Aurora = lazy(() => import("@/components/react-bits/aurora"));
 
 export function LandingHero() {
   const shellColors = useShellPalette();
+  const { mode } = useShellSettings();
   const scope = useRef<HTMLElement>(null);
   const { supported: canShowAurora, active: animateBackground } =
     useDecorativeMotionState(scope);
@@ -42,6 +43,7 @@ export function LandingHero() {
                   shellColors["accent"],
                   shellColors["teal"],
                 ]}
+                lightMode={mode === "light"}
                 paused={!animateBackground}
                 speed={0.35}
                 amplitude={0.8}
@@ -113,11 +115,6 @@ export function LandingHero() {
           >
             {["Редактор тем", "YouTube", "Конвертер"].map((label) => (
               <li key={label} className="inline-flex items-center gap-2">
-                <Check
-                  size={14}
-                  aria-hidden="true"
-                  className="shrink-0 text-shell-accent"
-                />
                 {label}
               </li>
             ))}
@@ -143,19 +140,16 @@ export function LandingHero() {
             <div className="mt-6 space-y-3">
               {[
                 {
-                  Icon: Palette,
                   name: "Редактор тем",
                   detail: "Цвет · Шрифт · Форма",
                   index: "01",
                 },
                 {
-                  Icon: Video,
                   name: "YouTube",
                   detail: "Видео · Аудио · Субтитры",
                   index: "02",
                 },
                 {
-                  Icon: RefreshCw,
                   name: "Конвертер",
                   detail: "Музыка · Изображения",
                   index: "03",
@@ -163,12 +157,8 @@ export function LandingHero() {
               ].map((tool) => (
                 <div
                   key={tool.index}
-                  className="flex items-center gap-3 rounded-xl border border-white/10 bg-shell-raised/60 p-4"
+                  className="flex items-center gap-3 rounded-xl border border-shell-divider/10 bg-shell-raised/60 p-4"
                 >
-                  <tool.Icon
-                    className="size-5 shrink-0 text-shell-accent"
-                    aria-hidden="true"
-                  />
                   <div className="min-w-0 flex-1">
                     <p className="text-base font-medium text-shell-text">
                       {tool.name}
@@ -192,7 +182,7 @@ export function LandingHero() {
               ].map((color) => (
                 <span
                   key={color}
-                  className="h-3 min-w-0 flex-1 rounded-full border border-white/10"
+                  className="h-3 min-w-0 flex-1 rounded-full border border-shell-divider/10"
                   style={{ backgroundColor: color }}
                 />
               ))}

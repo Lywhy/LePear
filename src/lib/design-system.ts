@@ -1,6 +1,6 @@
 /** Shared styling for the app shell/marketing pages, not exported user themes. */
 export const designClasses = {
-  page: "dark min-h-dvh bg-shell-background font-sans text-shell-text selection:bg-shell-accent selection:text-shell-accent-ink",
+  page: "min-h-dvh bg-shell-background font-sans text-shell-text selection:bg-shell-accent selection:text-shell-accent-ink",
   container: "mx-auto w-full max-w-7xl px-4 sm:px-8 lg:px-14",
   section: "py-12 sm:py-16 lg:py-24",
   stack: "flex flex-col gap-4 sm:gap-6",
@@ -15,14 +15,15 @@ export const designClasses = {
   body: "text-base leading-7 text-shell-muted [overflow-wrap:anywhere]",
   caption: "text-sm leading-6 text-shell-muted [overflow-wrap:anywhere]",
   surface:
-    "min-w-0 rounded-2xl border border-white/10 bg-shell-surface p-5 sm:p-6",
-  inset: "min-w-0 rounded-xl border border-white/10 bg-shell-raised p-4",
+    "min-w-0 rounded-2xl border border-shell-divider/10 bg-shell-surface p-5 sm:p-6",
+  inset:
+    "min-w-0 rounded-xl border border-shell-divider/10 bg-shell-raised p-4",
   primaryAction:
     "h-auto min-h-11 gap-2 rounded-lg bg-shell-accent px-4 py-3 text-sm leading-6 font-medium text-shell-accent-ink whitespace-normal hover:bg-shell-accent-hover focus-visible:border-shell-accent focus-visible:ring-shell-accent/40",
   secondaryAction:
-    "h-auto min-h-11 gap-2 rounded-lg border-white/20 bg-transparent px-4 py-3 text-sm leading-6 text-shell-soft whitespace-normal hover:bg-white/5 focus-visible:border-shell-accent focus-visible:ring-shell-accent/40",
+    "h-auto min-h-11 gap-2 rounded-lg border-shell-divider/20 bg-transparent px-4 py-3 text-sm leading-6 text-shell-soft whitespace-normal hover:bg-shell-divider/5 focus-visible:border-shell-accent focus-visible:ring-shell-accent/40",
   quietAction:
-    "h-auto min-h-11 rounded-lg px-3 py-2 text-sm leading-6 text-shell-soft hover:bg-white/5 focus-visible:border-shell-accent focus-visible:ring-shell-accent/40",
+    "h-auto min-h-11 rounded-lg px-3 py-2 text-sm leading-6 text-shell-soft hover:bg-shell-divider/5 focus-visible:border-shell-accent focus-visible:ring-shell-accent/40",
   focus:
     "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shell-accent",
 } as const;

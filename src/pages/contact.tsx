@@ -1,12 +1,7 @@
 import { TextReveal } from "@/components/motion/text-reveal";
 import { useShellPalette } from "@/lib/shell-settings";
 import { useRef, type CSSProperties } from "react";
-import {
-  ArrowUpRight,
-  Lightbulb,
-  MessageCircle,
-  SlidersHorizontal,
-} from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { RevealText } from "@/components/landing/marketing-text";
 import { ContactForm } from "@/components/contact-form";
@@ -17,17 +12,14 @@ import { designClasses as ui } from "@/lib/design-system";
 
 const topics = [
   {
-    Icon: Lightbulb,
     title: "Новая возможность",
     text: "Что помогло бы вам быстрее собрать свою тему?",
   },
   {
-    Icon: SlidersHorizontal,
     title: "Работа редактора",
     text: "Какой параметр или компонент стоит улучшить?",
   },
   {
-    Icon: MessageCircle,
     title: "Вопрос о LePear",
     text: "Что осталось непонятным при знакомстве с проектом?",
   },
@@ -77,11 +69,8 @@ export default function ContactPage() {
                 О чём можно рассказать
               </TextReveal>
               <ul className="mt-5 space-y-5">
-                {topics.map(({ Icon, title, text }) => (
+                {topics.map(({ title, text }) => (
                   <li key={title} className="flex items-start gap-3">
-                    <span className="grid size-9 shrink-0 place-items-center rounded-lg border border-white/10 bg-shell-raised text-shell-accent">
-                      <Icon size={18} aria-hidden="true" />
-                    </span>
                     <div className="min-w-0">
                       <p className="text-base leading-7 font-medium">{title}</p>
                       <p className={ui.caption}>{text}</p>

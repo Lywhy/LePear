@@ -1,3 +1,4 @@
+import { fontInfo, type ThemeFont } from "@/lib/font-catalog";
 import { TextReveal } from "@/components/motion/text-reveal";
 import { controlClasses as controls } from "@/components/editor/control-classes";
 import { TransferStatus } from "@/components/editor/transfer-status";
@@ -7,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Code2, Copy, Download, FileJson } from "lucide-react";
 
 export function ThemeExport({
+  themeFont,
   onCopy,
   onDownload,
   copied,
@@ -14,6 +16,7 @@ export function ThemeExport({
   status,
   statusTone,
 }: {
+  themeFont: ThemeFont;
   onCopy: (format: "css" | "json") => void;
   onDownload: (format: "css" | "json") => void;
   copied: boolean;
@@ -21,6 +24,7 @@ export function ThemeExport({
   status: string;
   statusTone: "info" | "success" | "warning" | "error";
 }) {
+  const font = fontInfo(themeFont);
   return (
     <div className="mt-5 min-w-0 space-y-4">
       <div className="grid min-w-0 gap-4 xl:grid-cols-2">
@@ -46,13 +50,13 @@ export function ThemeExport({
         ).map(({ format, title, name, description, Icon }) => (
           <div
             key={format}
-            className="flex min-w-0 flex-col rounded-xl border border-white/15 bg-shell-surface p-4 sm:p-5"
+            className="flex min-w-0 flex-col rounded-xl border border-shell-divider/15 bg-shell-surface p-4 sm:p-5"
           >
             <div className="mb-3 flex items-center justify-between gap-3">
-              <span className="grid size-10 place-items-center rounded-lg border border-white/10 bg-shell-raised text-shell-accent">
+              <span className="grid size-10 place-items-center rounded-lg border border-shell-divider/10 bg-shell-raised text-shell-accent">
                 <Icon size={20} aria-hidden="true" />
               </span>
-              <span className="rounded-md border border-white/15 px-2 py-1 font-mono text-sm text-shell-muted">
+              <span className="rounded-md border border-shell-divider/15 px-2 py-1 font-mono text-sm text-shell-muted">
                 {name}
               </span>
             </div>
@@ -122,7 +126,7 @@ export function ThemeExport({
       )}
       <details
         id="theme-integration"
-        className="rounded-xl border border-white/15 bg-shell-surface p-4"
+        className="rounded-xl border border-shell-divider/15 bg-shell-surface p-4"
       >
         <summary className="cursor-pointer rounded-md text-base leading-7 font-medium focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shell-accent">
           Как подключить CSS к проекту
@@ -146,15 +150,24 @@ export function ThemeExport({
             наследовали настройки.
           </li>
           <li>
-            Для Geist подключите{" "}
-            <code className="text-shell-text wrap-anywhere">
-              @fontsource-variable/geist
-            </code>
-            . Остальные шрифты используют установленные на устройстве гарнитуры
-            и fallback.
+            {font.packageName ? (
+              <>
+                Для {font.label} установите{" "}
+                <code className="text-shell-text wrap-anywhere">
+                  {font.packageName}
+                </code>{" "}
+                и импортируйте его wght.css перед CSS темы. Шрифты в экспорт не
+                встроены.
+              </>
+            ) : (
+              <>
+                Для {font.label} используется установленный шрифт устройства и
+                запасная цепочка; файлы гарнитуры в экспорт не входят.
+              </>
+            )}
           </li>
         </ol>
-        <p className="mt-4 border-t border-white/10 pt-3 text-sm leading-7 text-shell-muted">
+        <p className="mt-4 border-t border-shell-divider/10 pt-3 text-sm leading-7 text-shell-muted">
           Пример в репозитории:{" "}
           <code className="text-shell-text wrap-anywhere">
             examples/theme-integration

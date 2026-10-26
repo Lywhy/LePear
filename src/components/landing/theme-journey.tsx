@@ -107,7 +107,7 @@ export function ThemeJourney() {
           >
             <div className="mb-3 flex items-center gap-3">
               <span
-                className="grid size-12 place-items-center rounded-full border border-white/20 bg-shell-surface shadow-[0_0_30px_var(--shell-glow-soft)]"
+                className="grid size-12 place-items-center rounded-full border border-shell-divider/20 bg-shell-surface shadow-[0_0_30px_var(--shell-glow-soft)]"
                 style={{ color: stage.color }}
               >
                 <stage.Icon size={22} aria-hidden="true" />
@@ -116,7 +116,7 @@ export function ThemeJourney() {
                 {stage.number} / LEPEAR
               </span>
             </div>
-            <article className="relative isolate min-w-0 overflow-hidden rounded-2xl border border-white/15 bg-linear-to-b from-shell-raised via-shell-surface to-shell-deep p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_16px_60px_rgba(0,0,0,0.18)] sm:p-7">
+            <article className="relative isolate min-w-0 overflow-hidden rounded-2xl border border-shell-divider/15 bg-linear-to-b from-shell-raised via-shell-surface to-shell-deep p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_16px_60px_rgba(0,0,0,0.18)] sm:p-7">
               <div
                 aria-hidden="true"
                 className="pointer-events-none absolute -top-16 -right-12 -z-10 size-48 rounded-full opacity-10 blur-3xl"
@@ -124,7 +124,7 @@ export function ThemeJourney() {
               />
               <div
                 aria-hidden="true"
-                className="mb-6 flex min-h-28 items-center rounded-xl border border-white/10 bg-shell-deep/65 p-4"
+                className="mb-6 flex min-h-28 items-center rounded-xl border border-shell-divider/10 bg-shell-deep/65 p-4"
               >
                 {stage.visual === "palette" && (
                   <div className="flex w-full gap-2">
@@ -136,7 +136,7 @@ export function ThemeJourney() {
                     ].map((color, i) => (
                       <motion.span
                         key={color}
-                        className="block h-16 flex-1 rounded-lg border border-white/15"
+                        className="block h-16 flex-1 rounded-lg border border-shell-divider/15"
                         style={{ background: color }}
                         initial={false}
                         whileInView={
@@ -170,7 +170,7 @@ export function ThemeJourney() {
                         <Check size={14} />
                         Свой стиль
                       </span>
-                      <span className="rounded-full border border-white/20 px-3 py-1 text-sm text-shell-soft">
+                      <span className="rounded-full border border-shell-divider/20 px-3 py-1 text-sm text-shell-soft">
                         shadcn/ui
                       </span>
                     </div>

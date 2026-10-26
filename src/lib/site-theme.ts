@@ -1,17 +1,10 @@
+import { fontFamilies, fontInstallationNote } from "@/lib/font-catalog";
+import type { ThemeFont } from "@/lib/font-catalog";
+export { fontFamilies, type ThemeFont } from "@/lib/font-catalog";
 import type { CSSProperties } from "react";
 
 export const THEME_SCHEMA_VERSION = 2 as const;
 export type ThemeMode = "light" | "dark";
-export const fontFamilies = {
-  Geist: "'Geist Variable', system-ui, Arial, sans-serif",
-  System: "system-ui, 'Segoe UI', Arial, sans-serif",
-  Georgia: "Georgia, 'Times New Roman', serif",
-  Arial: "Arial, Helvetica, sans-serif",
-  Verdana: "Verdana, Geneva, sans-serif",
-  "Times New Roman": "'Times New Roman', Georgia, serif",
-  "Courier New": "'Courier New', Courier, monospace",
-} as const;
-export type ThemeFont = keyof typeof fontFamilies;
 export const themeColors = [
   { name: "Lime", value: "#d3ed9a", className: "bg-[#d3ed9a]" },
   { name: "Sky", value: "#9fd6ef", className: "bg-[#9fd6ef]" },
@@ -401,7 +394,7 @@ export function exportTheme(theme: SiteTheme) {
  * Import AFTER Tailwind/shadcn CSS in your main stylesheet and compile with Tailwind v4.
  * Root: class="lepear-theme${theme.mode === "dark" ? " dark" : ""}" data-theme="${theme.mode}".
  * Switch BOTH class dark and data-theme. Portals must be inside this themed root.
- * Geist: install @fontsource-variable/geist and import its CSS separately.
+ * Font: ${fontInstallationNote(theme.typography.font)}
  * System fonts use the fallback chain; font files are not included.
  */
 @theme inline {

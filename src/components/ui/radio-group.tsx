@@ -24,7 +24,7 @@ function RadioGroupItem({
       nativeButton={false}
       render={<div />}
       className={cn(
-        "min-w-0 cursor-pointer rounded-xl border border-white/15 bg-shell-deep p-5 outline-none data-checked:border-shell-accent data-checked:bg-shell-raised focus-visible:ring-2 focus-visible:ring-shell-accent focus-visible:ring-offset-4 focus-visible:ring-offset-shell-surface data-disabled:cursor-not-allowed",
+        "min-w-0 cursor-pointer rounded-xl border border-shell-divider/15 bg-shell-deep p-5 outline-none data-checked:border-shell-accent data-checked:bg-shell-raised focus-visible:ring-2 focus-visible:ring-shell-accent focus-visible:ring-offset-4 focus-visible:ring-offset-shell-surface data-disabled:cursor-not-allowed",
         className,
       )}
       {...props}

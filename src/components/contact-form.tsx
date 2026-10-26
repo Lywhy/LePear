@@ -109,11 +109,11 @@ export function ContactForm({ onSend }: ContactFormProps) {
     }
   }
   const fieldClass =
-    "h-auto min-h-12 w-full min-w-0 rounded-lg border-white/20 bg-shell-deep px-3 py-3 text-base leading-6 text-shell-text placeholder:text-shell-dim hover:border-white/35 focus-visible:border-shell-accent focus-visible:ring-shell-accent/25 aria-invalid:border-shell-danger aria-invalid:ring-shell-danger/20 dark:bg-shell-deep dark:aria-invalid:border-shell-danger disabled:cursor-not-allowed disabled:opacity-50 md:text-base";
+    "h-auto min-h-12 w-full min-w-0 rounded-lg border-shell-divider/20 bg-shell-deep px-3 py-3 text-base leading-6 text-shell-text placeholder:text-shell-dim hover:border-shell-divider/35 focus-visible:border-shell-accent focus-visible:ring-shell-accent/25 aria-invalid:border-shell-danger aria-invalid:ring-shell-danger/20 dark:bg-shell-deep dark:aria-invalid:border-shell-danger disabled:cursor-not-allowed disabled:opacity-50 md:text-base";
   return (
     <>
-      <Card className="min-w-0 w-full gap-6 rounded-2xl border border-white/15 bg-shell-surface py-6 text-shell-text shadow-none ring-0 sm:py-8">
-        <CardHeader className="gap-3 border-b border-white/10 px-5 pb-6 sm:px-8">
+      <Card className="min-w-0 w-full gap-6 rounded-2xl border border-shell-divider/15 bg-shell-surface py-6 text-shell-text shadow-none ring-0 sm:py-8">
+        <CardHeader className="gap-3 border-b border-shell-divider/10 px-5 pb-6 sm:px-8">
           <div className="mb-1 flex size-11 items-center justify-center rounded-xl border border-shell-accent/20 bg-shell-accent/10 text-shell-accent">
             <MessageSquare size={21} aria-hidden="true" />
           </div>
@@ -319,7 +319,7 @@ export function ContactForm({ onSend }: ContactFormProps) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent
           style={shellThemeStyle}
-          className="dark max-h-[85dvh] min-w-0 max-w-[calc(100vw_-_2rem)] overflow-y-auto rounded-2xl border border-white/15 bg-shell-surface p-5 text-shell-text motion-reduce:animate-none sm:max-w-lg sm:p-6"
+          className="max-h-[85dvh] min-w-0 max-w-[calc(100vw_-_2rem)] overflow-y-auto rounded-2xl border border-shell-divider/15 bg-shell-surface p-5 text-shell-text motion-reduce:animate-none sm:max-w-lg sm:p-6"
           showCloseButton={false}
         >
           <DialogHeader className="gap-3">
@@ -346,7 +346,7 @@ export function ContactForm({ onSend }: ContactFormProps) {
             </DialogDescription>
           </DialogHeader>
           {!sent && (
-            <dl className="my-2 min-w-0 space-y-4 rounded-xl border border-white/10 bg-shell-deep p-4 text-base wrap-anywhere">
+            <dl className="my-2 min-w-0 space-y-4 rounded-xl border border-shell-divider/10 bg-shell-deep p-4 text-base wrap-anywhere">
               <div>
                 <dt className="text-sm text-shell-muted">Имя</dt>
                 <dd className="mt-1">{values.name}</dd>
@@ -369,13 +369,13 @@ export function ContactForm({ onSend }: ContactFormProps) {
               </div>
             </dl>
           )}
-          <DialogFooter className="m-0 mt-2 gap-3 rounded-none border-white/10 bg-transparent p-0 pt-4">
+          <DialogFooter className="m-0 mt-2 gap-3 rounded-none border-shell-divider/10 bg-transparent p-0 pt-4">
             <Button
               onClick={() => setOpen(false)}
               variant="outline"
               className={
                 ui.secondaryAction +
-                " w-full text-base dark:border-white/20 dark:bg-transparent dark:hover:bg-white/5"
+                " w-full text-base dark:border-shell-divider/20 dark:bg-transparent dark:hover:bg-shell-divider/5"
               }
             >
               {sent ? "Закрыть" : "Вернуться к редактированию"}
