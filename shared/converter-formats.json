@@ -1,0 +1,72 @@
+[
+  {
+    "id": "mp3",
+    "label": "MP3",
+    "category": "audio",
+    "extensions": ["mp3"],
+    "mime": "audio/mpeg"
+  },
+  {
+    "id": "wav",
+    "label": "WAV",
+    "category": "audio",
+    "extensions": ["wav", "wave"],
+    "mime": "audio/wav"
+  },
+  {
+    "id": "flac",
+    "label": "FLAC",
+    "category": "audio",
+    "extensions": ["flac"],
+    "mime": "audio/flac"
+  },
+  {
+    "id": "ogg",
+    "label": "OGG",
+    "category": "audio",
+    "extensions": ["ogg", "oga", "opus"],
+    "mime": "audio/ogg"
+  },
+  {
+    "id": "m4a",
+    "label": "M4A",
+    "category": "audio",
+    "extensions": ["m4a"],
+    "mime": "audio/mp4"
+  },
+  {
+    "id": "aac",
+    "label": "AAC",
+    "category": "audio",
+    "extensions": ["aac"],
+    "mime": "audio/aac"
+  },
+  {
+    "id": "png",
+    "label": "PNG",
+    "category": "image",
+    "extensions": ["png"],
+    "mime": "image/png"
+  },
+  {
+    "id": "jpg",
+    "label": "JPEG",
+    "category": "image",
+    "extensions": ["jpg", "jpeg", "jpe"],
+    "mime": "image/jpeg"
+  },
+  {
+    "id": "webp",
+    "label": "WebP",
+    "category": "image",
+    "extensions": ["webp"],
+    "mime": "image/webp"
+  },
+  {
+    "id": "bmp",
+    "label": "BMP",
+    "category": "image",
+    "extensions": ["bmp"],
+    "mime": "image/bmp"
+  }
+]

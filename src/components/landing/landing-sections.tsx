@@ -1,7 +1,7 @@
 import { TextReveal } from "@/components/motion/text-reveal";
-import { shellColors } from "@/lib/shell-palette";
+import { shellColors, shellSwatches } from "@/lib/shell-palette";
 import { AccentText, RevealText } from "@/components/landing/marketing-text";
-import { EditorLink, Kicker } from "@/components/landing/shared";
+import { Kicker } from "@/components/landing/shared";
 import CountUp from "@/components/react-bits/count-up";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import SpotlightCard from "@/components/react-bits/spotlight-card";
@@ -12,185 +12,190 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { designClasses as ui } from "@/lib/design-system";
-import { shellSwatches as themeColors } from "@/lib/shell-palette";
+import { converterFormats } from "@/lib/converter-formats";
 import {
+  ArrowRight,
   Check,
-  Code2,
+  Download,
   Layers3,
   MessageCircle,
   Palette,
-  Save,
+  Play,
+  RefreshCw,
   SlidersHorizontal,
-  Type,
+  Video,
 } from "lucide-react";
 import { useReducedMotion } from "motion/react";
 import type { CSSProperties } from "react";
 import { Link } from "react-router-dom";
 
-const section = `${ui.container} scroll-mt-8 py-16 sm:py-20 lg:py-24`;
-const cards = [
+const section = ui.container + " scroll-mt-8 py-16 sm:py-20 lg:py-24";
+const tools = [
   {
-    id: "color",
+    id: "theme",
     icon: Palette,
     number: "01",
-    label: "ЦВЕТ",
-    title: "Найдите свою палитру",
-    text: "Четыре пресета, собственный акцент и независимые светлый и тёмный режимы. Цвета поверхностей, текста и состояний — под вашим контролем.",
-    action: "Подобрать цвета",
+    label: "СТИЛЬ",
+    title: "Сайт с вашим характером",
+    text: "Соберите палитру, подберите шрифт и настройте форму компонентов. Примерьте тему в редакторе, сохраните её и заберите CSS или JSON.",
+    action: "Открыть редактор",
+    to: "/editor",
+    detail: "Цвета · Типографика · Размеры",
   },
   {
-    id: "type",
-    icon: Type,
+    id: "youtube",
+    icon: Video,
     number: "02",
-    label: "ТИПОГРАФИКА",
-    title: "Дайте сайту свой голос",
-    text: "Подберите семейство, насыщенность и масштаб заголовков. Настройте интервалы и оцените длинный текст на реальных компонентах.",
-    action: "Выбрать типографику",
+    label: "МЕДИА",
+    title: "Из ссылки — в ваш файл",
+    text: "Вставьте ссылку на YouTube. Выберите видео со звуком, только аудио или доступные субтитры — и скачайте то, что нужно.",
+    action: "Перейти к YouTube",
+    to: "/youtube",
+    detail: "Видео · Аудио · Субтитры",
   },
   {
-    id: "shape",
-    icon: SlidersHorizontal,
+    id: "converter",
+    icon: RefreshCw,
     number: "03",
-    label: "РАЗМЕРЫ",
-    title: "Соберите всё в деталях",
-    text: "От строгих граней до мягких карточек. Меняйте радиусы, плотность и отступы, сохраняя удобную высоту кнопок и полей.",
-    action: "Настроить размеры",
+    label: "ФОРМАТЫ",
+    title: "Тот же файл. Новые возможности",
+    text: "Преобразуйте музыку или изображение. Список форматов подстроится под исходник: от MP3 и FLAC до PNG, JPEG и WebP.",
+    action: "Открыть конвертер",
+    to: "/converter",
+    detail: "Музыка · Изображения",
   },
 ];
 const steps = [
   {
     number: "01",
-    icon: Palette,
-    title: "Выберите основу",
-    text: "Начните с пресета. Задайте свои цвета отдельно для светлого и тёмного режимов.",
+    icon: Layers3,
+    title: "Выберите задачу",
+    text: "Откройте редактор для оформления сайта, YouTube для скачивания или конвертер для смены формата файла.",
   },
   {
     number: "02",
-    icon: Layers3,
-    title: "Доведите до своего стиля",
-    text: "Настройте шрифт, размеры и отступы. Посмотрите на кнопки, формы и диалоги в широком и узком виде.",
+    icon: SlidersHorizontal,
+    title: "Задайте нужный результат",
+    text: "Настройте тему, вставьте ссылку или выберите файл. Инструмент покажет доступные параметры — работа начнётся по вашей команде.",
   },
   {
     number: "03",
-    icon: Save,
-    title: "Сохраните удачный вариант",
-    text: "Создайте именованную копию. Рабочие изменения сохраняются в браузере и восстанавливаются после перезагрузки.",
-  },
-  {
-    number: "04",
-    icon: Code2,
-    title: "Перенесите тему в проект",
-    text: "Скачайте CSS для shadcn/ui с Tailwind v4 и подключите его по инструкции. JSON пригодится для резервной копии и повторного импорта.",
+    icon: Download,
+    title: "Заберите и используйте",
+    text: "Экспортируйте тему в CSS/JSON или скачайте готовый файл. Темы можно сохранить в браузере, а медиафайлы доступны ограниченное время.",
   },
 ];
 const faqs = [
   {
     id: "product",
-    question: "Что я смогу настроить?",
+    question: "Что можно делать в LePear?",
     answer:
-      "LePear меняет цвета, шрифты, насыщенности, интервалы, закругления и плотность компонентов. Результат виден на живом интерфейсе shadcn/ui в отдельном редакторе. Превью на главной — статичный пример оформления.",
+      "Здесь три инструмента: редактор оформления сайта на shadcn/ui, скачивание видео, аудио и субтитров YouTube и конвертер музыки и изображений. Каждый работает на своей странице. На главной показаны только статичные примеры.",
   },
   {
-    id: "save",
-    question: "Сохранятся ли настройки после перезагрузки?",
+    id: "formats",
+    question: "Какие файлы можно конвертировать?",
     answer:
-      "Да, рабочая тема и настройки панели автоматически сохраняются в этом браузере. Можно создать до 20 именованных копий. Они обновляются отдельной кнопкой; рабочие изменения не перезаписывают копию автоматически. Для важной темы скачайте JSON: очистка данных браузера удалит локальные темы.",
+      "Аудио: MP3, WAV, FLAC, OGG, M4A и AAC. Статичные изображения: PNG, JPEG, WebP и BMP. После выбора файла появятся выходные форматы из его категории. Документы, видео и анимированные изображения в конвертере пока не поддерживаются. Лимиты размера, длительности и разрешения указаны на его странице.",
   },
   {
-    id: "modes",
-    question: "Светлый и тёмный режимы связаны?",
+    id: "quality",
+    question: "Конвертация улучшает качество?",
     answer:
-      "Цвета у них независимы: пресет и ручная настройка меняют только выбранный режим. Типографика, радиусы и отступы общие. В CSS и JSON экспортируются обе палитры.",
+      "Нет: переход из MP3 в WAV не восстановит потерянные детали. WAV может быть значительно больше исходника; MP3, OGG и AAC используют сжатие с потерями. PNG и WebP сохраняют прозрачность, а при переводе в JPEG или BMP она заменяется белым фоном.",
   },
   {
-    id: "integrate",
-    question: "Как подключить тему к своему сайту?",
+    id: "youtube",
+    question: "Что доступно по ссылке YouTube?",
     answer:
-      "CSS рассчитан на shadcn/ui и Tailwind CSS v4. Импортируйте файл в основной stylesheet, обработайте его сборкой и задайте контейнер темы по инструкции. Шрифты и размещение порталов меню/диалогов нужно подключить отдельно. Сам по себе файл не меняет внешний сайт.",
+      "Видео со звуком, отдельная аудиодорожка, в том числе MP3, и субтитры VTT/SRT, если они есть у ролика. Доступные качество, языки и дорожки появятся после получения данных. YouTube может ограничивать доступ или частоту запросов — в таком случае инструмент покажет объяснение.",
   },
   {
-    id: "import",
-    question: "Можно ли продолжить работу из JSON?",
+    id: "storage",
+    question: "Где хранятся темы и файлы?",
     answer:
-      "Да. Загрузите JSON темы LePear schema v2 или вставьте его содержимое в редактор. Перед применением показываются параметры и ошибки. Корректный импорт заменяет рабочий черновик, сохраняя библиотеку именованных копий. Максимальный размер файла — 1 МБ.",
+      "Рабочая тема и до 20 именованных копий хранятся в этом браузере. Для резервной копии и переноса скачайте JSON. Файлы YouTube и конвертера хранятся временно в локальном сервисе обработки, а затем удаляются. Срок доступности указан в инструменте; важные результаты сохраните на устройство.",
   },
   {
-    id: "account",
-    question: "Нужен ли аккаунт или сервер?",
+    id: "server",
+    question: "Нужна ли регистрация и что требуется для работы?",
     answer:
-      "Для редактора регистрация не нужна. Темы хранятся локально: синхронизации между браузерами, вкладками и устройствами нет. Для переноса используйте JSON. Контактная форма пока демонстрационная и не отправляет сообщения.",
+      "Аккаунт LePear не нужен. Редактор работает в браузере. Для YouTube и конвертации нужен запущенный локальный сервис обработки с установленными инструментами. Если он недоступен, страница объяснит, что делать. Активные задания при уходе со страницы отменяются; автоматического возобновления нет.",
+  },
+  {
+    id: "theme",
+    question: "Как использовать созданную тему на сайте?",
+    answer:
+      "В редакторе скачайте CSS для shadcn/ui и Tailwind CSS v4 и подключите его по инструкции экспорта. Для продолжения работы в LePear используйте JSON. Светлая и тёмная палитры независимы; шрифты и размещение порталов меню/диалогов подключаются в вашем проекте отдельно.",
   },
 ];
-
 function FeatureVisual({ kind }: { kind: string }) {
   return (
     <div
       aria-hidden="true"
-      className={
-        "flex min-h-52 flex-col justify-center border-b border-white/10 bg-shell-surface/55 p-6 sm:p-7 " +
-        (kind === "color" ? "lg:border-r lg:border-b-0" : "")
-      }
+      className="flex h-64 flex-col justify-center bg-shell-deep/60 p-6 sm:p-7"
     >
-      {kind === "color" ? (
+      {kind === "theme" ? (
         <>
-          <div className="flex h-28 gap-2 sm:h-36">
-            {themeColors.map((color) => (
+          <p className="font-[family-name:Arial_Black,Arial,sans-serif] text-6xl leading-none font-black tracking-[-0.06em] text-shell-text">
+            Aa<span className="text-shell-accent">.</span>
+          </p>
+          <div className="mt-5 flex gap-2">
+            {shellSwatches.map((color) => (
               <span
                 key={color.name}
-                className={`min-w-0 flex-1 rounded-lg ${color.className}`}
+                className={
+                  "h-10 min-w-0 flex-1 rounded-lg border border-white/15 " +
+                  color.className
+                }
               />
             ))}
           </div>
-          <div className="mt-5 grid grid-cols-2 gap-3 text-sm leading-6">
-            <div className="rounded-lg border border-white/10 bg-shell-raised p-3 text-shell-text">
-              Тёмная основа
-              <span className="mt-1 block text-shell-muted">Свой характер</span>
-            </div>
-            <div className="rounded-lg border border-shell-sand bg-shell-light-surface p-3 text-shell-light-ink">
-              Светлая основа
-              <span className="mt-1 block text-shell-line">Свои цвета</span>
-            </div>
-          </div>
+          <p className="mt-4 text-sm leading-6 text-shell-muted">
+            Палитра + шрифт + форма
+          </p>
         </>
-      ) : kind === "type" ? (
+      ) : kind === "youtube" ? (
         <>
-          <p className="text-6xl leading-none tracking-[-0.06em] text-shell-text">
-            Aa <span className="font-serif text-shell-sand">Бб</span>
-          </p>
-          <p className="mt-5 text-base leading-7 text-shell-soft">
-            Читается. Чувствуется. Запоминается.
-          </p>
-          <div className="mt-3 flex flex-wrap gap-3 text-sm leading-6 text-shell-dim">
-            <span>Geist</span>
-            <span>Georgia</span>
-            <span>Системный</span>
+          <div className="flex h-24 items-center justify-center rounded-xl border border-shell-accent/25 bg-linear-to-br from-shell-hover to-shell-surface">
+            <Play className="size-9 text-shell-accent" />
+          </div>
+          <div className="mt-4 grid grid-cols-3 gap-2 text-sm leading-6">
+            {["Видео", "Аудио", "Субтитры"].map((label) => (
+              <span
+                key={label}
+                className="min-w-0 rounded-lg border border-white/15 bg-shell-raised px-1 py-2 text-center break-words text-shell-soft"
+              >
+                {label}
+              </span>
+            ))}
           </div>
         </>
       ) : (
         <>
-          <div className="flex flex-wrap gap-3 text-sm leading-6 text-shell-text">
-            <span className="rounded-sm border border-shell-line/50 bg-shell-raised px-4 py-3">
-              Строго
-            </span>
-            <span className="rounded-xl border border-shell-line/50 bg-shell-hover px-4 py-3">
-              Мягко
-            </span>
-            <span className="rounded-full bg-shell-accent px-4 py-3 text-shell-accent-ink">
-              Свободно
-            </span>
+          <div className="space-y-3">
+            {[
+              { from: "MP3", to: "WAV" },
+              { from: "PNG", to: "WebP" },
+            ].map((sample) => (
+              <div
+                key={sample.from}
+                className="grid grid-cols-3 items-center justify-items-center gap-3 rounded-xl border border-white/10 bg-shell-raised px-4 py-4 font-mono text-lg"
+              >
+                <span className="text-shell-muted">{sample.from}</span>
+                <ArrowRight className="size-5 text-shell-dim" />
+                <span className="text-shell-accent">{sample.to}</span>
+              </div>
+            ))}
           </div>
-          <div className="mt-5 flex items-center gap-3">
-            <span className="text-sm text-shell-muted">Плотность</span>
-            <span className="h-1 flex-1 rounded-full bg-shell-hover">
-              <span className="block h-full w-2/3 rounded-full bg-shell-accent" />
-            </span>
-          </div>
+          <p className="mt-4 text-sm leading-6 text-shell-muted">
+            Форматы под выбранный файл
+          </p>
         </>
       )}
     </div>
   );
 }
-
 export function LandingFeatures() {
   const reduced = useReducedMotion();
   return (
@@ -201,32 +206,30 @@ export function LandingFeatures() {
     >
       <div className="mb-8 grid items-end gap-5 lg:grid-cols-[1fr_0.8fr] lg:gap-16">
         <div>
-          <Kicker>СОБСТВЕННЫЙ ВИЗУАЛЬНЫЙ ЯЗЫК</Kicker>
-          <h2 id="features-title" className={`mt-4 ${ui.sectionTitle}`}>
-            <RevealText text="Одна основа." />
+          <Kicker>ОДНО МЕСТО ДЛЯ РАЗНЫХ ЗАДАЧ</Kicker>
+          <h2 id="features-title" className={"mt-4 " + ui.sectionTitle}>
+            <RevealText text="Что сделаем" />
             <br />
             <span className="text-shell-dim">
-              <RevealText text="Бесконечно ваш." />
+              <RevealText text="сегодня?" />
             </span>
           </h2>
         </div>
-        <TextReveal className={`${ui.body} max-w-lg`}>
-          Цвет, типографика и форма работают вместе. Настройте каждый слой и
-          сразу посмотрите на целый интерфейс.
+        <TextReveal className={ui.body + " max-w-lg"}>
+          Оформить сайт, сохранить медиа или подготовить файл к следующему
+          проекту. Выберите свой инструмент — всё остальное уже под рукой.
         </TextReveal>
       </div>
-      <div className={`${ui.grid} lg:grid-cols-2`}>
-        {cards.map((card, index) => (
+      <div className={ui.grid + " lg:grid-cols-3"}>
+        {tools.map((tool, index) => (
           <ScrollReveal
-            key={card.id}
+            key={tool.id}
             delay={index * 0.08}
-            className={
-              "h-full min-w-0 " + (card.id === "color" ? "lg:col-span-2" : "")
-            }
+            className="h-full min-w-0"
           >
             <SpotlightCard
               role="article"
-              aria-labelledby={`feature-${card.id}`}
+              aria-labelledby={"feature-" + tool.id}
               effectsEnabled={reduced === false}
               spotlightColor={shellColors["accent"]}
               intensity={0.2}
@@ -235,12 +238,7 @@ export function LandingFeatures() {
               smoothing={0.2}
               ambient={false}
               flare={false}
-              className={
-                "grid h-full min-w-0 p-0 focus-within:outline-2 focus-within:outline-offset-4 focus-within:outline-shell-accent " +
-                (card.id === "color"
-                  ? "lg:col-span-2 lg:grid-cols-2"
-                  : "grid-rows-[auto_1fr]")
-              }
+              className="grid h-full min-w-0 grid-rows-[16rem_1fr] p-0 focus-within:outline-2 focus-within:outline-offset-4 focus-within:outline-shell-accent"
               style={
                 {
                   "--spotlight-card-surface": shellColors["surface"],
@@ -248,29 +246,34 @@ export function LandingFeatures() {
                 } as CSSProperties
               }
             >
-              <FeatureVisual kind={card.id} />
-              <div className="flex flex-1 flex-col p-6 sm:p-7">
+              <FeatureVisual kind={tool.id} />
+              <div className="flex flex-col p-6 sm:p-7">
                 <p className="flex items-center justify-between gap-3 text-sm leading-6 text-shell-muted">
                   <span>
-                    {card.number} / {card.label}
+                    {tool.number} / {tool.label}
                   </span>
-                  <card.icon size={18} aria-hidden="true" />
+                  <tool.icon size={18} aria-hidden="true" />
                 </p>
                 <TextReveal
                   as="h3"
-                  id={`feature-${card.id}`}
-                  className={`mt-4 ${ui.cardTitle}`}
+                  id={"feature-" + tool.id}
+                  className={"mt-4 " + ui.cardTitle}
                 >
-                  {card.title}
+                  {tool.title}
                 </TextReveal>
-                <TextReveal className={`mt-3 flex-1 ${ui.body}`}>
-                  {card.text}
+                <TextReveal className={"mt-3 flex-1 " + ui.body}>
+                  {tool.text}
                 </TextReveal>
+                <p className={"mt-4 " + ui.caption}>{tool.detail}</p>
                 <Link
-                  to="/editor"
-                  className={`mt-5 inline-flex min-h-11 items-center justify-between gap-3 rounded text-sm text-shell-accent hover:text-shell-accent-hover ${ui.focus}`}
+                  to={tool.to}
+                  className={
+                    "mt-5 inline-flex min-h-11 items-center justify-between gap-3 rounded text-base text-shell-accent hover:text-shell-accent-hover " +
+                    ui.focus
+                  }
                 >
-                  {card.action}
+                  {tool.action}
+                  <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
                 </Link>
               </div>
             </SpotlightCard>
@@ -279,9 +282,9 @@ export function LandingFeatures() {
       </div>
       <ScrollReveal className="mt-6 flex flex-wrap gap-x-8 gap-y-3 rounded-xl border border-white/10 bg-shell-deep px-5 py-4 text-sm leading-6 text-shell-muted">
         {[
-          "Два режима — независимые палитры",
-          "Именованные копии в браузере",
-          "JSON для переноса и резервных копий",
+          "Без аккаунта LePear",
+          "Отдельная страница для каждой задачи",
+          "Темы в браузере, медиа — через локальный сервис",
         ].map((text) => (
           <p key={text} className="flex items-start gap-2">
             <Check
@@ -296,37 +299,43 @@ export function LandingFeatures() {
     </section>
   );
 }
-
 export function LandingWorkflow() {
   return (
     <section
       id="how-it-works"
       aria-labelledby="workflow-title"
-      className={section + " scroll-mt-24 border-t border-white/10"}
+      className={section + " scroll-mt-24"}
     >
       <div className="grid items-start gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
         <div>
-          <Kicker>ОТ ИДЕИ ДО ИНТЕРФЕЙСА</Kicker>
+          <Kicker>ОТ ЗАДАЧИ К РЕЗУЛЬТАТУ</Kicker>
           <TextReveal
             as="h2"
             id="workflow-title"
-            className={`mt-4 ${ui.sectionTitle}`}
+            className={"mt-4 " + ui.sectionTitle}
           >
-            Найдите своё.
+            Выберите.
             <br />
-            <span className="text-shell-dim">Сохраните. Используйте.</span>
+            <span className="text-shell-dim">Сделайте. Заберите.</span>
           </TextReveal>
-          <TextReveal className={`mt-5 max-w-md ${ui.body}`}>
-            От первой палитры до темы, которую можно забрать с собой. Без
-            регистрации и лишних шагов.
+          <TextReveal className={"mt-5 max-w-md " + ui.body}>
+            Без единого сложного рабочего окна. У каждого инструмента свой
+            понятный сценарий и нужные именно ему настройки.
           </TextReveal>
-          <EditorLink className="mt-6 gap-2 rounded-lg">
-            Начать с пресета
-          </EditorLink>
+          <Link
+            to="/#features"
+            className={
+              "mt-6 inline-flex min-h-12 items-center gap-3 rounded-lg bg-shell-accent px-5 py-3 text-base font-medium text-shell-accent-ink hover:bg-shell-accent-hover " +
+              ui.focus
+            }
+          >
+            К инструментам
+            <ArrowRight size={18} aria-hidden="true" />
+          </Link>
         </div>
-        <ol className="min-w-0 border-t border-white/20">
+        <ol className="min-w-0">
           {steps.map((step, index) => (
-            <li key={step.number} className="min-w-0 border-b border-white/15">
+            <li key={step.number} className="min-w-0">
               <ScrollReveal
                 delay={index * 0.05}
                 className="grid grid-cols-[3rem_1fr] gap-4 py-7 sm:grid-cols-[4.5rem_1fr] sm:gap-6"
@@ -360,7 +369,6 @@ export function LandingWorkflow() {
     </section>
   );
 }
-
 export function LandingFaq() {
   return (
     <section
@@ -368,7 +376,7 @@ export function LandingFaq() {
       aria-labelledby="faq-title"
       className={
         section +
-        " scroll-mt-24 grid gap-8 border-t border-white/10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16"
+        " scroll-mt-24 grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16"
       }
     >
       <div>
@@ -376,18 +384,22 @@ export function LandingFaq() {
         <TextReveal
           as="h2"
           id="faq-title"
-          className={`mt-4 ${ui.sectionTitle}`}
+          className={"mt-4 " + ui.sectionTitle}
         >
           Немного ясности
           <br />
-          <span className="text-shell-dim">перед первым цветом.</span>
+          <span className="text-shell-dim">перед началом.</span>
         </TextReveal>
-        <TextReveal className={`mt-5 max-w-md ${ui.body}`}>
-          Что сохраняется, как перенести тему и что понадобится для подключения.
+        <TextReveal className={"mt-5 max-w-md " + ui.body}>
+          Что умеют инструменты, как сохраняются результаты и какие есть
+          ограничения.
         </TextReveal>
         <Link
           to="/contact"
-          className={`mt-4 inline-flex min-h-11 items-center gap-2 rounded text-sm text-shell-accent hover:text-shell-accent-hover ${ui.focus}`}
+          className={
+            "mt-4 inline-flex min-h-11 items-center gap-2 rounded text-sm text-shell-accent hover:text-shell-accent-hover " +
+            ui.focus
+          }
         >
           <MessageCircle size={17} aria-hidden="true" />
           Есть другой вопрос?
@@ -399,11 +411,7 @@ export function LandingFaq() {
           className="rounded-2xl border border-white/10 bg-shell-surface px-4 sm:px-6 motion-reduce:**:data-[slot=accordion-content]:animate-none motion-reduce:**:data-[slot=accordion-trigger]:transition-none"
         >
           {faqs.map((item) => (
-            <AccordionItem
-              key={item.id}
-              value={item.id}
-              className="border-white/10"
-            >
+            <AccordionItem key={item.id} value={item.id} className="border-0">
               <AccordionTrigger className="min-h-16 items-center gap-5 rounded-md py-5 text-base leading-7 text-shell-text hover:no-underline focus-visible:border-shell-accent focus-visible:ring-shell-accent/30 **:data-[slot=accordion-trigger-icon]:text-shell-sand">
                 {item.question}
               </AccordionTrigger>
@@ -417,55 +425,70 @@ export function LandingFaq() {
     </section>
   );
 }
-
 export function LandingCta() {
   return (
-    <section aria-labelledby="cta-title" className={`${ui.container} pb-8`}>
+    <section aria-labelledby="cta-title" className={ui.container + " pb-8"}>
       <ScrollReveal className="relative isolate overflow-hidden rounded-3xl border border-shell-accent/25 bg-shell-surface px-5 py-12 text-left sm:px-10 sm:py-16 lg:px-14">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_50%_0%,var(--shell-glow-amber),transparent_70%)]"
         />
         <p className="text-sm leading-6 font-medium tracking-wide text-shell-soft">
-          ВАШ СЛЕДУЮЩИЙ ХОРОШИЙ ВАРИАНТ
+          ВАША СЛЕДУЮЩАЯ ЗАДАЧА
         </p>
         <TextReveal as="h2" id="cta-title" className={"mt-4 " + ui.heroTitle}>
-          Пусть выглядит
+          Меньше поисков.
           <br />
-          <AccentText text="по-вашему." />
+          <AccentText text="Больше готового." />
         </TextReveal>
-        <TextReveal className={`mt-5 max-w-lg ${ui.body}`}>
-          Начните с пресета, сохраните свой вариант и заберите тему в проект.
+        <TextReveal className={"mt-5 max-w-lg " + ui.body}>
+          Тема для сайта, медиа по ссылке или файл в другом формате — начните с
+          того, что нужно сейчас.
         </TextReveal>
-        <EditorLink className="mt-6 gap-2 rounded-lg text-base">
-          Создать свою тему
-        </EditorLink>
-        <p className="mt-4 text-sm leading-6 text-shell-muted">
-          Без аккаунта · Локальные копии · CSS и JSON
-        </p>
+        <div className="mt-7 flex flex-wrap gap-3">
+          {tools.map((tool, index) => (
+            <Link
+              key={tool.id}
+              to={tool.to}
+              className={
+                "inline-flex min-h-12 items-center gap-2 rounded-lg border px-5 py-3 text-base font-medium " +
+                ui.focus +
+                (index === 0
+                  ? " border-transparent bg-shell-accent text-shell-accent-ink hover:bg-shell-accent-hover"
+                  : " border-white/20 bg-shell-deep text-shell-soft hover:bg-shell-raised")
+              }
+            >
+              <tool.icon size={18} aria-hidden="true" />
+              {tool.id === "theme"
+                ? "Редактор тем"
+                : tool.id === "youtube"
+                  ? "YouTube"
+                  : "Конвертер"}
+            </Link>
+          ))}
+        </div>
       </ScrollReveal>
     </section>
   );
 }
-
 export function LandingNumbers() {
   return (
     <section
       className={ui.container + " pb-12 sm:pb-16"}
       aria-label="Возможности LePear в цифрах"
     >
-      <div className="grid gap-6 border-y border-white/20 py-7 sm:grid-cols-3 sm:gap-8 sm:py-9">
+      <div className="grid gap-6 py-7 sm:grid-cols-3 sm:gap-8 sm:py-9">
         {[
-          { to: 2, label: "независимые палитры", detail: "Светлая и тёмная" },
           {
-            to: 4,
-            label: "цветовых пресета",
-            detail: "Отправная точка для своего стиля",
+            to: tools.length,
+            label: "инструмента",
+            detail: "Оформление, YouTube и конвертация",
           },
+          { to: 3, label: "режима YouTube", detail: "Видео, аудио и субтитры" },
           {
-            to: 7,
-            label: "семейств шрифтов",
-            detail: "С кириллицей и fallback",
+            to: converterFormats.length,
+            label: "форматов конвертера",
+            detail: "Музыка и статичные изображения",
           },
         ].map((item, index) => (
           <ScrollReveal

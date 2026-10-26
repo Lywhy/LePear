@@ -1,3 +1,10 @@
+import { converterConfig } from "./converter-config.mjs";
+import { converterRoutes } from "./converter-routes.mjs";
+import {
+  initializeConverter,
+  stopConverter,
+  shutdownConverter,
+} from "./converter-jobs.mjs";
 import { createServer } from "node:http";
 import { randomUUID } from "node:crypto";
 import { config, ApiError, bundledToolExists } from "./config.mjs";
@@ -41,15 +48,29 @@ function bodyOf(req) {
     const chunks = [];
     let bytes = 0,
       done = false;
+    const timer = setTimeout(() => {
+      if (done) return;
+      done = true;
+      reject(new ApiError(408, "REQUEST_TIMEOUT", "Превышено время запроса."));
+    }, 10000);
+    req.once("aborted", () => {
+      clearTimeout(timer);
+      if (!done) {
+        done = true;
+        reject(new ApiError(400, "REQUEST_ABORTED", "Запрос прерван."));
+      }
+    });
     req.on("data", (chunk) => {
       if (done) return;
       bytes += chunk.length;
       if (bytes > config.maxBodyBytes) {
         done = true;
+        clearTimeout(timer);
         reject(new ApiError(413, "BODY_LIMIT", "Запрос слишком большой."));
       } else chunks.push(chunk);
     });
     req.on("end", () => {
+      clearTimeout(timer);
       if (done) return;
       done = true;
       try {
@@ -68,6 +89,7 @@ function bodyOf(req) {
       }
     });
     req.on("error", () => {
+      clearTimeout(timer);
       if (!done) {
         done = true;
         reject(new ApiError(400, "REQUEST_ABORTED", "Запрос прерван."));
@@ -76,7 +98,11 @@ function bodyOf(req) {
   });
 }
 const server = createServer(
-  { maxHeaderSize: 8192, requestTimeout: 10000, headersTimeout: 10000 },
+  {
+    maxHeaderSize: 8192,
+    requestTimeout: converterConfig.uploadTimeoutMs + 10000,
+    headersTimeout: 10000,
+  },
   async (req, res) => {
     const requestId = randomUUID();
     try {
@@ -98,7 +124,7 @@ const server = createServer(
         res.setHeader("Vary", "Origin");
         res.setHeader(
           "Access-Control-Allow-Methods",
-          "GET, POST, DELETE, OPTIONS",
+          "GET, POST, PUT, DELETE, OPTIONS",
         );
         res.setHeader("Access-Control-Allow-Headers", "Content-Type");
       }
@@ -107,6 +133,7 @@ const server = createServer(
         res.end();
         return;
       }
+      if (await converterRoutes(req, res, { json, bodyOf })) return;
       if (req.url === "/api/health" && req.method === "GET") {
         json(res, 200, {
           apiVersion: 1,
@@ -247,7 +274,11 @@ const server = createServer(
       const known = error instanceof ApiError;
       const status = known ? error.status : 500;
       const code = known ? error.code : "INTERNAL_ERROR";
-      console.error("[youtube]", requestId, code);
+      console.error(
+        req.url.startsWith("/api/converter/") ? "[converter]" : "[youtube]",
+        requestId,
+        code,
+      );
       if (Number.isFinite(error.retryAt))
         res.setHeader(
           "Retry-After",
@@ -272,7 +303,12 @@ server.on("error", (error) => {
   process.exitCode = 1;
 });
 server.listen(config.port, "127.0.0.1", async () => {
-  console.log("LePear YouTube API: http://127.0.0.1:" + config.port);
+  console.log("LePear local API: http://127.0.0.1:" + config.port);
+  try {
+    await initializeConverter();
+  } catch (error) {
+    console.error("[converter] Storage unavailable:", error.message);
+  }
   try {
     await initializeJobs();
   } catch (error) {
@@ -286,8 +322,9 @@ function shutdown() {
   clearInterval(sweep);
   for (const controller of controllers) controller.abort();
   stopJobs();
+  stopConverter();
   server.close(() => {
-    void shutdownJobs().catch(() => {
+    void Promise.all([shutdownJobs(), shutdownConverter()]).catch(() => {
       process.exitCode = 1;
     });
   });

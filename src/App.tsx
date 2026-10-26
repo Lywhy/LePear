@@ -1,5 +1,3 @@
-import { ThemeJourney } from "@/components/landing/theme-journey";
-
 import { LandingHero } from "@/components/landing/landing-hero";
 import { LandingPreview } from "@/components/landing/landing-preview";
 import {
@@ -18,7 +16,7 @@ export default function App() {
         <LandingPreview />
         <LandingFeatures />
         <LandingNumbers />
-        <ThemeJourney />
+
         <LandingWorkflow />
         <LandingFaq />
         <LandingCta />

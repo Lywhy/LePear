@@ -5,6 +5,7 @@ import { AppMotion } from "@/components/motion/app-motion";
 import ContactPage from "@/pages/contact";
 import EditorPage from "@/pages/editor";
 import YouTubePage from "@/pages/youtube";
+import ConverterPage from "@/pages/converter";
 import { Suspense, lazy } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -33,6 +34,7 @@ createRoot(document.getElementById("root")!).render(
         <Route element={<SiteLayout />}>
           <Route path="/editor" element={<EditorPage />} />
           <Route path="/youtube" element={<YouTubePage />} />
+          <Route path="/converter" element={<ConverterPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/*" element={<App />} />
         </Route>

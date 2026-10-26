@@ -240,7 +240,13 @@ export async function runSubtitleJob(job) {
         "-" +
         data.video.title
           .normalize("NFC")
-          .replace(/[<>:"/\\|?*\u0000-\u001f\u007f]/g, "")
+          .split("")
+          .filter((character) => {
+            const code = character.charCodeAt(0);
+            return code >= 32 && code !== 127;
+          })
+          .join("")
+          .replace(/[<>:"/\\|?*]/g, "")
           .replace(/^\.+|[.\s]+$/g, "")
           .slice(0, 65)
           .toWellFormed()

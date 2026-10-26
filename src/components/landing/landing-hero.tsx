@@ -4,12 +4,11 @@ import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { TextReveal } from "@/components/motion/text-reveal";
 import { shellColors } from "@/lib/shell-palette";
 import { AccentText } from "@/components/landing/marketing-text";
-import { EditorLink } from "@/components/landing/shared";
 import { Reveal } from "@/components/motion/reveal";
 import { useDecorativeMotionState } from "@/hooks/use-decorative-motion";
 import { designClasses as ui } from "@/lib/design-system";
 import TiltedCard from "@/components/react-bits/tilted-card";
-import { ArrowDown, Check } from "lucide-react";
+import { ArrowDown, Check, Palette, Video, RefreshCw } from "lucide-react";
 import { lazy, Suspense, useRef } from "react";
 
 const Aurora = lazy(() => import("@/components/react-bits/aurora"));
@@ -69,27 +68,33 @@ export function LandingHero() {
         <div className="min-w-0">
           <p className="flex flex-wrap items-center gap-3 text-sm leading-6 tracking-wide text-shell-soft">
             <span className="h-px w-8 bg-shell-accent" aria-hidden="true" />
-            LEPEAR / ВАША ТЕМА
+            LEPEAR / ВАШИ ИНСТРУМЕНТЫ
           </p>
           <TextReveal
             as="h1"
             id="hero-title"
-            className="mt-6 font-[family-name:Arial_Black,Arial,sans-serif] text-[clamp(2.75rem,7.3vw,6.5rem)] leading-[1.02] font-black tracking-[-0.065em] text-shell-text wrap-anywhere"
+            className="mt-6 font-[Arial_Black,Arial,sans-serif] text-[clamp(2.75rem,7.3vw,6.5rem)] leading-[1.02] font-black tracking-[-0.065em] text-shell-text wrap-anywhere"
           >
-            Ваш сайт.
+            Для идей.
             <br />
-            Ваш
+            Для файлов.
             <br />
-            <AccentText text="характер." />
+            <AccentText text="Для вас." />
           </TextReveal>
           <TextReveal className="mt-6 max-w-md text-base leading-8 text-shell-soft sm:text-lg">
-            Цвет, шрифт и форма — не мелочи. Соберите из них свой визуальный
-            язык и примерьте его на настоящие компоненты.
+            Оформите сайт, скачайте видео с YouTube или измените формат музыки и
+            изображений. Нужные инструменты — в одном месте.
           </TextReveal>
           <Reveal className="mt-7 flex flex-wrap items-center gap-3">
-            <EditorLink className="min-h-12 gap-2 rounded-lg px-5 text-base">
-              Создать тему
-            </EditorLink>
+            <Link
+              to="/#features"
+              className={
+                "inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-shell-accent px-5 py-3 text-base font-medium text-shell-accent-ink transition-colors hover:bg-shell-accent-hover motion-reduce:transition-none " +
+                ui.focus
+              }
+            >
+              Выбрать инструмент
+            </Link>
             <Link
               to="/#how-it-works"
               className={
@@ -105,18 +110,16 @@ export function LandingHero() {
             aria-label="Возможности LePear"
             className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm leading-6 text-shell-soft"
           >
-            {["Без регистрации", "Локальные темы", "CSS и JSON"].map(
-              (label) => (
-                <li key={label} className="inline-flex items-center gap-2">
-                  <Check
-                    size={14}
-                    aria-hidden="true"
-                    className="shrink-0 text-shell-accent"
-                  />
-                  {label}
-                </li>
-              ),
-            )}
+            {["Редактор тем", "YouTube", "Конвертер"].map((label) => (
+              <li key={label} className="inline-flex items-center gap-2">
+                <Check
+                  size={14}
+                  aria-hidden="true"
+                  className="shrink-0 text-shell-accent"
+                />
+                {label}
+              </li>
+            ))}
           </ul>
         </div>
         <ScrollReveal className="min-w-0 lg:pt-10" delay={0.12}>
@@ -124,51 +127,81 @@ export function LandingHero() {
             effectsEnabled={animateBackground}
             className="relative rounded-2xl border border-shell-accent/30 bg-shell-deep/95 p-5 shadow-2xl shadow-black/30 sm:p-7"
           >
-            <div className="flex flex-wrap justify-between gap-2 border-b border-white/15 pb-4 text-sm leading-6 text-shell-muted">
-              <span>ЭТЮД № 01</span>
-              <span>Sunset / Dark</span>
+            <div className="flex flex-wrap justify-between gap-2 pb-4 text-sm leading-6 text-shell-muted">
+              <span>ВАШ РАБОЧИЙ НАБОР</span>
+              <span>LePear / 01—03</span>
             </div>
-            <p
-              aria-hidden="true"
-              className="mt-6 font-[family-name:Arial_Black,Arial,sans-serif] text-[clamp(4.5rem,12vw,9rem)] leading-none font-black tracking-[-0.08em] text-shell-text"
+            <TextReveal
+              as="h2"
+              className="mt-6 font-[Arial_Black,Arial,sans-serif] text-3xl leading-tight font-black tracking-tight sm:text-4xl"
             >
-              Aa<span className="text-shell-accent">.</span>
-            </p>
-            <TextReveal className="mt-3 max-w-xs text-base leading-7 text-shell-soft">
-              Знакомые компоненты.
+              Один сайт.
               <br />
-              Ваш собственный характер.
+              <span className="text-shell-accent">Разные задачи.</span>
             </TextReveal>
-            <div
-              className="mt-7 grid grid-cols-4 gap-2"
-              aria-label="Образец палитры: тёмный коричневый, оранжевый, медный и персиковый"
-            >
+            <div className="mt-6 space-y-3">
+              {[
+                {
+                  Icon: Palette,
+                  name: "Редактор тем",
+                  detail: "Цвет · Шрифт · Форма",
+                  index: "01",
+                },
+                {
+                  Icon: Video,
+                  name: "YouTube",
+                  detail: "Видео · Аудио · Субтитры",
+                  index: "02",
+                },
+                {
+                  Icon: RefreshCw,
+                  name: "Конвертер",
+                  detail: "Музыка · Изображения",
+                  index: "03",
+                },
+              ].map((tool) => (
+                <div
+                  key={tool.index}
+                  className="flex items-center gap-3 rounded-xl border border-white/10 bg-shell-raised/60 p-4"
+                >
+                  <tool.Icon
+                    className="size-5 shrink-0 text-shell-accent"
+                    aria-hidden="true"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-base font-medium text-shell-text">
+                      {tool.name}
+                    </p>
+                    <p className="mt-1 text-sm leading-6 text-shell-muted">
+                      {tool.detail}
+                    </p>
+                  </div>
+                  <span className="font-mono text-sm text-shell-dim">
+                    {tool.index}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div aria-hidden="true" className="mt-6 flex gap-2">
               {[
                 shellColors["raised"],
                 shellColors["accent"],
                 shellColors["teal"],
                 shellColors["sand"],
-              ].map((color, index) => (
-                <div key={color} className="min-w-0">
-                  <span
-                    className="block h-16 rounded-lg border border-white/15 sm:h-20"
-                    style={{ backgroundColor: color }}
-                  />
-                  <span className="mt-2 block font-mono text-sm text-shell-dim">
-                    0{index + 1}
-                  </span>
-                </div>
+              ].map((color) => (
+                <span
+                  key={color}
+                  className="h-3 min-w-0 flex-1 rounded-full border border-white/10"
+                  style={{ backgroundColor: color }}
+                />
               ))}
             </div>
-            <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-white/15 pt-4 text-sm leading-6 text-shell-muted">
-              <span>Цвет / Типографика / Форма</span>
-              <span className="rounded-full border border-shell-accent/30 px-3 py-1 text-shell-accent">
-                shadcn/ui
-              </span>
-            </div>
+            <p className="mt-4 text-sm leading-6 text-shell-muted">
+              Оформляйте. Скачивайте. Преобразуйте.
+            </p>
           </TiltedCard>
           <TextReveal className="mt-4 text-sm leading-6 text-shell-soft">
-            Визуальный образец. Рабочие настройки — в редакторе.
+            Выберите задачу — у каждого инструмента своя страница.
           </TextReveal>
         </ScrollReveal>
       </div>

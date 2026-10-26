@@ -1,111 +1,125 @@
-import { landingPreviewTheme } from "@/lib/landing-preview-theme";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
-
 import {
-  Check,
-  Code2,
-  Moon,
   Palette,
-  SlidersHorizontal,
-  Sun,
+  Video,
+  RefreshCw,
+  ArrowRight,
+  Play,
+  AudioLines,
+  ImageIcon,
 } from "lucide-react";
-import { ThemePreview } from "@/components/theme-preview";
-import { shellSwatches as themeColors } from "@/lib/shell-palette";
 
-/** Illustration only: no focusable controls or editor state on the landing page. */
+/** Static illustrations only; all tools live on their dedicated pages. */
 export function LandingPreview() {
   return (
     <ScrollReveal
       as="section"
       className="relative z-10 mx-auto -mt-28 w-[calc(100%-2rem)] max-w-290 sm:-mt-36 sm:w-[calc(100%-4rem)]"
-      aria-label="Внешний вид редактора LePear"
+      aria-label="Примеры трёх инструментов LePear"
     >
-      <div
-        role="img"
-        aria-label="Макет редактора LePear: тёмная тема с янтарным акцентом, настройками цвета, шрифта и закругления"
-        className="overflow-hidden rounded-lg border border-shell-line bg-shell-surface shadow-2xl shadow-black/40"
-      >
-        <div aria-hidden="true">
-          <div className="flex min-h-11 items-center justify-between gap-3 border-b border-white/10 bg-shell-surface px-4 py-2 font-mono text-sm text-shell-muted">
-            <span className="flex gap-1.5">
-              <span className="size-1.5 rounded-full bg-shell-accent" />
-              <span className="size-1.5 rounded-full bg-shell-dim" />
-              <span className="size-1.5 rounded-full bg-shell-dim" />
-            </span>
-            <span className="flex items-center gap-2">
-              <Palette size={14} />
-              lepear / editor
-            </span>
-            <span className="hidden items-center gap-2 sm:flex">
-              <span className="size-1.5 rounded-full bg-shell-accent" />
-              ПРЕДПРОСМОТР
-            </span>
-          </div>
-          <div className="grid lg:grid-cols-[240px_minmax(0,1fr)]">
-            <div className="grid gap-6 border-b border-white/10 p-5 text-sm text-shell-muted sm:grid-cols-2 lg:flex lg:flex-col lg:border-r lg:border-b-0">
-              <div className="flex items-center gap-2 border-b border-white/10 pb-4 font-medium text-shell-text sm:col-span-2">
-                <SlidersHorizontal size={16} />
-                Настройки темы
+      <div className="overflow-hidden rounded-2xl border border-shell-line bg-shell-deep shadow-2xl shadow-black/40">
+        <div className="flex min-h-12 flex-wrap items-center justify-between gap-2 px-5 py-3 text-sm leading-6 text-shell-muted">
+          <span className="font-mono">LEPEAR / ВОЗМОЖНОСТИ</span>
+          <span>Три инструмента. Одна оболочка.</span>
+        </div>
+        <div className="grid divide-y divide-white/10 md:grid-cols-3 md:divide-x md:divide-y-0">
+          <div
+            role="img"
+            aria-label="Пример редактора: цветовая палитра и типографика"
+            className="min-w-0 bg-shell-surface p-5 sm:p-6"
+          >
+            <div aria-hidden="true">
+              <p className="flex items-center gap-2 text-base font-medium text-shell-soft">
+                <Palette className="size-4 text-shell-accent" />
+                Редактор тем
+              </p>
+              <p className="mt-6 font-[family-name:Arial_Black,Arial,sans-serif] text-5xl font-black tracking-tight text-shell-text">
+                Aa<span className="text-shell-accent">.</span>
+              </p>
+              <div className="mt-5 grid grid-cols-4 gap-2">
+                {[
+                  "bg-shell-raised",
+                  "bg-shell-accent",
+                  "bg-shell-teal",
+                  "bg-shell-sand",
+                ].map((color) => (
+                  <span
+                    key={color}
+                    className={
+                      "h-10 rounded-lg border border-white/15 " + color
+                    }
+                  />
+                ))}
               </div>
-              <div>
-                <p className="mb-3">Режим</p>
-                <div className="flex items-center rounded bg-shell-raised p-1">
-                  <span className="flex flex-1 items-center justify-center gap-2 rounded bg-shell-hover px-2 py-2 text-shell-text">
-                    <Moon size={14} />
-                    Тёмный
-                  </span>
-                  <span className="flex flex-1 items-center justify-center gap-2 px-2 py-2">
-                    <Sun size={14} />
-                    Светлый
-                  </span>
-                </div>
-              </div>
-              <div>
-                <p className="mb-3">Акцентный цвет</p>
-                <div className="flex flex-wrap gap-2.5">
-                  {themeColors.map((color, i) => (
-                    <span
-                      key={color.name}
-                      className={`grid size-7 place-items-center rounded-full text-shell-accent-ink ${color.className} ${i === 0 ? "outline outline-offset-3 outline-shell-accent" : ""}`}
-                    >
-                      {i === 0 && <Check size={17} />}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <p className="mb-3">Шрифт</p>
-                <div className="rounded border border-white/15 bg-shell-raised px-3 py-2.5 text-shell-text">
-                  Geist
-                </div>
-              </div>
-              <div>
-                <p className="mb-3 flex justify-between">
-                  Закругление<span>10 px</span>
-                </p>
-                <div className="relative my-5 h-1 rounded-full bg-shell-line">
-                  <span className="absolute top-1/2 left-[42%] size-3 -translate-y-1/2 rounded-full bg-shell-accent" />
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span>Строго</span>
-                  <span>Мягко</span>
-                </div>
-              </div>
+              <p className="mt-5 text-sm leading-6 text-shell-muted">
+                Свой стиль → CSS и JSON
+              </p>
             </div>
-            <ThemePreview staticView theme={landingPreviewTheme} />
           </div>
-          <div className="flex min-h-10 flex-wrap items-center justify-between gap-2 border-t border-white/10 px-4 py-2 font-mono text-sm text-shell-muted">
-            <span className="flex items-center gap-2">
-              <Code2 size={14} />
-              CSS variables
-            </span>
-            <span>Ваш стиль начинается с деталей.</span>
+          <div
+            role="img"
+            aria-label="Пример YouTube: выбор видео, аудио или субтитров"
+            className="min-w-0 bg-shell-surface p-5 sm:p-6"
+          >
+            <div aria-hidden="true">
+              <p className="flex items-center gap-2 text-base font-medium text-shell-soft">
+                <Video className="size-4 text-shell-accent" />
+                YouTube
+              </p>
+              <div className="mt-6 flex h-24 items-center justify-center rounded-xl border border-shell-accent/20 bg-linear-to-br from-shell-hover to-shell-deep">
+                <Play className="size-9 text-shell-accent" />
+              </div>
+              <div className="mt-4 grid grid-cols-3 gap-2 text-sm leading-6">
+                {["Видео", "Аудио", "Субтитры"].map((mode) => (
+                  <span
+                    key={mode}
+                    className="min-w-0 rounded-md border border-white/10 bg-shell-raised px-1 py-2 text-center break-words text-shell-soft"
+                  >
+                    {mode}
+                  </span>
+                ))}
+              </div>
+              <p className="mt-4 text-sm leading-6 text-shell-muted">
+                Одна ссылка → нужный формат
+              </p>
+            </div>
+          </div>
+          <div
+            role="img"
+            aria-label="Пример конвертера: MP3 в WAV и PNG в WebP"
+            className="min-w-0 bg-shell-surface p-5 sm:p-6"
+          >
+            <div aria-hidden="true">
+              <p className="flex items-center gap-2 text-base font-medium text-shell-soft">
+                <RefreshCw className="size-4 text-shell-accent" />
+                Конвертер
+              </p>
+              <div className="mt-6 space-y-3">
+                {[
+                  { Icon: AudioLines, from: "MP3", to: "WAV" },
+                  { Icon: ImageIcon, from: "PNG", to: "WebP" },
+                ].map((sample) => (
+                  <div
+                    key={sample.from}
+                    className="grid grid-cols-4 items-center justify-items-center gap-2 rounded-xl border border-white/10 bg-shell-raised px-3 py-4 font-mono text-base"
+                  >
+                    <sample.Icon className="size-4 shrink-0 text-shell-dim" />
+                    <span className="text-shell-soft">{sample.from}</span>
+                    <ArrowRight className="size-4 shrink-0 text-shell-dim" />
+                    <span className="text-shell-accent">{sample.to}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-5 text-sm leading-6 text-shell-muted">
+                Ваш файл → совместимый формат
+              </p>
+            </div>
           </div>
         </div>
       </div>
       <p className="mt-4 text-sm leading-6 text-shell-dim">
-        Пример интерфейса. Все настройки доступны на отдельной странице
-        редактора.
+        Статичные примеры. Работа с темами, ссылками и файлами — на страницах
+        инструментов.
       </p>
     </ScrollReveal>
   );
